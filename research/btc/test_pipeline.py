@@ -74,7 +74,15 @@ class PipelineTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             rates, prices = [], []
+            model = root / "model.json"
             for t in range(START, END, HOUR):
+                if t == START + 120 * HOUR:
+                    # Train before either replay day or any settlement file exists.
+                    subprocess.run(
+                        ["node", HERE / "first-week.cjs", "fit", root, model],
+                        check=True,
+                    )
+
                 books = [
                     {
                         "time": x,
@@ -150,6 +158,31 @@ class PipelineTest(unittest.TestCase):
             subprocess.run(["node", HERE / "first-week.cjs", root, result], check=True)
             out = json.loads(result.read_text())
             self.assertEqual(out["model"]["groups"]["1/3"]["n"], 7198)
+            split_result = root / "split.json"
+            subprocess.run(
+                ["node", HERE / "first-week.cjs", "replay", root, model, split_result],
+                check=True,
+            )
+            self.assertEqual(out, json.loads(split_result.read_text()))
+            self.assertEqual(out["model"], json.loads(model.read_text()))
+            changed = root / f"{START}.manifest.json"
+            changed.write_text(changed.read_text() + "\n")
+            invalid_result = root / "invalid.json"
+            attempt = subprocess.run(
+                [
+                    "node",
+                    HERE / "first-week.cjs",
+                    "replay",
+                    root,
+                    model,
+                    invalid_result,
+                ],
+                capture_output=True,
+                check=False,
+            )
+            self.assertNotEqual(attempt.returncode, 0)
+            self.assertIn(b"Training manifest changed", attempt.stderr)
+            self.assertFalse(invalid_result.exists())
             r = out["results"]["model"]
             self.assertGreater(r["buys"], 0)
             self.assertGreater(r["sells"], 0)

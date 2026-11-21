@@ -45,12 +45,15 @@ function checkFunding(folder) {
     };
   });
 }
-function readPackets(folder) {
+function readPackets(folder, sourceEnd) {
   const manifests = new Map(),
     cache = new Map();
+  const trainingManifest = crypto.createHash('sha256');
   let prev;
-  for (let t = start; t < end; t += M.hour) {
-    const m = json(path.join(folder, t + '.manifest.json')),
+  for (let t = start; t < sourceEnd; t += M.hour) {
+    const rawManifest = fs.readFileSync(path.join(folder, t + '.manifest.json'));
+    if (t < cut) trainingManifest.update(sha(rawManifest));
+    const m = JSON.parse(rawManifest),
       date = new Date(t);
     const stamp = date.toISOString().slice(0, 10).replaceAll('-', ''),
       h = date.getUTCHours();
@@ -94,13 +97,13 @@ function readPackets(folder) {
     }
     return cache.get(t);
   }
-  return function interval(a, b) {
+  function interval(a, b) {
     // Include adjacent source objects: file partition time can differ from exchange time.
     const books = new Map(),
       trades = [];
     for (
       let t = Math.max(start, Math.floor(a / M.hour) * M.hour - M.hour);
-      t <= Math.min(end - M.hour, Math.floor(b / M.hour) * M.hour + M.hour);
+      t <= Math.min(sourceEnd - M.hour, Math.floor(b / M.hour) * M.hour + M.hour);
       t += M.hour
     ) {
       const raw = packet(t);
@@ -113,7 +116,8 @@ function readPackets(folder) {
       for (const trade of raw.trades) if (trade.time >= a && trade.time < b) trades.push(trade);
     }
     return M.prepare({ books: [...books.values()], trades });
-  };
+  }
+  return { interval, trainingManifestSha256: trainingManifest.digest('hex') };
 }
 function train(interval) {
   const model = { version: 1, start, end: cut, config: M.defaults, groups: {} };
@@ -136,11 +140,31 @@ function train(interval) {
   }
   return model;
 }
-function study(folder) {
-  const interval = readPackets(folder),
-    funding = checkFunding(folder);
-  const model = train(interval),
-    tape = interval(cut, end);
+function fitWeek(folder) {
+  const packets = readPackets(folder, cut);
+  return {
+    ...train(packets.interval),
+    trainingManifestSha256: packets.trainingManifestSha256,
+    modelCodeSha256: sha(fs.readFileSync(require.resolve('./btc-quote-model.cjs'))),
+  };
+}
+function study(folder, model = fitWeek(folder)) {
+  assert.equal(model.version, 1);
+  assert.equal(model.start, start);
+  assert.equal(model.end, cut);
+  assert.deepEqual(model.config, M.defaults);
+  assert.equal(
+    model.modelCodeSha256,
+    sha(fs.readFileSync(require.resolve('./btc-quote-model.cjs'))),
+  );
+  const packets = readPackets(folder, end);
+  assert.equal(
+    model.trainingManifestSha256,
+    packets.trainingManifestSha256,
+    'Training manifest changed',
+  );
+  const funding = checkFunding(folder),
+    tape = packets.interval(cut, end);
   tape.funding = funding;
   const results = {};
   for (const policy of ['model', 'touch', 'touch15', 'wide3', 'cash'])
@@ -155,10 +179,18 @@ function study(folder) {
     results[name] = replay(tape, cut, end, 'model', model, opts);
   return { model, results };
 }
-module.exports = { study, train };
+module.exports = { study, train, fitWeek };
 if (require.main === module) {
-  const [dir, out] = process.argv.slice(2);
-  const result = study(dir);
-  fs.writeFileSync(out, JSON.stringify(result) + '\n', { flag: 'wx' });
-  console.log('First training-week chronological replay complete');
+  const args = process.argv.slice(2);
+  let result;
+  if (args[0] === 'fit' && args.length === 3) result = fitWeek(args[1]);
+  else if (args[0] === 'replay' && args.length === 4) result = study(args[1], json(args[2]));
+  else if (args.length === 2) result = study(args[0]);
+  else throw Error('Use FOLDER RESULT, fit FOLDER MODEL, or replay FOLDER MODEL RESULT');
+  fs.writeFileSync(args.at(-1), JSON.stringify(result) + '\n', { flag: 'wx' });
+  console.log(
+    args[0] === 'fit'
+      ? 'First five training days fitted'
+      : 'First training-week chronological replay complete',
+  );
 }

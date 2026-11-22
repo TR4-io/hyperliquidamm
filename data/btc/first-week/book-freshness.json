@@ -1,0 +1,56 @@
+{
+  "start": 1767052800000,
+  "end": 1767657600000,
+  "freshnessLimitMs": 10000,
+  "hourlyManifestSha256": "539671841722cd2a8c151be6c404cf54f077981dc4d1401ac59f039b07561dae",
+  "days": [
+    {
+      "date": "2025-12-30",
+      "staleMs": 1515988,
+      "snapshots": 154057
+    },
+    {
+      "date": "2025-12-31",
+      "staleMs": 1889610,
+      "snapshots": 153331
+    },
+    {
+      "date": "2026-01-01",
+      "staleMs": 2369943,
+      "snapshots": 152381
+    },
+    {
+      "date": "2026-01-02",
+      "staleMs": 2718303,
+      "snapshots": 151929
+    },
+    {
+      "date": "2026-01-03",
+      "staleMs": 2098186,
+      "snapshots": 152620
+    },
+    {
+      "date": "2026-01-04",
+      "staleMs": 6291922,
+      "snapshots": 145020
+    },
+    {
+      "date": "2026-01-05",
+      "staleMs": 4457019,
+      "snapshots": 148578
+    }
+  ],
+  "longIntervals": 130,
+  "maxBetweenBooksMs": 1749742,
+  "staleAtStartMs": 20842,
+  "staleMs": 21340971,
+  "suspectVenueHours": [
+    {
+      "hourStart": 1767423600000,
+      "first": 1767423599954,
+      "last": 1767427199861,
+      "rows": 42082,
+      "max_gap_ms": 68122
+    }
+  ]
+}

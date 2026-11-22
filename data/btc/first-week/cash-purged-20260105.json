@@ -1,0 +1,13 @@
+{
+  "start": 1767571200000,
+  "end": 1767657600000,
+  "modelSha256": "6008617ab84792ec4d0081066b71e7ff452879e9d4e5e7fcbd0c0aa6f6c1e708",
+  "trainingStart": 1767052800000,
+  "trainingEndExclusive": 1767571200000,
+  "lastSourceHourStart": 1767567600000,
+  "trainingOpportunityMinutes": 8010,
+  "excludedTrainingMinutes": 628,
+  "states": 36,
+  "activeStates": [],
+  "cashEquivalentFromFlat": true
+}

@@ -1,0 +1,51 @@
+[
+  {
+    "sourceBucket": "hyperliquid-archive",
+    "sourceKey": "asset_ctxs/20251230.csv.lz4",
+    "sourceSha256": "5111450e499161ba7f376e0906d371995e4dff6b8c7a3a2955dcede2d5000f24",
+    "rows": 1440,
+    "file": "20251230.csv.gz"
+  },
+  {
+    "sourceBucket": "hyperliquid-archive",
+    "sourceKey": "asset_ctxs/20251231.csv.lz4",
+    "sourceSha256": "1cd5ee3acfe838fc3e5d214b28e6418a1e93da992b06dd9500142e3da525f41b",
+    "rows": 1440,
+    "file": "20251231.csv.gz"
+  },
+  {
+    "sourceBucket": "hyperliquid-archive",
+    "sourceKey": "asset_ctxs/20260101.csv.lz4",
+    "sourceSha256": "3a8a1a555f533f4c3399be3598da766f5853c84b5c81234c09a895a6d4d8e3c9",
+    "rows": 1440,
+    "file": "20260101.csv.gz"
+  },
+  {
+    "sourceBucket": "hyperliquid-archive",
+    "sourceKey": "asset_ctxs/20260102.csv.lz4",
+    "sourceSha256": "33f000f2e653beb05d7525cc505e4464492e79c6178c0e1630b96b071e948936",
+    "rows": 1440,
+    "file": "20260102.csv.gz"
+  },
+  {
+    "sourceBucket": "hyperliquid-archive",
+    "sourceKey": "asset_ctxs/20260103.csv.lz4",
+    "sourceSha256": "a6c94dfa473ff6727a4fcaeb06235430ce17111dfd4954a3317203c487a62777",
+    "rows": 1440,
+    "file": "20260103.csv.gz"
+  },
+  {
+    "sourceBucket": "hyperliquid-archive",
+    "sourceKey": "asset_ctxs/20260104.csv.lz4",
+    "sourceSha256": "e4c9aba3f8be4d6870b6bf0dfc13c52aed81058ba129ee0b1aee6e59c7156ba1",
+    "rows": 1440,
+    "file": "20260104.csv.gz"
+  },
+  {
+    "sourceBucket": "hyperliquid-archive",
+    "sourceKey": "asset_ctxs/20260105.csv.lz4",
+    "sourceSha256": "6266ddc8aa76e34c5f557ee9a7d090f9ab97f3f3f34bbee30da7e32b374bf0e7",
+    "rows": 1440,
+    "file": "20260105.csv.gz"
+  }
+]

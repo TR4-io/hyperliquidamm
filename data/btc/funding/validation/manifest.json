@@ -1,0 +1,135 @@
+{
+  "split": "validation",
+  "start": "2026-08-27",
+  "end_exclusive": "2026-10-26",
+  "pages": [
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1787788800000,
+        "endTime": 1788393599999
+      },
+      "file": "2026-08-27.raw.json",
+      "bytes": 14799,
+      "sha256": "fec06606d21dbd30d5609823dc30443195c018fa7fdc8386a7cf45fc6e70c86f",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:14:08.170691+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1788393600000,
+        "endTime": 1788998399999
+      },
+      "file": "2026-09-03.raw.json",
+      "bytes": 14962,
+      "sha256": "d1f8b4ed3d4aae88b3d074d355645346139a6ce2022dc4f7964ebb91c41903ce",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:14:08.804039+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1788998400000,
+        "endTime": 1789603199999
+      },
+      "file": "2026-09-10.raw.json",
+      "bytes": 15015,
+      "sha256": "4ad1d626e4f62ebe2562726f87c5ad6bf146c1bffe624c4f7bb9b1b638bd2fb5",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:14:09.636482+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1789603200000,
+        "endTime": 1790207999999
+      },
+      "file": "2026-09-17.raw.json",
+      "bytes": 14767,
+      "sha256": "5a7b6db598f486e09a71b840c501b751c30183d0e12b89d9838a81c7396c96f8",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:14:10.281174+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1790208000000,
+        "endTime": 1790812799999
+      },
+      "file": "2026-09-24.raw.json",
+      "bytes": 14997,
+      "sha256": "c088992aaa726ddba36629b8e10150a6dcdf9559ab12c7be20b7fc4809de6f4f",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:14:10.949225+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1790812800000,
+        "endTime": 1791417599999
+      },
+      "file": "2026-10-01.raw.json",
+      "bytes": 14880,
+      "sha256": "f0a39e89a21f9d196f768ee792a5ac5f67ad1f7c687404e659f88d9498070a41",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:14:11.571108+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1791417600000,
+        "endTime": 1792022399999
+      },
+      "file": "2026-10-08.raw.json",
+      "bytes": 15135,
+      "sha256": "77aa64c319a9eeaa53b25ef00a4cde81e9efbbef99ee4656794c625eefe005c7",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:14:12.181455+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1792022400000,
+        "endTime": 1792627199999
+      },
+      "file": "2026-10-15.raw.json",
+      "bytes": 14949,
+      "sha256": "23cefde5846dd8abe9a7a2ef9a27bc4d664bfe6fd180963d53b38b2f431e157b",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:14:13.834065+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1792627200000,
+        "endTime": 1792972799999
+      },
+      "file": "2026-10-22.raw.json",
+      "bytes": 8480,
+      "sha256": "438d05640b4413974b53a4db6c43c113431a0bae328181157b265300b708b940",
+      "settlements": 96,
+      "retrieved_utc": "2026-11-22T17:14:14.456279+00:00"
+    }
+  ],
+  "settlements": 1440,
+  "coverage": "hourly BTC settled rates; settlement oracle not supplied by fundingHistory"
+}

@@ -1,0 +1,499 @@
+{
+  "split": "training",
+  "start": "2025-12-30",
+  "end_exclusive": "2026-08-27",
+  "pages": [
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1767052800000,
+        "endTime": 1767657599999
+      },
+      "file": "2025-12-30.raw.json",
+      "bytes": 14932,
+      "sha256": "873b8f4c45ba97ba6040dc2ae1de2022345b9451d0b87951f74a9bbc58f6256e",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-21T21:27:53.723996+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1767657600000,
+        "endTime": 1768262399999
+      },
+      "file": "2026-01-06.raw.json",
+      "bytes": 14784,
+      "sha256": "b076623045582d6f4b52739aa6798a4be6bf24741ba62f9367e32c1322d15459",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:13:35.076044+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1768262400000,
+        "endTime": 1768867199999
+      },
+      "file": "2026-01-13.raw.json",
+      "bytes": 14805,
+      "sha256": "88d12922e17f3317982001d1903638e1bc3afd36a905c6b934dcf7f9f3b7420a",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:13:36.541019+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1768867200000,
+        "endTime": 1769471999999
+      },
+      "file": "2026-01-20.raw.json",
+      "bytes": 15257,
+      "sha256": "67c2029a5e482cb16b1a9ae48af62836161e5bbb906307c3f1aae5075f873f56",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:13:38.064783+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1769472000000,
+        "endTime": 1770076799999
+      },
+      "file": "2026-01-27.raw.json",
+      "bytes": 15035,
+      "sha256": "192be532bc4fde97f4d08a60f246fcb3b24d269739a6f3521a2000a4192a6e8b",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:13:39.528077+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1770076800000,
+        "endTime": 1770681599999
+      },
+      "file": "2026-02-03.raw.json",
+      "bytes": 15203,
+      "sha256": "66f07140dba57dcb3c14deb5d454c5bb56760818068c98d8d98c49c5c7adbf4c",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:13:40.186571+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1770681600000,
+        "endTime": 1771286399999
+      },
+      "file": "2026-02-10.raw.json",
+      "bytes": 15140,
+      "sha256": "0b2208d18601c271ffe04859d80328578206444b9cd4fa4febe0104c010e5f85",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:13:40.943735+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1771286400000,
+        "endTime": 1771891199999
+      },
+      "file": "2026-02-17.raw.json",
+      "bytes": 15150,
+      "sha256": "41a868784529fb02b61f38cecc7c96c09e67fb3b6965f5578bf2943ec7d1639d",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:13:42.352924+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1771891200000,
+        "endTime": 1772495999999
+      },
+      "file": "2026-02-24.raw.json",
+      "bytes": 15228,
+      "sha256": "b4fb1ccdc5d593c447060f0e5695dc61ceff0b39181a9681c51e5fcbb25f3e43",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:13:42.969152+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1772496000000,
+        "endTime": 1773100799999
+      },
+      "file": "2026-03-03.raw.json",
+      "bytes": 15189,
+      "sha256": "ba905cedce7277d0d391068e565af0b765692570bac5d82fcd580365abeb0409",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:13:43.607408+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1773100800000,
+        "endTime": 1773705599999
+      },
+      "file": "2026-03-10.raw.json",
+      "bytes": 15312,
+      "sha256": "dccaad8df253601334dcf4fe1cd56a0e993d80e2c530bcfb3cb58d4790362c08",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:13:44.970652+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1773705600000,
+        "endTime": 1774310399999
+      },
+      "file": "2026-03-17.raw.json",
+      "bytes": 15273,
+      "sha256": "6cc32a8a540a222c3a73f0b3a4a09184dcbc63bb7d7352fe908a3c597db83fc3",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:13:46.198201+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1774310400000,
+        "endTime": 1774915199999
+      },
+      "file": "2026-03-24.raw.json",
+      "bytes": 15059,
+      "sha256": "153b564dcbdc9e493c3a81a0fa4c5ffe851dd905c9065056dd8b71c6939fac1d",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:13:46.807029+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1774915200000,
+        "endTime": 1775519999999
+      },
+      "file": "2026-03-31.raw.json",
+      "bytes": 15374,
+      "sha256": "7fa57c7b4634f7d300c8706b22813e20ff311678500ccdf6a0aea9272d9be27b",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:13:48.085587+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1775520000000,
+        "endTime": 1776124799999
+      },
+      "file": "2026-04-07.raw.json",
+      "bytes": 15130,
+      "sha256": "ab911f4f4c9337c72d117f12c6ce7900abce18e7871f70191fbefa6d0828f8b5",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:13:49.481550+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1776124800000,
+        "endTime": 1776729599999
+      },
+      "file": "2026-04-14.raw.json",
+      "bytes": 15345,
+      "sha256": "bab5ca3d0b4633438f9564413f8a8f5bf2a160efde45a6d38435405b77254b87",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:13:50.745221+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1776729600000,
+        "endTime": 1777334399999
+      },
+      "file": "2026-04-21.raw.json",
+      "bytes": 15224,
+      "sha256": "96b079f0b3a4c0b59f18371ffa579430b3c576bb1c48131695d04c0b6c818333",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:13:51.363724+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1777334400000,
+        "endTime": 1777939199999
+      },
+      "file": "2026-04-28.raw.json",
+      "bytes": 15338,
+      "sha256": "9e492c84be59c9e2b4548f6d0d7e0a81322a64c38b9686c29e24787c0f2b6999",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:13:51.968111+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1777939200000,
+        "endTime": 1778543999999
+      },
+      "file": "2026-05-05.raw.json",
+      "bytes": 15119,
+      "sha256": "48367b39998c272d8e79fc2c8db27152caaa3d1a28c1a54fd3e611c621a9be96",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:13:53.219425+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1778544000000,
+        "endTime": 1779148799999
+      },
+      "file": "2026-05-12.raw.json",
+      "bytes": 15215,
+      "sha256": "61cba3d18518f91c3d6dee476037a4a0d30ac54ca9602b6a450d71e0e025371a",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:13:54.586607+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1779148800000,
+        "endTime": 1779753599999
+      },
+      "file": "2026-05-19.raw.json",
+      "bytes": 15119,
+      "sha256": "584b20c47dd1b9a477a57645a4f2be0a29ab33df2a30c11396d59212fdbe2104",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:13:55.452452+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1779753600000,
+        "endTime": 1780358399999
+      },
+      "file": "2026-05-26.raw.json",
+      "bytes": 15093,
+      "sha256": "e4b0e4db3fde4fb027ac9e8e7c5cdae32eb134555a6dbdab35013cdc8fcf2f2c",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:13:56.356642+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1780358400000,
+        "endTime": 1780963199999
+      },
+      "file": "2026-06-02.raw.json",
+      "bytes": 15022,
+      "sha256": "ec81abf7337044145d5aacb984531731e46a4db736effbc4b49e943457898d88",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:13:57.713884+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1780963200000,
+        "endTime": 1781567999999
+      },
+      "file": "2026-06-09.raw.json",
+      "bytes": 15004,
+      "sha256": "123b4840eacbbdb57fb4beb1c3adbeeb59952c8786a31b1bfed7ef0684a6403b",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:13:58.345701+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1781568000000,
+        "endTime": 1782172799999
+      },
+      "file": "2026-06-16.raw.json",
+      "bytes": 15150,
+      "sha256": "33e9230e97f95cff858c04d7e20253a21c0dcc977b4724518c6eda74efa0256a",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:13:58.958428+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1782172800000,
+        "endTime": 1782777599999
+      },
+      "file": "2026-06-23.raw.json",
+      "bytes": 15269,
+      "sha256": "482e4aa726eafd33940a2acad8365f2659e1e09c666473e5d45988817c73a68e",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:14:00.321026+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1782777600000,
+        "endTime": 1783382399999
+      },
+      "file": "2026-06-30.raw.json",
+      "bytes": 14810,
+      "sha256": "00d6b6f06613b33a3664db51ec9660003cc4223f0f4aa501d156a1af29ee2e00",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:14:01.168428+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1783382400000,
+        "endTime": 1783987199999
+      },
+      "file": "2026-07-07.raw.json",
+      "bytes": 14697,
+      "sha256": "82542c32e844925af9684cc024daae3b4479376715172eef9f94b3867e2884e7",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:14:01.790867+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1783987200000,
+        "endTime": 1784591999999
+      },
+      "file": "2026-07-14.raw.json",
+      "bytes": 14789,
+      "sha256": "62c9467ec14a3aba9034d1c120bf29ae1d0e5899df586419d1dc83b16ece3095",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:14:02.418977+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1784592000000,
+        "endTime": 1785196799999
+      },
+      "file": "2026-07-21.raw.json",
+      "bytes": 15036,
+      "sha256": "3c3e20ddf824a155539541ae6b143df96943f894d0b34a02be61019fef72852d",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:14:03.318219+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1785196800000,
+        "endTime": 1785801599999
+      },
+      "file": "2026-07-28.raw.json",
+      "bytes": 15016,
+      "sha256": "850c9b24f5783039c5fa68e1c999355637f12e4d8bb1f825530f6990d67f5a7d",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:14:04.172915+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1785801600000,
+        "endTime": 1786406399999
+      },
+      "file": "2026-08-04.raw.json",
+      "bytes": 15213,
+      "sha256": "ec2561ddd8700b75a90ceddddb7ad1c9cbbe1cb746ce96b2d8f153930854b16c",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:14:05.538259+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1786406400000,
+        "endTime": 1787011199999
+      },
+      "file": "2026-08-11.raw.json",
+      "bytes": 14952,
+      "sha256": "38b18d9d6909e0bc4d0aff9cc3bab82ff94f687e53859600ea51e502d5e65ffc",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:14:06.190011+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1787011200000,
+        "endTime": 1787615999999
+      },
+      "file": "2026-08-18.raw.json",
+      "bytes": 14925,
+      "sha256": "4291384d9ccbf999702320077dbc70d2be692a5ce3a283c9191344fb21f2e2ba",
+      "settlements": 168,
+      "retrieved_utc": "2026-11-22T17:14:06.916627+00:00"
+    },
+    {
+      "source": "https://api.hyperliquid.xyz/info",
+      "request": {
+        "type": "fundingHistory",
+        "coin": "BTC",
+        "startTime": 1787616000000,
+        "endTime": 1787788799999
+      },
+      "file": "2026-08-25.raw.json",
+      "bytes": 4213,
+      "sha256": "5a1e585bebfbeee8c5ec6c5dda56f95e6c4ec9ebf975a4a4c4248324dc711ade",
+      "settlements": 48,
+      "retrieved_utc": "2026-11-22T17:14:07.530051+00:00"
+    }
+  ],
+  "settlements": 5760,
+  "coverage": "hourly BTC settled rates; settlement oracle not supplied by fundingHistory"
+}

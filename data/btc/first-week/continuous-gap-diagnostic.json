@@ -1,0 +1,134 @@
+{
+  "start": 1767484800000,
+  "end": 1767657600000,
+  "modelSha256": "857582d8e2a4fca8b06e951c395dee99109419df11c35fabd7b60d605797c268",
+  "certificate": {
+    "states": 36,
+    "activeStates": [],
+    "cashEquivalentFromFlat": true
+  },
+  "eligibleForPromotion": false,
+  "fundingPrices": "minute-sampled context proxy",
+  "policyInput": "observed feed including outages; decisions use past information only",
+  "results": {
+    "touch": {
+      "status": "unobservable",
+      "reason": "UNOBSERVABLE_EXIT",
+      "bookTime": 1767485241439,
+      "position": -0.003,
+      "missingSize": 0.00028000000000000095
+    },
+    "touch15": {
+      "status": "unobservable",
+      "reason": "UNOBSERVABLE_EXIT",
+      "bookTime": 1767485523041,
+      "position": -0.005,
+      "missingSize": 0.0004300000000000008
+    },
+    "wide3": {
+      "status": "unobservable",
+      "reason": "UNOBSERVABLE_EXIT",
+      "bookTime": 1767485241439,
+      "position": -0.006,
+      "missingSize": 0.0032800000000000017
+    },
+    "model": {
+      "status": "completed",
+      "policy": "model",
+      "start": 1767484800000,
+      "end": 1767657600000,
+      "initialEquity": 10000,
+      "finalEquity": 10000,
+      "net": 0,
+      "maxDD": 0,
+      "haltTime": null,
+      "peakAbsInventory": 0,
+      "eligible": 5316,
+      "submitted": 0,
+      "postOnlyRejected": 0,
+      "buys": 0,
+      "sells": 0,
+      "mean30sGrossBps": null,
+      "mean30sAfterMakerBps": null,
+      "diagnosticCoverage": {
+        "missingIntervalMs": 11187912,
+        "missingMarkouts": 0,
+        "observationsComplete": false
+      },
+      "inventoryPnl": 0,
+      "executionPnl": 0,
+      "makerFees": 0,
+      "takerFees": 0,
+      "fundingPnl": 0,
+      "fundingCoverage": {
+        "complete": true,
+        "missingHours": [],
+        "missingOraclePrices": 0
+      },
+      "daily": [
+        {
+          "day": "2026-01-04",
+          "net": 0,
+          "closeEquity": 10000,
+          "position": 0
+        },
+        {
+          "day": "2026-01-05",
+          "net": 0,
+          "closeEquity": 10000,
+          "position": 0
+        }
+      ],
+      "fills": []
+    },
+    "cash": {
+      "status": "completed",
+      "policy": "cash",
+      "start": 1767484800000,
+      "end": 1767657600000,
+      "initialEquity": 10000,
+      "finalEquity": 10000,
+      "net": 0,
+      "maxDD": 0,
+      "haltTime": null,
+      "peakAbsInventory": 0,
+      "eligible": 5316,
+      "submitted": 0,
+      "postOnlyRejected": 0,
+      "buys": 0,
+      "sells": 0,
+      "mean30sGrossBps": null,
+      "mean30sAfterMakerBps": null,
+      "diagnosticCoverage": {
+        "missingIntervalMs": 11187912,
+        "missingMarkouts": 0,
+        "observationsComplete": false
+      },
+      "inventoryPnl": 0,
+      "executionPnl": 0,
+      "makerFees": 0,
+      "takerFees": 0,
+      "fundingPnl": 0,
+      "fundingCoverage": {
+        "complete": true,
+        "missingHours": [],
+        "missingOraclePrices": 0
+      },
+      "daily": [
+        {
+          "day": "2026-01-04",
+          "net": 0,
+          "closeEquity": 10000,
+          "position": 0
+        },
+        {
+          "day": "2026-01-05",
+          "net": 0,
+          "closeEquity": 10000,
+          "position": 0
+        }
+      ],
+      "fills": []
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "source": "https://api.hyperliquid.xyz/info",
+  "request": {
+    "type": "fundingHistory",
+    "coin": "BTC",
+    "startTime": 1769472000000,
+    "endTime": 1770076799999
+  },
+  "file": "2026-01-27.raw.json",
+  "bytes": 15035,
+  "sha256": "192be532bc4fde97f4d08a60f246fcb3b24d269739a6f3521a2000a4192a6e8b",
+  "settlements": 168,
+  "retrieved_utc": "2026-11-22T17:13:39.528077+00:00"
+}

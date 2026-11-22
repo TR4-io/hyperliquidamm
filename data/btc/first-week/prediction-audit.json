@@ -1,0 +1,276 @@
+{
+  "start": 1767484800000,
+  "end": 1767657600000,
+  "source": "Covered UTC decision minutes in the held-back training interval",
+  "excludedMinutes": {
+    "feature": 220,
+    "futureBooks": 75,
+    "venueFills": 0
+  },
+  "pooled": {
+    "opportunities": 15498,
+    "fills": 3849,
+    "unsupported": 0,
+    "grossMarkoutBps": -1.5378112951702574,
+    "afterMakerMarkoutBps": -3.0378112951702576,
+    "predictions": {
+      "fitted": {
+        "scored": 15498,
+        "scoredFills": 3849,
+        "meanPredictedFillProbability": 0.18863799232805586,
+        "actualScoredFillProbability": 0.2483546264034069,
+        "brier": 0.16601839185606704,
+        "markoutRmseBps": 4.144636808375489,
+        "markoutMaeBps": 2.7966190384342227,
+        "markoutForecastMinusActualBps": 0.15203370636887775
+      },
+      "sideDepth": {
+        "scored": 15498,
+        "scoredFills": 3849,
+        "meanPredictedFillProbability": 0.19146619146618765,
+        "actualScoredFillProbability": 0.2483546264034069,
+        "brier": 0.17587519519108147,
+        "markoutRmseBps": 4.131905289137704,
+        "markoutMaeBps": 2.7807353912989683,
+        "markoutForecastMinusActualBps": 0.14729721138895935
+      }
+    }
+  },
+  "bySideDepth": {
+    "1/1.5": {
+      "opportunities": 2583,
+      "fills": 997,
+      "unsupported": 0,
+      "grossMarkoutBps": -1.5222651053521108,
+      "afterMakerMarkoutBps": -3.022265105352111,
+      "predictions": {
+        "fitted": {
+          "scored": 2583,
+          "scoredFills": 997,
+          "meanPredictedFillProbability": 0.3146957250872346,
+          "actualScoredFillProbability": 0.3859852884243128,
+          "brier": 0.2300471405795172,
+          "markoutRmseBps": 3.538218603897474,
+          "markoutMaeBps": 2.472483812389489,
+          "markoutForecastMinusActualBps": 0.1409975882856858
+        },
+        "sideDepth": {
+          "scored": 2583,
+          "scoredFills": 997,
+          "meanPredictedFillProbability": 0.31155331155332305,
+          "actualScoredFillProbability": 0.3859852884243128,
+          "brier": 0.24254076472523425,
+          "markoutRmseBps": 3.5503164814914525,
+          "markoutMaeBps": 2.4739168399204683,
+          "markoutForecastMinusActualBps": 0.1295313241310192
+        }
+      }
+    },
+    "1/3": {
+      "opportunities": 2583,
+      "fills": 634,
+      "unsupported": 0,
+      "grossMarkoutBps": -1.5309030974859048,
+      "afterMakerMarkoutBps": -3.030903097485905,
+      "predictions": {
+        "fitted": {
+          "scored": 2583,
+          "scoredFills": 634,
+          "meanPredictedFillProbability": 0.17830408180618731,
+          "actualScoredFillProbability": 0.2454510259388308,
+          "brier": 0.18018881434616596,
+          "markoutRmseBps": 3.8318385070701058,
+          "markoutMaeBps": 2.7017846018486713,
+          "markoutForecastMinusActualBps": 0.25655221140216633
+        },
+        "sideDepth": {
+          "scored": 2583,
+          "scoredFills": 634,
+          "meanPredictedFillProbability": 0.1789426789426861,
+          "actualScoredFillProbability": 0.2454510259388308,
+          "brier": 0.18962818002457366,
+          "markoutRmseBps": 3.79820896204515,
+          "markoutMaeBps": 2.6739042090153706,
+          "markoutForecastMinusActualBps": 0.25576915647864334
+        }
+      }
+    },
+    "1/6": {
+      "opportunities": 2583,
+      "fills": 239,
+      "unsupported": 0,
+      "grossMarkoutBps": -0.9822403397448356,
+      "afterMakerMarkoutBps": -2.482240339744836,
+      "predictions": {
+        "fitted": {
+          "scored": 2583,
+          "scoredFills": 239,
+          "meanPredictedFillProbability": 0.062254611558546384,
+          "actualScoredFillProbability": 0.09252806813782423,
+          "brier": 0.08008748403880095,
+          "markoutRmseBps": 4.614699104719294,
+          "markoutMaeBps": 3.4697026242587112,
+          "markoutForecastMinusActualBps": -0.22425533421794971
+        },
+        "sideDepth": {
+          "scored": 2583,
+          "scoredFills": 239,
+          "meanPredictedFillProbability": 0.06489456489456115,
+          "actualScoredFillProbability": 0.09252806813782423,
+          "brier": 0.08473023524600103,
+          "markoutRmseBps": 4.535026071762751,
+          "markoutMaeBps": 3.3873227655619864,
+          "markoutForecastMinusActualBps": -0.23895243411854764
+        }
+      }
+    },
+    "-1/1.5": {
+      "opportunities": 2583,
+      "fills": 1028,
+      "unsupported": 0,
+      "grossMarkoutBps": -1.7977400542208588,
+      "afterMakerMarkoutBps": -3.297740054220859,
+      "predictions": {
+        "fitted": {
+          "scored": 2583,
+          "scoredFills": 1028,
+          "meanPredictedFillProbability": 0.3229204365220056,
+          "actualScoredFillProbability": 0.3979868370112273,
+          "brier": 0.22950050023625965,
+          "markoutRmseBps": 4.025679070444103,
+          "markoutMaeBps": 2.6097682561682225,
+          "markoutForecastMinusActualBps": 0.322431493693219
+        },
+        "sideDepth": {
+          "scored": 2583,
+          "scoredFills": 1028,
+          "meanPredictedFillProbability": 0.3295218295218161,
+          "actualScoredFillProbability": 0.3979868370112273,
+          "brier": 0.24428077182754782,
+          "markoutRmseBps": 4.030392078011156,
+          "markoutMaeBps": 2.6224038975989274,
+          "markoutForecastMinusActualBps": 0.3235767007258822
+        }
+      }
+    },
+    "-1/3": {
+      "opportunities": 2583,
+      "fills": 681,
+      "unsupported": 0,
+      "grossMarkoutBps": -1.4250880650231483,
+      "afterMakerMarkoutBps": -2.9250880650231483,
+      "predictions": {
+        "fitted": {
+          "scored": 2583,
+          "scoredFills": 681,
+          "meanPredictedFillProbability": 0.18455930564386874,
+          "actualScoredFillProbability": 0.26364692218350755,
+          "brier": 0.18768009268079583,
+          "markoutRmseBps": 4.552450494123093,
+          "markoutMaeBps": 3.021730579854854,
+          "markoutForecastMinusActualBps": -0.0007326052357370477
+        },
+        "sideDepth": {
+          "scored": 2583,
+          "scoredFills": 681,
+          "meanPredictedFillProbability": 0.19037719037719425,
+          "actualScoredFillProbability": 0.26364692218350755,
+          "brier": 0.19950567620563697,
+          "markoutRmseBps": 4.543622515225956,
+          "markoutMaeBps": 3.002018017425875,
+          "markoutForecastMinusActualBps": 0.0033484059697302796
+        }
+      }
+    },
+    "-1/6": {
+      "opportunities": 2583,
+      "fills": 270,
+      "unsupported": 0,
+      "grossMarkoutBps": -1.3978800446273232,
+      "afterMakerMarkoutBps": -2.897880044627323,
+      "predictions": {
+        "fitted": {
+          "scored": 2583,
+          "scoredFills": 270,
+          "meanPredictedFillProbability": 0.06909379335048833,
+          "actualScoredFillProbability": 0.10452961672473868,
+          "brier": 0.0886063192548697,
+          "markoutRmseBps": 5.599160832880912,
+          "markoutMaeBps": 3.764035781440803,
+          "markoutForecastMinusActualBps": 0.016982932559285922
+        },
+        "sideDepth": {
+          "scored": 2583,
+          "scoredFills": 270,
+          "meanPredictedFillProbability": 0.07350757350757607,
+          "actualScoredFillProbability": 0.10452961672473868,
+          "brier": 0.09456554311748726,
+          "markoutRmseBps": 5.553158891167274,
+          "markoutMaeBps": 3.672313131945361,
+          "markoutForecastMinusActualBps": -0.008003295508300602
+        }
+      }
+    }
+  },
+  "byUtcDay": {
+    "2026-01-04": {
+      "opportunities": 7656,
+      "fills": 1433,
+      "unsupported": 0,
+      "grossMarkoutBps": -1.4701126877213322,
+      "afterMakerMarkoutBps": -2.970112687721332,
+      "predictions": {
+        "fitted": {
+          "scored": 7656,
+          "scoredFills": 1433,
+          "meanPredictedFillProbability": 0.1733093410196845,
+          "actualScoredFillProbability": 0.18717345872518287,
+          "brier": 0.13453454900203482,
+          "markoutRmseBps": 3.6171033956049263,
+          "markoutMaeBps": 2.3025202883247964,
+          "markoutForecastMinusActualBps": 0.08961077212543636
+        },
+        "sideDepth": {
+          "scored": 7656,
+          "scoredFills": 1433,
+          "meanPredictedFillProbability": 0.1914661914661803,
+          "actualScoredFillProbability": 0.18717345872518287,
+          "brier": 0.14032446279126323,
+          "markoutRmseBps": 3.6050392188881526,
+          "markoutMaeBps": 2.28661108243728,
+          "markoutForecastMinusActualBps": 0.07670265899007163
+        }
+      }
+    },
+    "2026-01-05": {
+      "opportunities": 7842,
+      "fills": 2416,
+      "unsupported": 0,
+      "grossMarkoutBps": -1.5779653119228663,
+      "afterMakerMarkoutBps": -3.077965311922866,
+      "predictions": {
+        "fitted": {
+          "scored": 7842,
+          "scoredFills": 2416,
+          "meanPredictedFillProbability": 0.2036030719527584,
+          "actualScoredFillProbability": 0.3080846722774802,
+          "brier": 0.19675548709841822,
+          "markoutRmseBps": 4.427937147416576,
+          "markoutMaeBps": 3.0896834047035853,
+          "markoutForecastMinusActualBps": 0.1890585676150912
+        },
+        "sideDepth": {
+          "scored": 7842,
+          "scoredFills": 2416,
+          "meanPredictedFillProbability": 0.19146619146618007,
+          "actualScoredFillProbability": 0.3080846722774802,
+          "brier": 0.21058271970690243,
+          "markoutRmseBps": 4.414797110480603,
+          "markoutMaeBps": 3.073814917209071,
+          "markoutForecastMinusActualBps": 0.18916889747654447
+        }
+      }
+    }
+  },
+  "modelSha256": "0ef393c93f0d5f19470efe90b2efb28ae65310e0c123029ccc4c302adec410b2"
+}

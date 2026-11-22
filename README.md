@@ -6,7 +6,7 @@ The model trained on the first five days submitted zero quotes on January 4–9,
 
 ## Download the development snapshot
 
-The data branch includes the strategy source, fitted development models, hourly BTC book/trade packets starting December 30, 2025 UTC, daily BTC context samples at one-minute intervals, and 7,200 hourly funding rates covering training and validation. Each packet has source and coverage metadata. The final test stays sealed. [Browse the development data](https://github.com/TR4-io/hyperliquidamm/tree/btc-development-data)
+The data branch includes the strategy source, fitted development models, 192 hourly BTC book/trade packets from December 30, 2025 through January 6, 2026 UTC, daily BTC context samples at one-minute intervals, and 7,200 hourly funding rates covering training and validation. Each packet has source and coverage metadata. The final test stays sealed. [Browse the development data](https://github.com/TR4-io/hyperliquidamm/tree/btc-development-data)
 
 To download the verified snapshot and run the offline model and account checks:
 
@@ -17,3 +17,14 @@ sha256sum --quiet -c SHA256SUMS
 node research/btc/btc-quote-model.cjs self-test
 node research/btc/btc-account-replay.cjs self-test
 ```
+
+## Additional development packets
+
+January 7–9, 2026 UTC is available as a separate shallow clone. The batch includes 72 hourly packets, BTC asset contexts, source manifests and 153 file checksums. [Browse January 7–9 on GitHub](https://github.com/TR4-io/hyperliquidamm/tree/data-btc-training-20260107-20260109)
+
+```sh
+git clone --depth 1 --single-branch --branch data-btc-training-20260107-20260109 https://github.com/TR4-io/hyperliquidamm.git btc-jan07-09
+(cd btc-jan07-09 && sha256sum --quiet -c SHA256SUMS)
+```
+
+New date-bounded batches can be found in the [repository releases](https://github.com/TR4-io/hyperliquidamm/releases) or [data branches](https://github.com/TR4-io/hyperliquidamm/branches/all?query=data-btc).

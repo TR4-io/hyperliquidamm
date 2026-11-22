@@ -17,6 +17,7 @@ from pathlib import Path
 from archive import RATES, atomic_json, estimated_cost, sources
 from funding import HOUR
 
+AUXILIARY_START = date(2025, 11, 22)
 FIRST = date(2025, 12, 30)
 AFTER_WEEK = date(2026, 1, 6)
 VALIDATION = date(2026, 8, 27)
@@ -25,13 +26,26 @@ LAST = date(2026, 12, 29)
 
 
 def partition(day):
-    return (
-        "training"
-        if day < VALIDATION
-        else "validation"
-        if day < FINAL
-        else "sealed-final"
-    )
+    if not AUXILIARY_START <= day <= LAST:
+        raise ValueError("UTC date outside the authorized archive interval")
+    if day < FIRST:
+        return "pre-study"
+    if day < VALIDATION:
+        return "training"
+    if day < FINAL:
+        return "validation"
+    return "sealed-final"
+
+
+def acquisition_days(start, end):
+    latest = min(LAST, datetime.now(UTC).date() - timedelta(days=1))
+    if not AUXILIARY_START <= start <= end <= latest:
+        raise ValueError(
+            "Select completed UTC days within the authorized archive interval"
+        )
+    span = (start + timedelta(days=i) for i in range((end - start).days + 1))
+    # The first study week already has its own verified collection directory.
+    return [day for day in span if day < FIRST or day >= AFTER_WEEK]
 
 
 def day_dir(root, day):
@@ -468,6 +482,61 @@ def raw_paths(folder, row):
     return raw, raw.with_suffix(".receipt.json")
 
 
+def raw_policy(folder, keep_raw=False):
+    """Record which source objects were already compact-only when retention began."""
+    marker = folder / ".raw" / ".keep-raw"
+    if marker.exists():
+        policy = json.loads(marker.read_bytes())
+        if policy.get("version") != 1 or not isinstance(
+            policy.get("compact_only_keys"), list
+        ):
+            raise ValueError("Invalid retained-source policy: " + str(marker))
+        return set(policy["compact_only_keys"])
+    if not keep_raw:
+        return None
+    legacy = []
+    for path in folder.glob("*.manifest.json"):
+        if path.name == "context.manifest.json":
+            kinds = ["context"]
+        elif re.fullmatch(r"[0-9]+\.manifest\.json", path.name):
+            kinds = ["book", "fills"]
+        else:
+            continue
+        compact = json.loads(path.read_bytes())
+        for kind, source in zip(kinds, compact["sources"], strict=True):
+            raw, receipt = raw_paths(folder, {"hour": compact["hour"], "kind": kind})
+            if not raw.exists() and not receipt.exists():
+                legacy.append(source["key"])
+    marker.parent.mkdir(exist_ok=True)
+    atomic_json(marker, {"version": 1, "compact_only_keys": sorted(legacy)})
+    return set(legacy)
+
+
+def verify_retained_raw(folder, row, compact_source):
+    """Verify the retained original before reusing it; repair a receipt only from an independent digest."""
+    from archive import sha
+
+    raw, receipt = raw_paths(folder, row)
+    if not receipt.exists() and raw.exists():
+        if (
+            not compact_source
+            or raw.stat().st_size != row["bytes"]
+            or sha(raw) != compact_source["sha256"]
+        ):
+            raise ValueError(
+                "Unverified retained raw; refusing to overwrite " + str(raw)
+            )
+        atomic_json(receipt, {"source": row, "sha256": compact_source["sha256"]})
+    if not valid_cache(folder, row):
+        return False
+    if (
+        compact_source
+        and json.loads(receipt.read_bytes())["sha256"] != compact_source["sha256"]
+    ):
+        raise ValueError("Raw and compact source digests disagree: " + str(raw))
+    return True
+
+
 def valid_cache(folder, row):
     from archive import sha
 
@@ -543,6 +612,10 @@ def packet_paths(folder, group):
     return folder / target, folder / (prefix + ".manifest.json")
 
 
+def unpaired(group):
+    return len(group) == 1 and group[0]["kind"] in ("book", "fills")
+
+
 def complete(folder, group):
     from archive import sha
 
@@ -560,9 +633,21 @@ def complete(folder, group):
     original = None
     for target, path in packets:
         record = json.loads(path.read_bytes())
+        listed = record["sources"]
+        origin = record["origin"]
+        if unpaired(group):
+            # A current plan may resolve only one side of an existing complete hour.
+            # Verify the archived pair and compare the measured member to its source.
+            if [(src["bucket"], src["key"]) for src in listed] != sources(
+                group[0]["hour"]
+            ) or len(origin["etags"]) != 2:
+                raise ValueError("Invalid prior paired manifest: " + str(path))
+            index = 0 if group[0]["kind"] == "book" else 1
+            listed = [listed[index]]
+            origin = {"etags": [origin["etags"][index]]}
         if (
-            record["origin"] != {"etags": [r["etag"] for r in group]}
-            or [(s["bucket"], s["key"], s["bytes"]) for s in record["sources"]]
+            origin != {"etags": [r["etag"] for r in group]}
+            or [(s["bucket"], s["key"], s["bytes"]) for s in listed]
             != [(r["bucket"], r["key"], r["bytes"]) for r in group]
             or (original is not None and original != record["sources"])
             or target.stat().st_size != record["packet_bytes"]
@@ -626,7 +711,10 @@ def normalize_context(folder, row):
     write([r for r in samples if r["time"] % HOUR == 0], *packet_paths(folder, [row]))
 
 
-def normalize_group(folder, group):
+def normalize_group(folder, group, *, keep_raw=False):
+    # Record retention before writing any new compact completion markers.
+    # A resumed normalization honors the saved choice even without the CLI flag.
+    retain = raw_policy(folder, keep_raw) is not None
     if group[0]["kind"] == "context":
         normalize_context(folder, group[0])
     else:
@@ -655,22 +743,25 @@ def normalize_group(folder, group):
                     f"Fee sample unavailable at {group[0]['hour']}: {type(exc).__name__}",
                     flush=True,
                 )
-    for row in group:
-        for path in reversed(raw_paths(folder, row)):
-            path.unlink(missing_ok=True)
+    if not retain:
+        for row in group:
+            for path in reversed(raw_paths(folder, row)):
+                path.unlink(missing_ok=True)
 
 
-def groups(plan):
+def groups(plan, *, include_unpaired=False):
     by_hour = {}
     for row in plan["objects"]:
         key = (row["hour"], row["kind"] == "context")
         by_hour.setdefault(key, []).append(row)
     for group in by_hour.values():
-        if len(group) == 2 or group[0]["kind"] == "context":
+        if include_unpaired or not unpaired(group):
             yield sorted(group, key=lambda r: r["kind"])
 
 
-def acquire_wave(batch, ledger, s3, cpu, io, slots_count, progress, probe_key):
+def acquire_wave(
+    batch, ledger, s3, cpu, io, slots_count, progress, probe_key, *, keep_raw=False
+):
     """Transfer a bounded wave and normalize downloaded groups while other GETs finish."""
     from concurrent.futures import as_completed
 
@@ -739,8 +830,19 @@ def acquire_wave(batch, ledger, s3, cpu, io, slots_count, progress, probe_key):
             continue
         if fresh is None:
             skipped.append(i)
+        elif unpaired(group):
+            fresh_groups += int(fresh)
+            # The transport receipt preserves the standalone source for its mate.
+            # A missing source cannot be represented as a book/trade packet.
+            (folder / f"{group[0]['hour']}.{group[0]['kind']}.error.json").unlink(
+                missing_ok=True
+            )
         else:
-            parses[cpu.submit(normalize_group, folder, group)] = (folder, group, fresh)
+            parses[cpu.submit(normalize_group, folder, group, keep_raw=keep_raw)] = (
+                folder,
+                group,
+                fresh,
+            )
 
     for future in as_completed(parses):
         folder, group, fresh = parses[future]
@@ -788,7 +890,9 @@ def alternate_group(queue, failure, ledger, s3):
     return None
 
 
-def collect_days(root, days, ledger, s3, workers, max_gets=4, start_gets=None):
+def collect_days(
+    root, days, ledger, s3, workers, max_gets=4, start_gets=None, *, keep_raw=False
+):
     import multiprocessing
     import shutil
     from collections import deque
@@ -803,16 +907,62 @@ def collect_days(root, days, ledger, s3, workers, max_gets=4, start_gets=None):
     progress = {"verified_objects": 0, "verified_bytes": 0, "completed_groups": 0}
     remaining = deque()
     projected = 0
+    retained = {
+        "verified_existing_objects": 0,
+        "verified_existing_bytes": 0,
+        "compact_only_objects": 0,
+        "compact_only_bytes": 0,
+        "unpaired_measured_objects": 0,
+        "unpaired_verified_existing_objects": 0,
+    }
     for day in days:
         folder = day_dir(root, day)
         plan = load_plan(root, day, ledger.account)
-        for group in groups(plan):
-            if complete(folder, group):
+        legacy_keys = raw_policy(folder, keep_raw)
+        for group in groups(plan, include_unpaired=legacy_keys is not None):
+            standalone = unpaired(group)
+            if standalone:
+                retained["unpaired_measured_objects"] += 1
+            done = complete(folder, group)
+            if done and legacy_keys is None:
                 continue
+            if done:
+                _, path = packet_paths(folder, group)
+                sources_by_key = {
+                    src["key"]: src for src in json.loads(path.read_bytes())["sources"]
+                }
+            else:
+                sources_by_key = {}
+            needs_get = False
             for row in group:
-                if not valid_cache(folder, row):
+                source = sources_by_key.get(row["key"])
+                if legacy_keys is not None:
+                    cached = verify_retained_raw(folder, row, source)
+                    if cached:
+                        retained["unpaired_verified_existing_objects"] += int(
+                            standalone
+                        )
+                        retained["verified_existing_objects"] += 1
+                        retained["verified_existing_bytes"] += row["bytes"]
+                    elif done:
+                        if row["key"] not in legacy_keys:
+                            raise ValueError(
+                                "Previously retained original is missing: " + row["key"]
+                            )
+                        retained["compact_only_objects"] += 1
+                        retained["compact_only_bytes"] += row["bytes"]
+                    elif row["key"] in legacy_keys:
+                        raise ValueError(
+                            "Missing compact output for legacy source; explicit recovery required: "
+                            + row["key"]
+                        )
+                else:
+                    cached = valid_cache(folder, row)
+                if not done and not cached:
+                    needs_get = True
                     projected += estimated_cost(row["bucket"], row["bytes"])
-            remaining.append((folder, group))
+            if not done and (not standalone or needs_get):
+                remaining.append((folder, group))
     used = ledger.require(projected)
     total = len(remaining)
     print(
@@ -821,6 +971,7 @@ def collect_days(root, days, ledger, s3, workers, max_gets=4, start_gets=None):
                 "remaining_groups": total,
                 "projected_GET_usd": projected,
                 "gross_with_reservations": used + projected,
+                "raw_retention": retained,
             }
         ),
         flush=True,
@@ -852,6 +1003,7 @@ def collect_days(root, days, ledger, s3, workers, max_gets=4, start_gets=None):
                 1 if single_probe else active,
                 progress,
                 probe_key,
+                keep_raw=keep_raw,
             )
             remaining.extendleft(reversed(skipped))
             failures += bad
@@ -936,19 +1088,19 @@ def main():
     parser.add_argument("--workers", type=int, default=None)
     parser.add_argument("--max-gets", type=int, choices=range(1, 5), default=4)
     parser.add_argument("--start-gets", type=int, choices=range(1, 5))
+    parser.add_argument(
+        "--keep-raw",
+        action="store_true",
+        help="Preserve requester-pays source objects and receipts on acquired UTC days",
+    )
     args = parser.parse_args()
-    if (
-        not AFTER_WEEK
-        <= args.start
-        <= args.end
-        <= min(LAST, datetime.now(UTC).date() - timedelta(days=1))
-    ):
-        parser.error(
-            "Use complete UTC days after the reused first week within the study"
-        )
-    days = [
-        args.start + timedelta(days=i) for i in range((args.end - args.start).days + 1)
-    ]
+    try:
+        days = acquisition_days(args.start, args.end)
+    except ValueError as exc:
+        parser.error(str(exc))
+    if not days:
+        print("Selected dates are covered by the existing first-week archive.")
+        return
     args.root.mkdir(parents=True, exist_ok=True)
     with (args.root / (args.mode + ".lock")).open("a") as lock:
         fcntl.flock(lock, fcntl.LOCK_EX)
@@ -964,6 +1116,7 @@ def main():
                 args.workers or 4,
                 args.max_gets,
                 args.start_gets,
+                keep_raw=args.keep_raw,
             )
 
 

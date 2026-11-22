@@ -332,6 +332,22 @@ class Resume(unittest.TestCase):
             [app.AFTER_WEEK + i * app.ONE for i in range(12)],
         )
 
+    def test_trailing_year_queue_plus_reused_week(self):
+        from datetime import date
+
+        through = date(2026, 11, 21)
+        extra = list(app.pre_study_batches())
+        self.assertEqual(len(extra[0]), 1)
+        self.assertTrue(all(1 <= len(batch) <= 7 for batch in extra))
+        before = [d for batch in extra for d in batch]
+        self.assertEqual(len(before), 38)
+        reused = [app.FIRST + i * app.ONE for i in range(7)]
+        after = [d for batch in app.batches(through) for d in batch]
+        self.assertEqual(
+            before + reused + after,
+            [date(2025, 11, 22) + i * app.ONE for i in range(365)],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

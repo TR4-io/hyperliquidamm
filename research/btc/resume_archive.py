@@ -14,6 +14,8 @@ from pathlib import Path
 from archive import atomic_json
 from bulk_archive import (
     AFTER_WEEK,
+    AUXILIARY_START,
+    FIRST,
     LAST,
     VALIDATION,
     ArchiveGetUnavailable,
@@ -55,6 +57,16 @@ def batches(through):
         end = min(through, day + (3 if day == AFTER_WEEK else 6) * ONE)
         yield [day + i * ONE for i in range((end - day).days + 1)]
         day = end + ONE
+
+
+def pre_study_batches():
+    # Start transferring as soon as the first new day is priced.
+    yield [AUXILIARY_START]
+    day = AUXILIARY_START + ONE
+    while day < FIRST:
+        stop = min(day + 7 * ONE, FIRST)
+        yield [day + i * ONE for i in range((stop - day).days)]
+        day = stop
 
 
 def fit_prefix(data):
@@ -138,7 +150,11 @@ def plan_batch(root, days, ledger, s3, retry_unresolved_only):
     return measured_days, pending_days, head_failure
 
 
-def run(data, through, hours, download_only=False):
+def run(
+    data, through, hours, download_only=False, include_pre_study=False, keep_raw=False
+):
+    if include_pre_study and not download_only:
+        raise ValueError("Pre-study acquisition requires download-only mode")
     root = data / "annual"
     root.mkdir(parents=True, exist_ok=True)
     status_file = root / "transfer-status.json"
@@ -152,13 +168,16 @@ def run(data, through, hours, download_only=False):
             "batchEnd": days[-1].isoformat(),
             "through": through.isoformat(),
             "downloadOnly": download_only,
+            "includePreStudy": include_pre_study,
+            "keepRaw": keep_raw,
             **fields,
         }
         atomic_json(status_file, record)
         LOG.info("%s", json.dumps(record))
 
     with lock(root / "supervisor.lock", blocking=False):
-        scheduled = list(batches(through))
+        scheduled = list(pre_study_batches()) if include_pre_study else []
+        scheduled.extend(batches(through))
         all_days = [day for batch in scheduled for day in batch]
         pending_batches = deque((batch, False) for batch in scheduled)
         analysis_errors = []
@@ -236,6 +255,7 @@ def run(data, through, hours, download_only=False):
                                     4,
                                     max_gets=4,
                                     start_gets=start_gets,
+                                    keep_raw=keep_raw,
                                 )
                                 if collect_scope
                                 else {}
@@ -344,6 +364,16 @@ if __name__ == "__main__":
     parser.add_argument("--through", type=date.fromisoformat, required=True)
     parser.add_argument("--retry-hours", type=float, default=12)
     parser.add_argument(
+        "--keep-raw",
+        action="store_true",
+        help="Retain newly acquired exact source objects and receipts in private daily folders",
+    )
+    parser.add_argument(
+        "--include-pre-study",
+        action="store_true",
+        help="Prepend the separate November 22 through December 29, 2025 archive to a download-only pass",
+    )
+    parser.add_argument(
         "--download-only",
         action="store_true",
         help="Acquire and verify data without fitting or replaying a strategy",
@@ -354,5 +384,12 @@ if __name__ == "__main__":
     if not 0 < args.retry_hours <= 12:
         parser.error("Select a bounded retry horizon up to 12 hours")
     raise SystemExit(
-        run(args.data.resolve(), args.through, args.retry_hours, args.download_only)
+        run(
+            args.data.resolve(),
+            args.through,
+            args.retry_hours,
+            args.download_only,
+            args.include_pre_study,
+            args.keep_raw,
+        )
     )

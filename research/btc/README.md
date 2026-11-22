@@ -113,3 +113,15 @@ python research/btc/study_settlements.py data/btc --start 2025-12-30 --through 2
 For newly downloaded daily asset-context archives, `context-series.json.gz` retains every observed BTC row and its public market fields before the venue-wide source is removed. The accompanying `context-series.manifest.json` records the source key, size, ETag, checksums, observation count, number of distinct UTC minutes, first and last observations, and largest observed gap. A minute with no observation stays empty. The hourly file contains the observations timestamped exactly on the hour.
 
 The first seven days also have BTC minute data from the original archive. January 6–11 were compacted before full-series retention was added, so those dates have the sampled hourly contexts. A missing full-series file on a legacy day does not invalidate the previously verified hourly packet. Development publication verifies that both context files come from the same source and that the hourly file matches the corresponding rows of the full series.
+
+
+## One-time trailing-year acquisition
+
+The one-time window is November 22, 2025 through November 21, 2026 UTC, inclusive. Its first 38 days use the separate `pre-study` partition. The next seven dates reuse the original first-week cache. Training, validation and sealed-final boundaries remain fixed for the underlying study. The six October 25 pilot hours are reserved for reuse.
+
+```sh
+python research/btc/resume_archive.py data/btc --through 2026-11-21 --download-only --include-pre-study --keep-raw
+python research/btc/study_funding.py data/btc/funding --pre-study --annual data/btc/annual --first-week data/btc/first-week
+```
+
+Raw retention keeps newly retrieved compressed source objects and receipts in the private daily `.raw` directory. The venue fills source contains all markets and account-level rows. Public data branches contain verified BTC market data. Earlier compact-only hours require separate recovery of their original objects for a byte-for-byte raw copy.

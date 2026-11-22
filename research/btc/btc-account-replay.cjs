@@ -3,6 +3,7 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const M = require('./btc-quote-model.cjs');
+const { accountGaps, assertFlat } = require('./replay-coverage.cjs');
 const sides = [1, -1];
 const isoDay = (t) => new Date(t).toISOString().slice(0, 10);
 
@@ -16,7 +17,12 @@ function closeValue(book, position, c) {
     notional += amount * px;
     if (left < 1e-12) break;
   }
-  if (left > 1e-12) throw Error('Insufficient displayed exit liquidity');
+  if (left > 1e-12) {
+    const error = Error('Insufficient displayed exit liquidity');
+    error.code = 'UNOBSERVABLE_EXIT';
+    error.detail = { bookTime: book.time, position, missingSize: left };
+    throw error;
+  }
   return { gross: Math.sign(position) * notional, fee: (notional * c.taker) / 1e4 };
 }
 function fundingRows(rows, start, end, required) {
@@ -52,7 +58,9 @@ function fundingRows(rows, start, end, required) {
     complete: !missing.length && !unpriced,
   };
 }
-function replay(tape, start, end, policy, model = null, options = {}) {
+// Each window supplies bounded lookback for features and lookahead for reporting.
+// The generator retains the account, peak, working orders, and pending cancellations.
+function* accountWindows(start, end, policy, model, options, windowSize, frozenFinal = false) {
   const c = { ...M.defaults, ...options };
   for (const k of ['delay', 'life', 'extraThrough', 'maker', 'taker', 'sizeFactor']) {
     if (!Number.isFinite(c[k]) || c[k] < 0) throw Error('Invalid execution assumption ' + k);
@@ -63,7 +71,14 @@ function replay(tape, start, end, policy, model = null, options = {}) {
     !Number.isSafeInteger(start) ||
     !Number.isSafeInteger(end) ||
     start >= end ||
-    end > M.finalStart
+    !(Number.isSafeInteger(windowSize) && windowSize > 0) ||
+    (end > M.finalStart &&
+      !(
+        frozenFinal &&
+        start === M.finalStart &&
+        end === Date.parse('2026-12-30Z') &&
+        Date.now() >= end
+      ))
   )
     throw Error('Only complete development intervals are enabled');
   if (!['model', 'touch', 'touch15', 'wide3', 'cash'].includes(policy))
@@ -73,13 +88,16 @@ function replay(tape, start, end, policy, model = null, options = {}) {
     (!model || model.end > start || model.start < M.training[0] || model.end > M.training[1])
   )
     throw Error('A strictly prior training model is required');
-  M.verifyBooks(tape.books, start, end, c);
-  const funding = fundingRows(tape.funding, start, end, !c.allowMissingFunding);
-  const { books, trades } = tape;
-  let bi = M.indexAfter(books, start - 1),
-    ti = M.indexAfter(trades, start - 1),
-    fi = 0;
-  let book = M.asof(books, start - 1, c.gap);
+  const flatAcrossGaps = c.coverageMode === 'flatAcrossGaps';
+  if (c.coverageMode !== undefined && !flatAcrossGaps && c.coverageMode !== 'strict')
+    throw Error('Unknown replay coverage mode');
+  if (flatAcrossGaps && end > M.finalStart) throw Error('Gap diagnostic is development only');
+  let missingIntervalMs = 0,
+    missingMarkouts = 0;
+  let book = null,
+    books;
+  const missingHours = [];
+  let unpriced = 0;
   let pos = 0,
     cash = c.capital,
     peak = c.capital,
@@ -162,65 +180,116 @@ function replay(tape, start, end, policy, model = null, options = {}) {
     }
     pending = null;
   }
-  while (true) {
-    const t = Math.min(
-      books[bi]?.time ?? Infinity,
-      trades[ti]?.time ?? Infinity,
-      funding.events[fi]?.time ?? Infinity,
-      decision,
-      pending?.at ?? Infinity,
-    );
-    if (t >= end) break;
-    if (isoDay(t) !== currentDay) {
-      dayClose();
-      currentDay = isoDay(t);
+  for (let segmentStart = start; segmentStart < end; segmentStart += windowSize) {
+    const segmentEnd = Math.min(end, segmentStart + windowSize);
+    const tape = yield {
+      start: segmentStart,
+      end: segmentEnd,
+      readStart: segmentStart - M.minute - c.gap,
+      readEnd: Math.min(end, segmentEnd + c.horizon + 1),
+    };
+    books = tape.books;
+    const trades = tape.trades;
+    const gaps = flatAcrossGaps ? accountGaps(tape, segmentStart, segmentEnd, book, c.gap) : [];
+    missingIntervalMs += gaps.reduce((n, g) => n + g.end - g.start, 0);
+    let nextGap = 0,
+      currentGap;
+    if (!flatAcrossGaps && tape.venueGaps?.some(([a, b]) => a < segmentEnd && b > segmentStart))
+      throw Object.assign(Error('Gap in venue fill coverage at ' + segmentStart), {
+        code: 'INCOMPLETE_MARKET_COVERAGE',
+      });
+    // Hourly checks alone can miss a long gap that straddles a window boundary.
+    if (segmentStart > start && !flatAcrossGaps) {
+      const next = books[M.indexAfter(books, segmentStart - 1)];
+      if (!book || !next || next.time - book.time > c.gap)
+        throw Object.assign(Error('Gap across replay windows at ' + segmentStart), {
+          code: 'INCOMPLETE_MARKET_COVERAGE',
+        });
+    } else if (segmentStart === start) {
+      book = M.asof(books, start - 1, c.gap);
     }
-    // Settlement and book updates precede simulated fills at equal timestamps.
-    const revalue = books[bi]?.time === t || funding.events[fi]?.time === t;
-    if (books[bi]?.time === t) {
-      const next = books[bi++];
-      if (book) inventoryPnl += pos * (next.mid - book.mid);
-      book = next;
+    if (!flatAcrossGaps) {
+      try {
+        M.verifyBooks(books, segmentStart, segmentEnd, c);
+      } catch (error) {
+        error.code = 'INCOMPLETE_MARKET_COVERAGE';
+        throw error;
+      }
     }
-    if (funding.events[fi]?.time === t) {
-      const r = funding.events[fi++];
-      const flow = -pos * r.rate * r.oraclePx;
-      cash += flow;
-      fundingPnl += flow;
-    }
-    if (revalue) risk(t);
-    if (pending?.at === t) activate(t);
-    while (trades[ti]?.time === t) {
-      const tr = trades[ti++],
-        side = tr.side === 'A' ? 1 : -1,
-        o = live.get(side);
-      if (!o || t <= o.at || t >= o.until || !M.qualifies(tr, side, o.px, c)) continue;
-      live.delete(side);
-      pos = Number((pos + side * c.clip).toFixed(8));
-      if (Math.abs(pos) > c.limit + 1e-12) throw Error('Inventory cap violated');
-      peakAbsInventory = Math.max(peakAbsInventory, Math.abs(pos));
-      const fee = (c.clip * o.px * c.maker) / 1e4;
-      cash -= side * c.clip * o.px + fee;
-      makerFees += fee;
-      executionPnl += side * c.clip * (book.mid - o.px);
-      // Ex-post reporting only. This value is never read by the policy.
-      const ref = M.asof(books, t + c.horizon, c.gap);
-      if (!ref || t + c.horizon >= end) throw Error('Truncated fill markout');
-      const mo = M.markout(ref, side, o.px);
-      fills.push({ time: t, side, px: o.px, markoutBps: mo });
-      moSum += mo;
-      if (side === 1) buys++;
-      else sells++;
-      risk(t);
-    }
-    if (t === decision) {
-      if (t + c.delay + c.life + c.horizon < end) submit(t);
-      decision += M.minute;
+    const funding = fundingRows(tape.funding, segmentStart, segmentEnd, !c.allowMissingFunding);
+    missingHours.push(...funding.missingHours);
+    unpriced += funding.unpriced;
+    let bi = M.indexAfter(books, segmentStart - 1),
+      ti = M.indexAfter(trades, segmentStart - 1),
+      fi = 0;
+    while (true) {
+      const t = Math.min(
+        books[bi]?.time ?? Infinity,
+        trades[ti]?.time ?? Infinity,
+        funding.events[fi]?.time ?? Infinity,
+        decision,
+        pending?.at ?? Infinity,
+        gaps[nextGap]?.start ?? Infinity,
+      );
+      if (t >= segmentEnd) break;
+      if (gaps[nextGap]?.start === t) currentGap = gaps[nextGap++];
+      if (currentGap && t >= currentGap.end) currentGap = undefined;
+      if (currentGap) assertFlat(currentGap, t, pos, live, pending);
+      if (isoDay(t) !== currentDay) {
+        dayClose();
+        currentDay = isoDay(t);
+      }
+      // Settlement and book updates precede simulated fills at equal timestamps.
+      const revalue = books[bi]?.time === t || funding.events[fi]?.time === t;
+      if (books[bi]?.time === t) {
+        const next = books[bi++];
+        if (book) inventoryPnl += pos * (next.mid - book.mid);
+        book = next;
+      }
+      if (funding.events[fi]?.time === t) {
+        const r = funding.events[fi++];
+        const flow = -pos * r.rate * r.oraclePx;
+        cash += flow;
+        fundingPnl += flow;
+      }
+      if (revalue) risk(t);
+      if (pending?.at === t) activate(t);
+      while (trades[ti]?.time === t) {
+        const tr = trades[ti++],
+          side = tr.side === 'A' ? 1 : -1,
+          o = live.get(side);
+        if (!o || t <= o.at || t >= o.until || !M.qualifies(tr, side, o.px, c)) continue;
+        live.delete(side);
+        pos = Number((pos + side * c.clip).toFixed(8));
+        if (Math.abs(pos) > c.limit + 1e-12) throw Error('Inventory cap violated');
+        peakAbsInventory = Math.max(peakAbsInventory, Math.abs(pos));
+        const fee = (c.clip * o.px * c.maker) / 1e4;
+        cash -= side * c.clip * o.px + fee;
+        makerFees += fee;
+        executionPnl += side * c.clip * (book.mid - o.px);
+        // Ex-post reporting only. This value is never read by the policy.
+        const ref = M.asof(books, t + c.horizon, c.gap);
+        if ((!ref && !flatAcrossGaps) || t + c.horizon >= end)
+          throw Error('Truncated fill markout');
+        const mo = ref ? M.markout(ref, side, o.px) : null;
+        fills.push({ time: t, side, px: o.px, markoutBps: mo });
+        if (mo === null) missingMarkouts++;
+        else moSum += mo;
+        if (side === 1) buys++;
+        else sells++;
+        risk(t);
+      }
+      if (t === decision) {
+        if (t + c.delay + c.life + c.horizon < end) submit(t);
+        decision += M.minute;
+        if (currentGap) assertFlat(currentGap, t, pos, live, pending);
+      }
     }
   }
   flatten();
   dayClose();
   const net = cash - c.capital;
+  const markouts = fills.length - missingMarkouts;
   assert.ok(
     Math.abs(net - (inventoryPnl + executionPnl - makerFees - takerFees + fundingPnl)) <
       1e-6 * Math.max(1, daily.length),
@@ -240,21 +309,35 @@ function replay(tape, start, end, policy, model = null, options = {}) {
     postOnlyRejected,
     buys,
     sells,
-    mean30sGrossBps: fills.length ? moSum / fills.length : null,
-    mean30sAfterMakerBps: fills.length ? moSum / fills.length - c.maker : null,
+    mean30sGrossBps: markouts ? moSum / markouts : null,
+    mean30sAfterMakerBps: markouts ? moSum / markouts - c.maker : null,
+    ...(flatAcrossGaps
+      ? {
+          diagnosticCoverage: {
+            missingIntervalMs,
+            missingMarkouts,
+            observationsComplete: missingIntervalMs === 0,
+          },
+        }
+      : {}),
     inventoryPnl,
     executionPnl,
     makerFees,
     takerFees,
     fundingPnl,
     fundingCoverage: {
-      complete: funding.complete,
-      missingHours: funding.missingHours,
-      missingOraclePrices: funding.unpriced,
+      complete: missingHours.length === 0 && unpriced === 0,
+      missingHours,
+      missingOraclePrices: unpriced,
     },
     daily,
     fills,
   };
+}
+function replay(tape, start, end, policy, model = null, options = {}) {
+  const state = accountWindows(start, end, policy, model, options, end - start);
+  state.next();
+  return state.next(tape).value;
 }
 function selfTest() {
   const boundary = Date.parse('2026-01-01Z'),
@@ -323,7 +406,7 @@ function selfTest() {
   );
   console.log('account-replay replacement self-test passed');
 }
-module.exports = { replay, fundingRows };
+module.exports = { replay, fundingRows, accountWindows };
 if (require.main === module) {
   const [cmd, file, from, to, policy, modelPath, ...flags] = process.argv.slice(2);
   if (cmd === 'self-test') selfTest();

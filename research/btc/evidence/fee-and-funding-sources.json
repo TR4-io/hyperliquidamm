@@ -1,0 +1,33 @@
+{
+  "checked_utc": "2026-11-22",
+  "contract": "Hyperliquid validator-operated BTC-USDC perpetual",
+  "fee_assumption": {
+    "maker_bps": 1.5,
+    "taker_bps": 4.5,
+    "account": "tier zero, no referral, staking, builder, or market-maker adjustments",
+    "evidence": [
+      {
+        "url": "https://t.me/hyperliquid_announcements/351",
+        "finding": "Hyperliquid announced a new tier schedule going live around 03:00 UTC on 2025-05-05."
+      },
+      {
+        "url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint#query-a-users-fees",
+        "finding": "The official userFees example with a dailyUserVlm row dated 2025-05-23 lists feeSchedule.cross=0.00045 and feeSchedule.add=0.00015. This is a documentation example."
+      },
+      {
+        "url": "https://hyperliquid.gitbook.io/hyperliquid-docs/trading/fees",
+        "finding": "The published Tier 0 Base rates for perps are 0.045% taker and 0.015% maker. Fee tiers depend on rolling 14-day volume assessed daily. Tier 1 threshold is over USD 5 million."
+      }
+    ],
+    "continuous_historical_schedule_verified": false
+  },
+  "funding": {
+    "settlement_interval": "hourly",
+    "cash_change_usdc": "-signed_position_btc * spot_oracle_price_usdc_per_btc * settled_rate",
+    "formula_source": "https://hyperliquid.gitbook.io/hyperliquid-docs/trading/funding",
+    "rate_source": "https://api.hyperliquid.xyz/info",
+    "request_type": "fundingHistory",
+    "price_source_for_sensitivity": "s3://hyperliquid-archive/asset_ctxs/YYYYMMDD.csv.lz4",
+    "status": "Official settled-rate pages do not include the settlement oracle. The sampled hourly BTC oracle and mark values provide proxy prices. Source-specific cash-delta reconciliation is still required to verify settlement prices."
+  }
+}

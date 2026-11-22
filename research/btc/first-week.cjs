@@ -50,15 +50,18 @@ function checkFunding(folder, useContext = false) {
     };
   });
 }
-function readPackets(folder, sourceEnd) {
+function readPackets(folder, sourceEnd, sourceStart = start, manifestEnd = cut) {
+  // A resolver lets large studies keep normalized packets in split-specific folders.
+  const packetPath = (t, suffix) =>
+    path.join(typeof folder === 'function' ? folder(t) : folder, t + suffix);
   const manifests = new Map(),
     cache = new Map(),
     venueGaps = [];
   const trainingManifest = crypto.createHash('sha256');
   let prev;
-  for (let t = start; t < sourceEnd; t += M.hour) {
-    const rawManifest = fs.readFileSync(path.join(folder, t + '.manifest.json'));
-    if (t < cut) trainingManifest.update(sha(rawManifest));
+  for (let t = sourceStart; t < sourceEnd; t += M.hour) {
+    const rawManifest = fs.readFileSync(packetPath(t, '.manifest.json'));
+    if (t < manifestEnd) trainingManifest.update(sha(rawManifest));
     const m = JSON.parse(rawManifest),
       date = new Date(t);
     const stamp = date.toISOString().slice(0, 10).replaceAll('-', ''),
@@ -76,7 +79,28 @@ function readPackets(folder, sourceEnd) {
     assert.ok(book.rows > 0 && book.first <= book.last && book.max_gap_ms >= 0);
     const venue = m.venue_blocks;
     assert.ok(venue.rows > 0 && venue.first <= venue.last && venue.max_gap_ms >= 0);
-    if (
+    if (venue.gaps_gt_10s !== undefined && M.defaults.gap === 10000) {
+      assert.ok(Array.isArray(venue.gaps_gt_10s));
+      let prior = venue.first,
+        maxGap = 0;
+      for (const [before, after] of venue.gaps_gt_10s) {
+        assert.ok(
+          Number.isSafeInteger(before) &&
+            Number.isSafeInteger(after) &&
+            before >= prior &&
+            after <= venue.last &&
+            after - before > M.defaults.gap,
+        );
+        venueGaps.push([before, after]);
+        maxGap = Math.max(maxGap, after - before);
+        prior = after;
+      }
+      assert.equal(maxGap, venue.max_gap_ms > M.defaults.gap ? venue.max_gap_ms : 0);
+      if (t === sourceStart && venue.first - sourceStart > M.defaults.gap)
+        venueGaps.push([sourceStart, venue.first]);
+      if (t + M.hour === sourceEnd && sourceEnd - venue.last > M.defaults.gap)
+        venueGaps.push([venue.last, sourceEnd]);
+    } else if (
       venue.max_gap_ms > M.defaults.gap ||
       Math.abs(venue.first - t) > M.defaults.gap ||
       Math.abs(venue.last - t - M.hour) > M.defaults.gap
@@ -89,7 +113,7 @@ function readPackets(folder, sourceEnd) {
   }
   function packet(t) {
     if (!cache.has(t)) {
-      const bytes = fs.readFileSync(path.join(folder, t + '.json.gz'));
+      const bytes = fs.readFileSync(packetPath(t, '.json.gz'));
       const m = manifests.get(t);
       assert.equal(bytes.length, m.packet_bytes);
       assert.equal(sha(bytes), m.packet_sha256);
@@ -97,7 +121,7 @@ function readPackets(folder, sourceEnd) {
       assert.equal(raw.books.length, m.books.rows);
       assert.equal(raw.trades.length, m.unique_takers);
       cache.set(t, raw);
-      if (cache.size > 4) cache.delete(cache.keys().next().value);
+      if (cache.size > 5) cache.delete(cache.keys().next().value);
     }
     return cache.get(t);
   }
@@ -106,7 +130,7 @@ function readPackets(folder, sourceEnd) {
     const books = new Map(),
       trades = [];
     for (
-      let t = Math.max(start, Math.floor(a / M.hour) * M.hour - M.hour);
+      let t = Math.max(sourceStart, Math.floor(a / M.hour) * M.hour - M.hour);
       t <= Math.min(sourceEnd - M.hour, Math.floor(b / M.hour) * M.hour + M.hour);
       t += M.hour
     ) {
@@ -126,20 +150,20 @@ function readPackets(folder, sourceEnd) {
   }
   return { interval, trainingManifestSha256: trainingManifest.digest('hex') };
 }
-function train(interval) {
+function train(interval, from = start, to = cut, splitStart = from, splitEnd = to) {
   const model = {
     version: 1,
-    start,
-    end: cut,
+    start: from,
+    end: to,
     config: M.defaults,
     groups: {},
     excludedDecisions: 0,
   };
-  for (let t = start; t < cut; t += M.hour) {
-    const a = Math.max(start, t - M.minute),
-      b = Math.min(cut, t + M.hour + 2 * M.minute);
+  for (let t = from; t < to; t += M.hour) {
+    const a = Math.max(splitStart, t - M.minute),
+      b = Math.min(splitEnd, t + M.hour + 2 * M.minute);
     const part = M.fit(
-      interval(Math.max(start, a - M.defaults.gap), b),
+      interval(Math.max(splitStart, a - M.defaults.gap), b),
       a,
       b,
       M.defaults,
@@ -241,7 +265,7 @@ function study(folder, model = fitWeek(folder), developmentDiagnostic = false) {
     results[name] = replay(tape, from, to, 'model', model, opts);
   return { model, coverage, results };
 }
-module.exports = { study, train, fitWeek };
+module.exports = { study, train, fitWeek, readPackets, checkFunding };
 if (require.main === module) {
   const args = process.argv.slice(2);
   let result;

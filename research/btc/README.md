@@ -50,3 +50,37 @@ With complete inputs, run `node first-week.cjs FOLDER NEW_RESULT_JSON`. It fits 
 ## Final evaluation
 
 Training ends August 26, validation ends October 25, and the 65-day final period spans October 26–December 29, 2026 inclusive, all UTC. Keep final outcomes sealed. Freeze the code and model hashes, configuration, complete coverage manifest, transfer of account state at the boundary, benchmark rules and stress cases before scoring. The prespecified primary statistic is mean daily net USDC P&L over cash, with the empirical 5th percentile of 20,000 circular seven-day-block bootstrap means using seed 20261121 as a one-sided lower bound. Three- and fourteen-day blocks are sensitivities. Retain zero-trade days. Promotion requires positive cumulative net P&L and primary lower bound, complete usable coverage and no drawdown halt. Approximately nine weekly blocks limit precision. Forward paper trading follows only if the frozen model passes.
+
+## Annual archive acquisition
+
+From the repository root, use the research Python environment and an AWS profile authorized for requester-pays reads. Use the same private budget file and reservation journal as the first week. The default end date is the earlier of yesterday UTC and December 29, 2026.
+
+```sh
+python research/btc/bulk_archive.py plan data/btc/annual data/btc/archive-budget.json
+python research/btc/bulk_archive.py collect data/btc/annual data/btc/archive-budget.json
+python research/btc/test_bulk_archive.py
+```
+
+Both acquisition commands accept inclusive UTC dates through `--start YYYY-MM-DD --end YYYY-MM-DD`. The annual collector starts on January 6, 2026. The original first week remains in `data/btc/first-week`. The six previously downloaded October 25 pilot hours are reserved for import from the existing CloudShell packet. Daily outputs are partitioned by `training`, `validation`, and `sealed-final`. Acquisition performs transport and structural checks on sealed objects. Strategy scoring only belongs in the evaluation stage.
+
+The plan retains per-object sizes and ETags, distinguishes missing objects from exhausted temporary errors, and resumes from daily manifests. Collection needs a plan for every requested UTC date and sums remaining estimated transfer costs before its first GET. It fetches complete book/fill pairs and daily asset contexts, retains checksummed raw inputs across interrupted runs, then writes compact packets and manifests. An incomplete pair stays on hold until both objects can be measured. The remaining disk-space check leaves at least 2 GiB free plus twice the size of the next raw batch. The first GET group probes availability before increasing concurrency. A temporary GET failure pauses further requests, and a subsequent run validates completed packets and resumes outstanding work. Verified daily hourly context samples are archived in `context-samples.json.gz`. Use the independently collected funding rate and settlement evidence for accounting.
+
+### Annual training and evaluation
+
+From the repository root, `node research/btc/annual.cjs fit-ready data/btc data/btc/study` fits each consecutive training day with sufficient input and prints the first unpublished or uncollected local hour. Run it again as packets arrive. Each day gets an immutable checkpoint bound to the estimator, packet reader, configuration and input manifest hashes. A cutoff before August 27 is a development snapshot. Its `decisionEnd` is the exclusive decision-time cutoff and its `end` bounds the future training labels already consumed. The production model requires all 240 training days. New manifests can localize venue-block gaps with exact timestamp pairs. The reader checks the intervals against the reported maximum gap and retains the conservative full-hour exclusion for older max-only manifests.
+
+`node research/btc/annual.cjs validate DATA RESULT MODEL VERIFIED_FUNDING` replays the 60-day validation account with all benchmarks and fixed stresses. The nine accounts share hourly tape windows and keep their own orders, delayed cancellations, inventory, cash, equity peaks and halt state across windows and UTC midnight. Each evaluation split starts independently with 10,000 USDC flat and closes once at its end. This makes the final daily P&L a comparison against cash over that split. Both split boundaries purge crossing quote lifetimes and markout labels. `VERIFIED_FUNDING` is ordered by exchange settlement time with one row per UTC hour. It includes `time, rate, oraclePx, markPx, sourceBucket, sourceKey, sourceField, sourceSha256, priceEvidence, rateSource, rateSourceSha256`. The exact price evidence is labeled `verified settlement oracle`. Rate provenance points to the official info API.
+
+For a development sensitivity, `node research/btc/annual.cjs diagnose-validation DATA RESULT MODEL` joins the collected official rates with the hourly sampled context oracle proxies. It reads the original rate pages and checks their hashes against the derived daily files. It may carry an account through an observation gap only while flat with no exposed orders. An account exposed during a gap, or without enough displayed depth for an executable exit, gets an unobservable status and no full-period P&L. An inactive policy's known cash value does not establish market-data coverage.
+
+The two-stage freeze uses these commands:
+
+```sh
+node research/btc/annual.cjs lock DATA STUDY_DIR MODEL VALIDATION_RESULT
+node research/btc/annual.cjs freeze DATA STUDY_DIR MODEL VALIDATION_RESULT FINAL_FUNDING FEE_EVIDENCE
+node research/btc/annual.cjs score DATA FINAL_RESULT STUDY_DIR/freeze.json MODEL FINAL_FUNDING
+```
+
+The development lock can be created as soon as validation completes. It hashes the code, model, configuration, train and validation manifests, evaluation rules and validation result. After December 29 UTC, the manifest freeze binds the untouched final packets, settlement evidence and effective fee evidence to the lock. Fee evidence permits multiple consecutive or overlapping official-source intervals covering the study. Each verified interval has `from, to` (exchange milliseconds, exclusive end), `maker, taker` (bps), `officialUrl, sourceSha256, verifiedStudyPeriod`. Use a single interval or an object with a `periods` array. Score verifies both lock files and data hashes. A strict market-coverage failure is inconclusive. The prescribed bootstrap uses all 65 calendar-day results when the primary account is observable and coverage is complete. `node research/btc/test_annual.cjs` exercises chunk replay against the original single-window simulation, training resumption against an unchunked fit, funding and lock guards, precise gap localization, and multi-source fee coverage using synthetic fixtures.
+
+The worker runs `python research/btc/resume_archive.py data/btc --through 2026-11-21` with its existing AWS profile. It checks identity before each batch, prices the measured archive objects under the shared gross cap, and retries temporary upstream failures for up to 12 hours with backoff. The supervisor holds one process lock, checkpoints transfer status in `data/btc/annual/transfer-status.json`, invokes `fit-ready` on training batches, and runs a validation diagnostic when its inputs are complete. Credential, budget and integrity failures are reported separately. Cached packets and offline research remain usable after the AWS session expires.

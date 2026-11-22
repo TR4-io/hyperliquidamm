@@ -1,3 +1,4 @@
 boto3==1.44.9
 botocore[crt]==1.44.9
 lz4==4.4.5
+isal==1.9.1

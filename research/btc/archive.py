@@ -70,7 +70,14 @@ def block_ms(value):
     return int((dt if dt.tzinfo else dt.replace(tzinfo=UTC)).timestamp() * 1000)
 
 
-def normalize(t, paths, out, origin):
+def write_packet(tmp, packet, *, gzip_writer=gzip.GzipFile):
+    with gzip_writer(fileobj=tmp, mode="wb", mtime=0, filename="") as zipped:
+        zipped.write(
+            json.dumps(packet, separators=(",", ":"), allow_nan=False).encode()
+        )
+
+
+def normalize(t, paths, out, origin, *, packet_writer=write_packet):
     books, trades, block_times = [], {}, []
     btc_accounts = crossed = stale_books = 0
     for row in read_rows(paths[0]):
@@ -134,21 +141,18 @@ def normalize(t, paths, out, origin):
 
     book_clock = check_clock([b["time"] for b in books], "books")
     block_clock = check_clock(block_times, "venue fill blocks")
+    block_clock["gaps_gt_10s"] = [
+        [a, b] for a, b in itertools.pairwise(block_times) if b - a > 10000
+    ]
     if any(not t - 10000 <= tr["time"] < t + HOUR + 10000 for tr in trades.values()):
         raise ValueError("Unexpected BTC trade timestamp outside file window")
-    with (
-        tempfile.NamedTemporaryFile(dir=out, delete=False) as tmp,
-        gzip.GzipFile(fileobj=tmp, mode="wb", mtime=0, filename="") as zipped,
-    ):
-        zipped.write(
-            json.dumps(
-                {
-                    "books": books,
-                    "trades": sorted(trades.values(), key=lambda r: r["time"]),
-                },
-                separators=(",", ":"),
-                allow_nan=False,
-            ).encode()
+    with tempfile.NamedTemporaryFile(dir=out, delete=False) as tmp:
+        packet_writer(
+            tmp,
+            {
+                "books": books,
+                "trades": sorted(trades.values(), key=lambda r: r["time"]),
+            },
         )
     target = out / f"{t}.json.gz"
     os.replace(tmp.name, target)

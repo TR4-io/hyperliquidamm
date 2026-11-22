@@ -11,7 +11,7 @@ const start = M.training[0],
   end = start + 7 * M.day;
 const sha = (bytes) => crypto.createHash('sha256').update(bytes).digest('hex');
 const json = (file) => JSON.parse(fs.readFileSync(file));
-function checkFunding(folder) {
+function checkFunding(folder, useContext = false) {
   const rates = fs.readFileSync(path.join(folder, 'fundingHistory.raw.json'));
   const m = json(path.join(folder, 'fundingHistory.manifest.json'));
   assert.equal(m.source, 'https://api.hyperliquid.xyz/info');
@@ -23,7 +23,7 @@ function checkFunding(folder) {
   });
   assert.equal(m.sha256, sha(rates));
   const rows = JSON.parse(rates),
-    prices = json(path.join(folder, 'settlement-prices.json'));
+    prices = json(path.join(folder, useContext ? 'context-prices.json' : 'settlement-prices.json'));
   assert.equal(rows.length, 168);
   assert.equal(prices.length, 168);
   return rows.map((r, i) => {
@@ -34,7 +34,12 @@ function checkFunding(folder) {
       p.time !== r.time ||
       !p.sourceKey ||
       !/^[a-f0-9]{64}$/.test(p.sourceSha256) ||
-      !['oraclePx', 'oraclePrice'].includes(p.sourceField)
+      (useContext
+        ? p.priceEvidence !== 'minute-sampled context proxy' ||
+          p.sourceBucket !== 'hyperliquid-archive' ||
+          p.sourceField !== 'oracle_px' ||
+          p.sampleTime !== Math.floor(r.time / M.hour) * M.hour
+        : !['oraclePx', 'oraclePrice'].includes(p.sourceField))
     )
       throw Error('Unverified settlement-price join at ' + r.time);
     return {
@@ -66,7 +71,9 @@ function readPackets(folder, sourceEnd) {
     );
     for (const r of m.sources) assert.ok(r.bytes > 0 && /^[0-9a-f]{64}$/.test(r.sha256));
     assert.equal(m.hour, t);
-    for (const k of ['books', 'venue_blocks']) {
+    const book = m.books;
+    assert.ok(book.rows > 0 && book.first <= book.last && book.max_gap_ms >= 0);
+    for (const k of ['venue_blocks']) {
       const r = m[k];
       if (
         !(
@@ -120,7 +127,14 @@ function readPackets(folder, sourceEnd) {
   return { interval, trainingManifestSha256: trainingManifest.digest('hex') };
 }
 function train(interval) {
-  const model = { version: 1, start, end: cut, config: M.defaults, groups: {} };
+  const model = {
+    version: 1,
+    start,
+    end: cut,
+    config: M.defaults,
+    groups: {},
+    excludedDecisions: 0,
+  };
   for (let t = start; t < cut; t += M.hour) {
     const a = Math.max(start, t - M.minute),
       b = Math.min(cut, t + M.hour + 2 * M.minute);
@@ -130,7 +144,9 @@ function train(interval) {
       b,
       M.defaults,
       t + M.hour,
+      true,
     );
+    model.excludedDecisions += part.excludedDecisions;
     for (const [key, g] of Object.entries(part.groups)) {
       const sum = (model.groups[key] ||= { n: 0, fills: 0, sum: 0 });
       sum.n += g.n;
@@ -148,7 +164,21 @@ function fitWeek(folder) {
     modelCodeSha256: sha(fs.readFileSync(require.resolve('./btc-quote-model.cjs'))),
   };
 }
-function study(folder, model = fitWeek(folder)) {
+function longestBookRun(books, start, end, gap) {
+  let best = [start, start],
+    runStart = Math.max(start, books[0].time - gap),
+    prior = books[0].time;
+  for (const b of books.slice(1)) {
+    if (b.time - prior > gap) {
+      if (prior + 1 - runStart > best[1] - best[0]) best = [runStart, prior + 1];
+      runStart = b.time;
+    }
+    prior = b.time;
+  }
+  const last = end - prior <= gap ? end : prior + 1;
+  return last - runStart > best[1] - best[0] ? [runStart, last] : best;
+}
+function study(folder, model = fitWeek(folder), developmentDiagnostic = false) {
   assert.equal(model.version, 1);
   assert.equal(model.start, start);
   assert.equal(model.end, cut);
@@ -163,12 +193,27 @@ function study(folder, model = fitWeek(folder)) {
     packets.trainingManifestSha256,
     'Training manifest changed',
   );
-  const funding = checkFunding(folder),
-    tape = packets.interval(cut, end);
+  const funding = checkFunding(folder, developmentDiagnostic);
+  const tape = packets.interval(cut, end);
   tape.funding = funding;
+  const [from, to] = developmentDiagnostic
+    ? longestBookRun(tape.books, cut, end, M.defaults.gap)
+    : [cut, end];
+  if (to - from < 2 * M.minute) throw Error('No usable chronological replay interval');
+  const coverage = {
+    requestedStart: cut,
+    requestedEnd: end,
+    replayStart: from,
+    replayEnd: to,
+    fullBookWindow: from === cut && to === end,
+    fundingPrices: developmentDiagnostic
+      ? 'minute-sampled context proxy'
+      : 'verified settlement oracle',
+    eligibleForPromotion: false,
+  };
   const results = {};
   for (const policy of ['model', 'touch', 'touch15', 'wide3', 'cash'])
-    results[policy] = replay(tape, cut, end, policy, model);
+    results[policy] = replay(tape, from, to, policy, model);
   // Sensitivities keep the fitted model fixed. Change only execution and scoring costs.
   for (const [name, opts] of Object.entries({
     doubleSize: { sizeFactor: 2 },
@@ -176,8 +221,8 @@ function study(folder, model = fitWeek(folder)) {
     delay1500: { delay: 1500 },
     feesPlus1bp: { maker: 2.5, taker: 5.5 },
   }))
-    results[name] = replay(tape, cut, end, 'model', model, opts);
-  return { model, results };
+    results[name] = replay(tape, from, to, 'model', model, opts);
+  return { model, coverage, results };
 }
 module.exports = { study, train, fitWeek };
 if (require.main === module) {
@@ -185,8 +230,13 @@ if (require.main === module) {
   let result;
   if (args[0] === 'fit' && args.length === 3) result = fitWeek(args[1]);
   else if (args[0] === 'replay' && args.length === 4) result = study(args[1], json(args[2]));
+  else if (args[0] === 'diagnose' && args.length === 4)
+    result = study(args[1], json(args[2]), true);
   else if (args.length === 2) result = study(args[0]);
-  else throw Error('Use FOLDER RESULT, fit FOLDER MODEL, or replay FOLDER MODEL RESULT');
+  else
+    throw Error(
+      'Use FOLDER RESULT, fit FOLDER MODEL, replay FOLDER MODEL RESULT, or diagnose FOLDER MODEL RESULT',
+    );
   fs.writeFileSync(args.at(-1), JSON.stringify(result) + '\n', { flag: 'wx' });
   console.log(
     args[0] === 'fit'

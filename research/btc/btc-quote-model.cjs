@@ -187,7 +187,17 @@ function verifyBooks(books, start, end, c) {
   }
   if (end - prior > c.gap) throw Error('Incomplete book interval ending ' + end);
 }
-function fit(tape, start, end, c = defaults, decisionEnd = end) {
+function hasForwardBookCoverage(books, t, end, gap) {
+  let i = indexAfter(books, t);
+  let prior = books[i - 1]?.time;
+  if (prior == null || t - prior > gap) return false;
+  for (; i < books.length && books[i].time <= end; i++) {
+    if (books[i].time - prior > gap) return false;
+    prior = books[i].time;
+  }
+  return end - prior <= gap;
+}
+function fit(tape, start, end, c = defaults, decisionEnd = end, allowBookGaps = false) {
   if (
     !Number.isSafeInteger(start) ||
     !Number.isSafeInteger(end) ||
@@ -196,15 +206,23 @@ function fit(tape, start, end, c = defaults, decisionEnd = end) {
     start >= end
   )
     throw Error('Fit outside training interval');
-  verifyBooks(tape.books, start, end, c);
+  if (!allowBookGaps) verifyBooks(tape.books, start, end, c);
   const groups = {};
+  let excludedDecisions = 0;
   for (
     let t = Math.ceil((start + minute) / minute) * minute;
     t < decisionEnd && t + c.delay + c.life + c.horizon < end;
     t += minute
   ) {
     const f = features(tape.books, t, c);
-    if (!f) continue;
+    if (
+      !f ||
+      (allowBookGaps &&
+        !hasForwardBookCoverage(tape.books, t, t + c.delay + c.life + c.horizon, c.gap))
+    ) {
+      excludedDecisions++;
+      continue;
+    }
     for (const side of [1, -1])
       for (const depth of c.depths) {
         const mo = label(tape, t, side, quotePrice(f.book.mid, side, depth), c);
@@ -218,7 +236,7 @@ function fit(tape, start, end, c = defaults, decisionEnd = end) {
         }
       }
   }
-  return { version: 1, start, end, config: c, groups };
+  return { version: 1, start, end, config: c, groups, excludedDecisions };
 }
 function estimate(model, side, depth, f, c) {
   let p, mu;
@@ -271,6 +289,14 @@ function selfTest() {
   assert.equal(label({ ...tape, trades: tape.trades.slice(0, 4) }, t, 1, px, c), null);
   const model = fit(tape, start, start + 300000, c);
   assert.deepEqual([model.groups['1/3'].n, model.groups['1/3'].fills], [3, 1]);
+  const missing = {
+    ...tape,
+    books: tape.books.filter((b) => b.time < t + 10000 || b.time > t + 35000),
+  };
+  assert.throws(() => fit(missing, start, start + 300000, c), /Gap/);
+  const observed = fit(missing, start, start + 300000, c, start + 300000, true);
+  assert.equal(observed.excludedDecisions, 2);
+  assert.deepEqual([observed.groups['1/3'].n, observed.groups['1/3'].fills], [1, 0]);
   assert.equal(choose(model, 1, features(tape.books, t, c), 0, c), null);
   assert.throws(() => fit(tape, finalStart, finalStart + day), /outside training/);
   assert.throws(() => verifyBooks(tape.books.slice(4), start, start + 300000, c), /Gap/);

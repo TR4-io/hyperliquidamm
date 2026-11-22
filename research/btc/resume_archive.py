@@ -6,19 +6,20 @@ import json
 import logging
 import subprocess
 import time
-from contextlib import contextmanager
+from contextlib import ExitStack, contextmanager
 from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 
 from archive import atomic_json
-from botocore.parsers import ResponseParserError
 from bulk_archive import (
     AFTER_WEEK,
     LAST,
     VALIDATION,
+    ArchiveGetUnavailable,
     clients,
     collect_days,
     day_dir,
+    error_details,
     plan_days,
     retryable,
 )
@@ -38,8 +39,6 @@ def lock(path, blocking=True):
 def transient(exc):
     if retryable(exc):
         return True
-    if isinstance(exc, ResponseParserError):
-        return "upstream connect error" in str(exc)
     if isinstance(exc, RuntimeError):
         return str(exc).startswith(
             ("S3 HEADs all failed", "S3 GET paused after a service error")
@@ -129,48 +128,87 @@ def run(data, through, hours):
         for days in batches(through):
             all_days.extend(days)
             delay = 30
-            while True:
-                ledger = None
-                try:
-                    report("checking AWS identity", days)
-                    ledger, s3 = clients(data / "archive-budget.json")
-                    # Record availability errors distinctly; only verified complete pairs are downloaded.
-                    with lock(root / "plan.lock"):
-                        report("sizing archive", days)
-                        plan_days(root, days, ledger, s3, 8)
-                    with lock(root / "collect.lock"):
-                        report("collecting verified pairs", days)
-                        collect_days(root, days, ledger, s3, 4)
-                    break
-                except Exception as exc:
-                    if not transient(exc):
+            max_gets = 4
+            planned = False
+            ledger = None
+            probe = None
+            with ExitStack() as resources:
+                while True:
+                    try:
+                        if ledger is None:
+                            stage = "checking AWS identity"
+                            report(stage, days)
+                            ledger, s3 = clients(data / "archive-budget.json")
+                            resources.callback(ledger.file.close)
+                        if not planned:
+                            stage = "sizing archive"
+                            with lock(root / "plan.lock"):
+                                report(stage, days)
+                                plan_days(root, days, ledger, s3, 8)
+                            planned = True
+                        with lock(root / "collect.lock"):
+                            if probe is not None:
+                                # A journaled metadata request tests the failed object's route
+                                # before another full transfer reservation. GET still uses IfMatch.
+                                stage = "checking failed S3 object"
+                                report(
+                                    stage,
+                                    days,
+                                    bucket=probe["bucket"],
+                                    key=probe["key"],
+                                )
+                                ledger.reserve(probe, "HEAD")
+                                s3[probe["bucket"]].head_object(
+                                    Bucket=probe["bucket"],
+                                    Key=probe["key"],
+                                    RequestPayer="requester",
+                                )
+                                probe = None
+                            stage = "collecting verified pairs"
+                            report(stage, days, concurrentGETs=max_gets)
+                            collect_days(root, days, ledger, s3, 4, max_gets=max_gets)
+                        break
+                    except Exception as exc:
+                        details = {"stage": stage, "errorType": type(exc).__name__}
+                        retry_after = 0
+                        if isinstance(exc, ArchiveGetUnavailable):
+                            probe = {"bucket": exc.bucket, "key": exc.key}
+                            max_gets = 1
+                            details.update(
+                                probe, transport=exc.details, progress=exc.progress
+                            )
+                            if (
+                                exc.progress["verified_objects"]
+                                or exc.progress["completed_groups"]
+                            ):
+                                delay = 5
+                            retry_after = exc.retry_after_seconds or 0
+                        else:
+                            details["transport"] = error_details(exc)
+                            retry_after = details["transport"].get(
+                                "retry_after_seconds", 0
+                            )
+                            if probe is not None:
+                                details.update(probe)
+                        if not transient(exc):
+                            report("stopped", days, reason=str(exc)[:500], **details)
+                            raise
+                        remaining = deadline - time.monotonic()
+                        if remaining <= 0:
+                            report("upstream still unavailable", days, **details)
+                            return 2
+                        delay_now = min(max(delay, retry_after), remaining)
                         report(
-                            "stopped",
+                            "waiting for upstream recovery",
                             days,
-                            errorType=type(exc).__name__,
-                            reason=str(exc)[:500],
+                            retrySeconds=int(delay_now),
+                            **details,
                         )
-                        raise
-                    remaining = deadline - time.monotonic()
-                    if remaining <= 0:
-                        report(
-                            "upstream still unavailable",
-                            days,
-                            errorType=type(exc).__name__,
-                        )
-                        return 2
-                    delay_now = min(delay, remaining)
-                    report(
-                        "waiting for upstream recovery",
-                        days,
-                        retrySeconds=int(delay_now),
-                        errorType=type(exc).__name__,
-                    )
-                    time.sleep(delay_now)
-                    delay = min(300, delay * 2)
-                finally:
-                    if ledger:
-                        ledger.file.close()
+                        time.sleep(delay_now)
+                        if delay_now >= remaining:
+                            report("upstream still unavailable", days, **details)
+                            return 2
+                        delay = min(300, delay * 2)
             if days[0] < VALIDATION:
                 try:
                     fit_prefix(data)

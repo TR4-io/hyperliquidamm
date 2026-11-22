@@ -17,11 +17,14 @@ from bulk_archive import (
     AFTER_WEEK,
     HOUR,
     RATES,
+    ArchiveGetUnavailable,
     Ledger,
     collect_days,
     day_dir,
+    error_details,
     items,
     plan_days,
+    retryable,
 )
 
 
@@ -125,8 +128,20 @@ class Archive(unittest.TestCase):
                 def get_object(self, **kwargs):
                     raise ClientError(
                         {
-                            "Error": {"Code": "ServiceUnavailable", "Message": "retry"},
-                            "ResponseMetadata": {"HTTPStatusCode": 503},
+                            "Error": {
+                                "Code": "ServiceUnavailable",
+                                "Message": "upstream connect error; do-not-echo-token",
+                            },
+                            "ResponseMetadata": {
+                                "HTTPStatusCode": 503,
+                                "HTTPHeaders": {
+                                    "retry-after": "17",
+                                    "server": "envoy",
+                                    "authorization": "do-not-echo-token",
+                                    "x-envoy-upstream-service-time": "0021",
+                                    "x-debug-note": "do-not-echo-token",
+                                },
+                            },
                         },
                         "GetObject",
                     )
@@ -140,14 +155,62 @@ class Archive(unittest.TestCase):
                 )
 
             before_outage = get_count()
-            with self.assertRaisesRegex(RuntimeError, "GET paused"):
-                collect_days(root, [day], ledger, {key: Down() for key in RATES}, 4)
+            with self.assertRaises(ArchiveGetUnavailable) as failure:
+                collect_days(
+                    root, [day], ledger, {key: Down() for key in RATES}, 4, max_gets=1
+                )
+            self.assertEqual(
+                failure.exception.progress,
+                {"verified_objects": 0, "verified_bytes": 0, "completed_groups": 0},
+            )
+            self.assertEqual(failure.exception.bucket, rows[0]["bucket"])
+            self.assertEqual(failure.exception.key, rows[0]["key"])
+            self.assertEqual(failure.exception.retry_after_seconds, 17)
+            self.assertTrue(retryable(failure.exception))
+            self.assertEqual(
+                failure.exception.details["gateway_indications"],
+                ["upstream connect error"],
+            )
+            self.assertEqual(failure.exception.details["servers"], ["envoy"])
+            self.assertEqual(failure.exception.details["envoy_upstream_ms"], 21)
+            self.assertNotIn("do-not-echo", json.dumps(failure.exception.details))
+            self.assertNotIn("do-not-echo", str(failure.exception))
             self.assertEqual(get_count() - before_outage, 1)
             detail = json.loads(
                 next((folder / ".raw").glob("*.get-error.json")).read_bytes()
             )
             self.assertEqual(detail["status"], 503)
-            collect_days(root, [day], ledger, clients, 1)
+            self.assertNotIn("do-not-echo", json.dumps(detail))
+            with self.assertRaises(ArchiveGetUnavailable) as partial:
+                collect_days(
+                    root,
+                    [day],
+                    ledger,
+                    {rows[0]["bucket"]: S3(), rows[1]["bucket"]: Down()},
+                    3,
+                    max_gets=1,
+                )
+            self.assertEqual(
+                partial.exception.progress,
+                {
+                    "verified_objects": 1,
+                    "verified_bytes": len(content[rows[0]["key"]]),
+                    "completed_groups": 0,
+                },
+            )
+            self.assertEqual(partial.exception.key, rows[1]["key"])
+            # A successful cached book is reused in the recovery attempt.
+            done = collect_days(root, [day], ledger, clients, 3, max_gets=1)
+            self.assertEqual(
+                done,
+                {
+                    "verified_objects": 2,
+                    "verified_bytes": sum(
+                        len(content[r["key"]]) for r in (rows[1], rows[-1])
+                    ),
+                    "completed_groups": 2,
+                },
+            )
             self.assertEqual(
                 json.loads(
                     gzip.decompress((folder / "context-samples.json.gz").read_bytes())
@@ -162,8 +225,41 @@ class Archive(unittest.TestCase):
             )
             self.assertEqual(list((folder / ".raw").iterdir()), [])
             before = (root / "archive-reservations.jsonl").read_bytes()
-            collect_days(root, [day], ledger, {k: None for k in RATES}, 1)
+            empty = collect_days(root, [day], ledger, {k: None for k in RATES}, 1)
+            self.assertEqual(
+                empty,
+                {"verified_objects": 0, "verified_bytes": 0, "completed_groups": 0},
+            )
             self.assertEqual(before, (root / "archive-reservations.jsonl").read_bytes())
+
+    def test_gateway_classification(self):
+        from datetime import UTC, datetime
+        from email.utils import format_datetime
+
+        from botocore.parsers import ResponseParserError
+
+        upstream = ResponseParserError(
+            "cannot parse response: upstream connect error or disconnect/reset before headers [secret-url]"
+        )
+        denied = ClientError(
+            {
+                "Error": {"Code": "AccessDenied", "Message": "Denied"},
+                "ResponseMetadata": {"HTTPStatusCode": 403},
+            },
+            "GetObject",
+        )
+        self.assertTrue(retryable(upstream))
+        self.assertFalse(retryable(denied))
+        self.assertFalse(retryable(ResponseParserError("unrecognized response")))
+        self.assertEqual(
+            error_details(upstream)["gateway_indications"],
+            ["upstream connect error", "disconnect/reset before headers"],
+        )
+        self.assertNotIn("secret-url", json.dumps(error_details(upstream)))
+        denied.response["ResponseMetadata"]["HTTPHeaders"] = {
+            "Retry-After": format_datetime(datetime.now(UTC) + timedelta(seconds=61))
+        }
+        self.assertIn(error_details(denied)["retry_after_seconds"], (60, 61))
 
     def test_pilot_and_split(self):
         from datetime import date

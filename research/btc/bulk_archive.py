@@ -7,6 +7,7 @@ import hashlib
 import json
 import os
 import random
+import re
 import threading
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -140,15 +141,114 @@ def clients(budget):
     }
 
 
+class ArchiveGetUnavailable(RuntimeError):
+    def __init__(self, row, details):
+        self.bucket = row["bucket"]
+        self.key = row["key"]
+        self.details = details
+        self.retry_after_seconds = details.get("retry_after_seconds")
+        self.progress = {
+            "verified_objects": 0,
+            "verified_bytes": 0,
+            "completed_groups": 0,
+        }
+        super().__init__(
+            f"S3 GET paused for {self.bucket}/{self.key}: "
+            f"{details.get('status') or details['error']} {details.get('code') or ''}".rstrip()
+        )
+
+
+_GATEWAY_MARKERS = (
+    "upstream connect error",
+    "disconnect/reset before headers",
+    "upstream request timeout",
+    "connection termination",
+    "connection timeout",
+    "no healthy upstream",
+    "upstream reset",
+)
+
+
+def gateway_markers(exc):
+    # Never publish a raw parser body or exception message. A proxy can put
+    # arbitrary content in either one.
+    text = str(exc).lower()
+    return [marker for marker in _GATEWAY_MARKERS if marker in text]
+
+
+def error_details(exc):
+    from email.utils import parsedate_to_datetime
+    from math import ceil
+
+    resp = getattr(exc, "response", {}) or {}
+    meta = resp.get("ResponseMetadata", {})
+    headers = {str(k).lower(): str(v) for k, v in meta.get("HTTPHeaders", {}).items()}
+
+    def identifier(value):
+        return (
+            value
+            if isinstance(value, str)
+            and re.fullmatch(r"[A-Za-z0-9_./+=-]{1,128}", value)
+            else None
+        )
+
+    status = meta.get("HTTPStatusCode")
+    evidence = {
+        "error": type(exc).__name__,
+        "status": status if type(status) is int else None,
+        "code": identifier(resp.get("Error", {}).get("Code")),
+        "request_id": identifier(
+            meta.get("RequestId") or headers.get("x-amz-request-id")
+        ),
+    }
+    markers = gateway_markers(exc)
+    if markers:
+        evidence["gateway_indications"] = markers
+    # Project known upstream/server tokens only. Do not serialize arbitrary
+    # header values such as authorization, cookies, origin addresses or URLs.
+    server = headers.get("server", "").lower()
+    servers = [
+        name
+        for name in ("envoy", "nginx", "cloudfront", "amazons3", "squid", "awselb")
+        if re.search(r"(?<![a-z0-9])" + name + r"(?![a-z0-9])", server)
+    ]
+    if servers:
+        evidence["servers"] = servers
+    envoy_ms = headers.get("x-envoy-upstream-service-time", "")
+    if re.fullmatch(r"[0-9]{1,10}", envoy_ms):
+        evidence["envoy_upstream_ms"] = int(envoy_ms)
+    retry = headers.get("retry-after", "")
+    if re.fullmatch(r"[0-9]{1,10}", retry):
+        evidence["retry_after_seconds"] = int(retry)
+    elif retry:
+        try:
+            then = parsedate_to_datetime(retry)
+            if then.tzinfo is not None:
+                evidence["retry_after_seconds"] = max(
+                    0, ceil((then - datetime.now(UTC)).total_seconds())
+                )
+        except (ValueError, TypeError, OverflowError):
+            pass
+    return evidence
+
+
 def retryable(exc):
     from botocore.exceptions import (
         ClientError,
         ConnectionClosedError,
+        ConnectTimeoutError,
         EndpointConnectionError,
+        IncompleteReadError,
+        ProxyConnectionError,
         ReadTimeoutError,
         ResponseStreamingError,
     )
+    from botocore.parsers import ResponseParserError
 
+    if isinstance(exc, ArchiveGetUnavailable):
+        return True
+    if isinstance(exc, ResponseParserError):
+        return bool(gateway_markers(exc))
     if isinstance(exc, ClientError):
         resp = exc.response
         return resp.get("ResponseMetadata", {}).get("HTTPStatusCode", 0) in (
@@ -162,7 +262,10 @@ def retryable(exc):
         exc,
         (
             ConnectionClosedError,
+            ConnectTimeoutError,
             EndpointConnectionError,
+            IncompleteReadError,
+            ProxyConnectionError,
             ReadTimeoutError,
             ResponseStreamingError,
         ),
@@ -193,7 +296,8 @@ def head(row, ledger, s3):
                 return {
                     **row,
                     "status": "unresolved",
-                    "error": type(exc).__name__ + ": " + str(exc),
+                    "error": type(exc).__name__,
+                    "details": error_details(exc),
                 }
             time.sleep(0.25 + random.random() * 2**attempt)
 
@@ -334,8 +438,10 @@ def fetch(folder, row, ledger, s3):
     """Only a fully verified, atomically published receipt authorizes offline reuse."""
     import tempfile
 
+    from botocore.exceptions import IncompleteReadError
+
     if valid_cache(folder, row):
-        return
+        return False
     raw, receipt = raw_paths(folder, row)
     raw.parent.mkdir(exist_ok=True)
     ledger.reserve(row, "GET")
@@ -362,25 +468,17 @@ def fetch(folder, row, ledger, s3):
                     size += len(chunk)
                     digest.update(chunk)
                 if size != row["bytes"]:
-                    raise ValueError("Incomplete body")
+                    raise IncompleteReadError(actual_bytes=size, expected_bytes=row["bytes"])
             os.replace(tmp, raw)
             tmp = None
             atomic_json(receipt, {"source": row, "sha256": digest.hexdigest()})
             raw.with_suffix(".get-error.json").unlink(missing_ok=True)
-            return
+            return True
     except Exception as exc:
-        response = getattr(exc, "response", {})
-        atomic_json(
-            raw.with_suffix(".get-error.json"),
-            {
-                "source": row,
-                "error": type(exc).__name__,
-                "message": str(exc),
-                "code": response.get("Error", {}).get("Code"),
-                "request_id": response.get("ResponseMetadata", {}).get("RequestId"),
-                "status": response.get("ResponseMetadata", {}).get("HTTPStatusCode"),
-            },
-        )
+        details = error_details(exc)
+        atomic_json(raw.with_suffix(".get-error.json"), {"source": row, **details})
+        if retryable(exc):
+            raise ArchiveGetUnavailable(row, details) from None
         raise
     finally:
         if tmp is not None:
@@ -483,11 +581,18 @@ def groups(plan):
             yield sorted(group, key=lambda r: r["kind"])
 
 
-def collect_days(root, days, ledger, s3, workers):
+def collect_days(root, days, ledger, s3, workers, max_gets=4):
     import multiprocessing
     import shutil
     from concurrent.futures import ProcessPoolExecutor, as_completed
 
+    if workers < 1 or not 1 <= max_gets <= 4:
+        raise ValueError(
+            "Expected at least one normalization worker and 1–4 concurrent GETs"
+        )
+    progress = {"verified_objects": 0, "verified_bytes": 0, "completed_groups": 0}
+    progress_lock = threading.Lock()
+    transient_failure = None
     # Verify all metadata and compute remaining transfers BEFORE the first GET.
     remaining = []
     projected = 0
@@ -524,7 +629,7 @@ def collect_days(root, days, ledger, s3, workers):
         # Start every resumed run with a single group. A failing destination
         # therefore reserves at most one GET for the failing source on startup.
         paused = threading.Event()
-        slots = threading.Semaphore(min(workers, 4))
+        slots = threading.Semaphore(max_gets)
         starts = (
             ([0] + list(range(1, len(remaining), workers * 3))) if remaining else []
         )
@@ -535,12 +640,23 @@ def collect_days(root, days, ledger, s3, workers):
                 raise RuntimeError("Insufficient free space for next bounded batch")
 
             def get_group(folder, group):
+                nonlocal transient_failure
                 for row in group:
                     with slots:
                         if paused.is_set():
                             return False
                         try:
-                            fetch(folder, row, ledger, s3)
+                            downloaded = fetch(folder, row, ledger, s3)
+                            if downloaded:
+                                with progress_lock:
+                                    progress["verified_objects"] += 1
+                                    progress["verified_bytes"] += row["bytes"]
+                        except ArchiveGetUnavailable as exc:
+                            with progress_lock:
+                                if transient_failure is None:
+                                    transient_failure = exc
+                                paused.set()
+                            raise
                         except Exception as exc:
                             if retryable(exc) or getattr(exc, "response", {}).get(
                                 "ResponseMetadata", {}
@@ -567,9 +683,14 @@ def collect_days(root, days, ledger, s3, workers):
                             or "budget" in str(exc).lower()
                         ):
                             raise
+                    detail = (
+                        {"bucket": exc.bucket, "key": exc.key, **exc.details}
+                        if isinstance(exc, ArchiveGetUnavailable)
+                        else error_details(exc)
+                    )
                     atomic_json(
                         folder / f"{g[0]['hour']}.{g[0]['kind']}.error.json",
-                        {"stage": "GET", "error": str(exc)},
+                        {"stage": "GET", **detail},
                     )
                     failures += 1
                     continue
@@ -580,6 +701,7 @@ def collect_days(root, days, ledger, s3, workers):
                 errfile = folder / f"{g[0]['hour']}.{g[0]['kind']}.error.json"
                 try:
                     fut.result()
+                    progress["completed_groups"] += 1
                     errfile.unlink(missing_ok=True)
                 except (
                     OSError,
@@ -591,10 +713,9 @@ def collect_days(root, days, ledger, s3, workers):
                 ) as exc:
                     atomic_json(errfile, {"stage": "normalize", "error": str(exc)})
                     failures += 1
-            if paused.is_set():
-                raise RuntimeError(
-                    "S3 GET paused after a service error; verified inputs retained"
-                )
+            if transient_failure is not None:
+                transient_failure.progress = progress.copy()
+                raise transient_failure
             if (
                 i == 0
                 or (i // (workers * 3)) % 10 == 0
@@ -615,6 +736,7 @@ def collect_days(root, days, ledger, s3, workers):
         raise RuntimeError(
             f"{failures} groups need diagnosis; other groups were processed"
         )
+    return progress
 
 
 def main():
@@ -629,6 +751,7 @@ def main():
         default=min(LAST, datetime.now(UTC).date() - timedelta(days=1)),
     )
     parser.add_argument("--workers", type=int, default=None)
+    parser.add_argument("--max-gets", type=int, choices=range(1, 5), default=4)
     args = parser.parse_args()
     if (
         not AFTER_WEEK
@@ -649,7 +772,7 @@ def main():
         if args.mode == "plan":
             plan_days(args.root, days, ledger, s3, args.workers or 12)
         else:
-            collect_days(args.root, days, ledger, s3, args.workers or 4)
+            collect_days(args.root, days, ledger, s3, args.workers or 4, args.max_gets)
 
 
 if __name__ == "__main__":

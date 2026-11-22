@@ -17,9 +17,22 @@
       {
         "url": "https://hyperliquid.gitbook.io/hyperliquid-docs/trading/fees",
         "finding": "The published Tier 0 Base rates for perps are 0.045% taker and 0.015% maker. Fee tiers depend on rolling 14-day volume assessed daily. Tier 1 threshold is over USD 5 million."
+      },
+      {
+        "url": "https://t.me/hyperliquid_announcements/547",
+        "finding": "May 14, 2026 announcement specifies that AQAv2 adds no trading-fee or volume benefit."
+      },
+      {
+        "url": "https://t.me/hyperliquid_announcements/560",
+        "finding": "June 16, 2026 update confirms AQAv2 activation for USDC."
+      },
+      {
+        "url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint",
+        "finding": "The official fill schema documents fee as inclusive of the optional builderFee."
       }
     ],
-    "continuous_historical_schedule_verified": false
+    "continuous_historical_schedule_verified": false,
+    "observed_training_fee_audit": "observed-fees-20260110-20260111.json"
   },
   "funding": {
     "settlement_interval": "hourly",

@@ -16,6 +16,7 @@ from bulk_archive import (
     LAST,
     VALIDATION,
     ArchiveGetUnavailable,
+    ArchiveHeadUnavailable,
     clients,
     collect_days,
     day_dir,
@@ -37,7 +38,7 @@ def lock(path, blocking=True):
 
 
 def transient(exc):
-    if retryable(exc):
+    if isinstance(exc, ArchiveHeadUnavailable) or retryable(exc):
         return True
     if isinstance(exc, RuntimeError):
         return str(exc).startswith(
@@ -104,6 +105,38 @@ def validate_if_ready(data):
     return "Development validation diagnostic available"
 
 
+def plan_batch(root, days, ledger, s3, retry_unresolved_only):
+    """Hand every measured day to collection and retain outstanding HEADs for recovery."""
+    head_failure = None
+    try:
+        if retry_unresolved_only:
+            plan_days(root, days, ledger, s3, 8, retry_unresolved_only=True)
+        else:
+            plan_days(root, days, ledger, s3, 8)
+    except ArchiveHeadUnavailable as exc:
+        head_failure = exc
+
+    measured_days, pending_days = [], []
+    for day in days:
+        plan_path = day_dir(root, day) / "plan.json"
+        if not plan_path.exists():
+            if head_failure is None:
+                raise ValueError(
+                    "Archive plan unexpectedly absent after metadata check"
+                )
+            pending_days.append(day)
+            continue
+        measured_days.append(day)
+        unresolved = json.loads(plan_path.read_bytes()).get("unresolved", [])
+        if unresolved or (head_failure and head_failure.day == day):
+            pending_days.append(day)
+            if head_failure is None:
+                head_failure = ArchiveHeadUnavailable(
+                    day, unresolved[0], len(unresolved)
+                )
+    return measured_days, pending_days, head_failure
+
+
 def run(data, through, hours):
     root = data / "annual"
     root.mkdir(parents=True, exist_ok=True)
@@ -125,11 +158,24 @@ def run(data, through, hours):
     with lock(root / "supervisor.lock", blocking=False):
         all_days = []
         analysis_errors = []
+
+        def fit_after_download(batch):
+            if batch[0] < VALIDATION:
+                try:
+                    fit_prefix(data)
+                except (OSError, subprocess.CalledProcessError) as exc:
+                    analysis_errors.append(
+                        {"through": batch[-1].isoformat(), "error": str(exc)}
+                    )
+                    LOG.error("Analysis held; continuing archive acquisition: %s", exc)
+
         for days in batches(through):
             all_days.extend(days)
             delay = 30
             max_gets = 4
             planned = False
+            planning_days = days
+            retry_unresolved_only = False
             ledger = None
             probe = None
             with ExitStack() as resources:
@@ -144,7 +190,13 @@ def run(data, through, hours):
                             stage = "sizing archive"
                             with lock(root / "plan.lock"):
                                 report(stage, days)
-                                plan_days(root, days, ledger, s3, 8)
+                                collect_scope, pending_days, head_failure = plan_batch(
+                                    root,
+                                    planning_days,
+                                    ledger,
+                                    s3,
+                                    retry_unresolved_only,
+                                )
                             planned = True
                         with lock(root / "collect.lock"):
                             if probe is not None:
@@ -166,7 +218,29 @@ def run(data, through, hours):
                                 probe = None
                             stage = "collecting verified pairs"
                             report(stage, days, concurrentGETs=max_gets)
-                            collect_days(root, days, ledger, s3, 4, max_gets=max_gets)
+                            progress = (
+                                collect_days(
+                                    root,
+                                    collect_scope,
+                                    ledger,
+                                    s3,
+                                    4,
+                                    max_gets=max_gets,
+                                )
+                                if collect_scope
+                                else {}
+                            )
+                        if pending_days:
+                            planned = False
+                            planning_days = pending_days
+                            retry_unresolved_only = True
+                            stage = "recovering incomplete S3 metadata"
+                            if isinstance(progress, dict) and progress.get(
+                                "completed_groups"
+                            ):
+                                delay = 5
+                                fit_after_download(days)
+                            raise head_failure
                         break
                     except Exception as exc:
                         details = {"stage": stage, "errorType": type(exc).__name__}
@@ -183,6 +257,15 @@ def run(data, through, hours):
                             ):
                                 delay = 5
                             retry_after = exc.retry_after_seconds or 0
+                        elif isinstance(exc, ArchiveHeadUnavailable):
+                            details.update(
+                                bucket=exc.row["bucket"],
+                                key=exc.row["key"],
+                                unresolvedOrUnmeasured=exc.unresolved_count,
+                                metadataDaysPending=len(planning_days),
+                                transport=exc.details,
+                            )
+                            retry_after = exc.details.get("retry_after_seconds", 0)
                         else:
                             details["transport"] = error_details(exc)
                             retry_after = details["transport"].get(
@@ -209,14 +292,7 @@ def run(data, through, hours):
                             report("upstream still unavailable", days, **details)
                             return 2
                         delay = min(300, delay * 2)
-            if days[0] < VALIDATION:
-                try:
-                    fit_prefix(data)
-                except (OSError, subprocess.CalledProcessError) as exc:
-                    analysis_errors.append(
-                        {"through": days[-1].isoformat(), "error": str(exc)}
-                    )
-                    LOG.error("Analysis held; continuing archive acquisition: %s", exc)
+            fit_after_download(days)
         materialize(data / "funding", root, data / "first-week")
         plans = [
             json.loads((day_dir(root, d) / "plan.json").read_bytes()) for d in all_days

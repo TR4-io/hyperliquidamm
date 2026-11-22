@@ -272,10 +272,23 @@ def retryable(exc):
     )
 
 
-def head(row, ledger, s3):
+class ArchiveHeadUnavailable(RuntimeError):
+    """A metadata check needs a later retry; known source pairs remain usable."""
+
+    def __init__(self, day, row, unresolved_count):
+        self.day = day
+        self.row = row
+        self.details = row.get("details", {})
+        self.unresolved_count = unresolved_count
+        super().__init__(
+            f"S3 HEAD incomplete for {day} at {row['bucket']}/{row['key']}"
+        )
+
+
+def head(row, ledger, s3, attempts=3):
     from botocore.exceptions import ClientError
 
-    for attempt in range(4):
+    for attempt in range(attempts):
         ledger.reserve(row, "HEAD")
         try:
             result = s3[row["bucket"]].head_object(
@@ -292,7 +305,7 @@ def head(row, ledger, s3):
                 return {**row, "status": "missing"}
             if not retryable(exc):
                 raise
-            if attempt == 2:
+            if attempt + 1 == attempts:
                 return {
                     **row,
                     "status": "unresolved",
@@ -302,7 +315,7 @@ def head(row, ledger, s3):
             time.sleep(0.25 + random.random() * 2**attempt)
 
 
-def plan_days(root, days, ledger, s3, workers):
+def plan_days(root, days, ledger, s3, workers, *, retry_unresolved_only=False):
     stats = {
         "planned_days": 0,
         "available_objects": 0,
@@ -320,14 +333,26 @@ def plan_days(root, days, ledger, s3, workers):
             if existing and existing.get("account") != ledger.account:
                 raise ValueError("Cached plan uses a different billing account")
             available = {r["key"]: r for r in existing.get("objects", [])}
+            if retry_unresolved_only:
+                available.update({r["key"]: r for r in existing.get("unavailable", [])})
             expected = list(items(day))
+            last_probe_key = None
+            probe_state = {}
             missing = [row for row in expected if row["key"] not in available]
 
-            def save_progress(folder=folder, available=available):
+            def save_progress(
+                folder=folder, available=available, probe_state=probe_state
+            ):
                 atomic_json(
                     folder / "plan.partial.json",
                     {
                         "account": ledger.account,
+                        "probe": probe_state.copy(),
+                        "unavailable": [
+                            r
+                            for r in available.values()
+                            if r.get("status") == "missing"
+                        ],
                         "objects": [
                             r for r in available.values() if not r.get("status")
                         ],
@@ -347,8 +372,33 @@ def plan_days(root, days, ledger, s3, workers):
                     cached = json.loads(partial.read_text())
                     if cached["account"] == ledger.account:
                         available.update({r["key"]: r for r in cached["objects"]})
+                        if retry_unresolved_only:
+                            available.update(
+                                {r["key"]: r for r in cached.get("unavailable", [])}
+                            )
+                        last_probe_key = cached.get("probe", {}).get("key")
                     missing = [row for row in expected if row["key"] not in available]
-                tasks = [pool.submit(head, row, ledger, s3) for row in missing]
+                if len(missing) >= 8:
+                    # One journaled HEAD checks reachability before a concurrent fan-out.
+                    # Rotate after a failure so an object-specific error cannot hold an entire day.
+                    keys = [r["key"] for r in missing]
+                    index = (
+                        (keys.index(last_probe_key) + 1) % len(keys)
+                        if last_probe_key in keys
+                        else 0
+                    )
+                    row = missing.pop(index)
+                    probe_state["key"] = row["key"]
+                    checked = head(row, ledger, s3, attempts=1)
+                    available[row["key"]] = checked
+                    if checked.get("status") == "unresolved":
+                        raise ArchiveHeadUnavailable(day, checked, len(missing) + 1)
+                tasks = [
+                    pool.submit(
+                        head, row, ledger, s3, 1 if retry_unresolved_only else 3
+                    )
+                    for row in missing
+                ]
                 for i, future in enumerate(as_completed(tasks)):
                     result = future.result()
                     available[result["key"]] = result
@@ -380,9 +430,7 @@ def plan_days(root, days, ledger, s3, workers):
             stats["bytes"] += sum(r["bytes"] for r in objects)
             stats["get_usd"] += cost
             if not objects and len(unresolved) >= 3 and not unavailable:
-                raise RuntimeError(
-                    f"S3 HEADs all failed for {day}; diagnostic metadata retained"
-                )
+                raise ArchiveHeadUnavailable(day, unresolved[0], len(unresolved))
             if stats["planned_days"] % 14 == 0:
                 print(json.dumps(stats), flush=True)
     print(
@@ -468,7 +516,9 @@ def fetch(folder, row, ledger, s3):
                     size += len(chunk)
                     digest.update(chunk)
                 if size != row["bytes"]:
-                    raise IncompleteReadError(actual_bytes=size, expected_bytes=row["bytes"])
+                    raise IncompleteReadError(
+                        actual_bytes=size, expected_bytes=row["bytes"]
+                    )
             os.replace(tmp, raw)
             tmp = None
             atomic_json(receipt, {"source": row, "sha256": digest.hexdigest()})
@@ -566,6 +616,19 @@ def normalize_group(folder, group):
             folder,
             {"etags": [r["etag"] for r in group]},
         )
+        if folder.parent.name in ("training", "validation"):
+            # Optional sampled evidence is independent of packet validation and cleanup.
+            try:
+                from fee_evidence import save, scheduled
+
+                if scheduled(group[0]["hour"]):
+                    raw, receipt = raw_paths(folder, group[1])
+                    save(raw, receipt, folder / "weekly-fee-evidence.json", "weekly")
+            except Exception as exc:  # noqa: BLE001 - an audit failure must not block raw cleanup
+                print(
+                    f"Fee sample unavailable at {group[0]['hour']}: {type(exc).__name__}",
+                    flush=True,
+                )
     for row in group:
         for path in reversed(raw_paths(folder, row)):
             path.unlink(missing_ok=True)

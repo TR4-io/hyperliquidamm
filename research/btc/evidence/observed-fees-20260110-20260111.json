@@ -1,0 +1,305 @@
+{
+  "sampling": "opportunistic locally available development hours; no additional archive calls",
+  "contract": "validator-operated BTC-USDC perpetual",
+  "rateScope": "nominal undiscounted tier zero, unlinked, no staking/referral/builder/priority fee",
+  "observedHours": 5,
+  "compressedBytesAudited": 42966785,
+  "byRole": {
+    "maker": {
+      "builder_fee_removed": 907,
+      "analyzed": 10739,
+      "below_base": 10038,
+      "within_base_tolerance": 701,
+      "excluded_under_10_usdc": 92
+    },
+    "taker": {
+      "analyzed": 10739,
+      "below_base": 9511,
+      "builder_fee_removed": 1935,
+      "within_base_tolerance": 1228,
+      "excluded_under_10_usdc": 92
+    }
+  },
+  "observations": [
+    {
+      "sampling": "opportunistic",
+      "hour": 1768071600000,
+      "bucket": "hl-mainnet-node-data",
+      "key": "node_fills_by_block/hourly/20260110/19.lz4",
+      "sourceBytes": 8978020,
+      "sourceSha256": "f6823799601b7868b19b265dbb38234f09c69c235b24786c8b15bef586c6e90f",
+      "baseBps": {
+        "maker": 1.5,
+        "taker": 4.5
+      },
+      "toleranceUsdc": "0.000001",
+      "minimumNotionalUsdc": "10",
+      "counts": {
+        "btc_account_fill_rows": 2776
+      },
+      "byRole": {
+        "maker": {
+          "builder_fee_removed": 160,
+          "analyzed": 1372,
+          "below_base": 1291,
+          "within_base_tolerance": 81,
+          "excluded_under_10_usdc": 16
+        },
+        "taker": {
+          "analyzed": 1372,
+          "below_base": 1221,
+          "builder_fee_removed": 271,
+          "within_base_tolerance": 151,
+          "excluded_under_10_usdc": 16
+        }
+      },
+      "mostFrequentEffectiveBps": {
+        "maker": {
+          "-0.30": 464,
+          "-0.20": 304,
+          "1.44": 140,
+          "-0.10": 96,
+          "0.28": 82,
+          "1.50": 81,
+          "1.20": 53,
+          "1.35": 45
+        },
+        "taker": {
+          "4.32": 518,
+          "3.60": 249,
+          "4.05": 193,
+          "4.50": 151,
+          "2.55": 46,
+          "3.50": 42,
+          "3.89": 33,
+          "4.00": 31
+        }
+      },
+      "interpretation": "Observed fees include participant-specific tiers, rebates and discounts. Rate matches do not identify the account tier or establish an uninterrupted historical schedule."
+    },
+    {
+      "sampling": "opportunistic",
+      "hour": 1768089600000,
+      "bucket": "hl-mainnet-node-data",
+      "key": "node_fills_by_block/hourly/20260111/0.lz4",
+      "sourceBytes": 9404322,
+      "sourceSha256": "34b472852009cabc51c9b931ddf06ee4b8e672bee5d66ead0cdcb5fca99034ec",
+      "baseBps": {
+        "maker": 1.5,
+        "taker": 4.5
+      },
+      "toleranceUsdc": "0.000001",
+      "minimumNotionalUsdc": "10",
+      "counts": {
+        "btc_account_fill_rows": 6656
+      },
+      "byRole": {
+        "maker": {
+          "analyzed": 3307,
+          "below_base": 3043,
+          "within_base_tolerance": 264,
+          "builder_fee_removed": 209,
+          "excluded_under_10_usdc": 21
+        },
+        "taker": {
+          "analyzed": 3307,
+          "below_base": 2963,
+          "builder_fee_removed": 409,
+          "within_base_tolerance": 344,
+          "excluded_under_10_usdc": 21
+        }
+      },
+      "mostFrequentEffectiveBps": {
+        "maker": {
+          "-0.30": 1524,
+          "-0.20": 469,
+          "1.50": 264,
+          "0.34": 163,
+          "-0.10": 160,
+          "0.24": 117,
+          "0.80": 108,
+          "1.44": 81
+        },
+        "taker": {
+          "3.00": 719,
+          "4.32": 635,
+          "4.50": 344,
+          "3.50": 277,
+          "3.60": 273,
+          "3.84": 235,
+          "4.05": 155,
+          "2.55": 138
+        }
+      },
+      "interpretation": "Observed fees include participant-specific tiers, rebates and discounts. Rate matches do not identify the account tier or establish an uninterrupted historical schedule."
+    },
+    {
+      "sampling": "opportunistic",
+      "hour": 1768096800000,
+      "bucket": "hl-mainnet-node-data",
+      "key": "node_fills_by_block/hourly/20260111/2.lz4",
+      "sourceBytes": 7685372,
+      "sourceSha256": "5372a5b1b9b3512be79ee0099d873a3e9a3fd35727e08e666d154f93e5420eb8",
+      "baseBps": {
+        "maker": 1.5,
+        "taker": 4.5
+      },
+      "toleranceUsdc": "0.000001",
+      "minimumNotionalUsdc": "10",
+      "counts": {
+        "btc_account_fill_rows": 3540
+      },
+      "byRole": {
+        "maker": {
+          "analyzed": 1757,
+          "below_base": 1602,
+          "within_base_tolerance": 155,
+          "excluded_under_10_usdc": 13,
+          "builder_fee_removed": 150
+        },
+        "taker": {
+          "analyzed": 1757,
+          "below_base": 1571,
+          "builder_fee_removed": 442,
+          "within_base_tolerance": 186,
+          "excluded_under_10_usdc": 13
+        }
+      },
+      "mostFrequentEffectiveBps": {
+        "maker": {
+          "-0.30": 630,
+          "-0.20": 350,
+          "1.50": 155,
+          "1.44": 135,
+          "1.20": 109,
+          "-0.10": 89,
+          "0.24": 71,
+          "1.08": 62
+        },
+        "taker": {
+          "4.32": 575,
+          "3.60": 266,
+          "4.50": 186,
+          "4.05": 124,
+          "3.00": 95,
+          "3.89": 75,
+          "1.82": 64,
+          "1.44": 63
+        }
+      },
+      "interpretation": "Observed fees include participant-specific tiers, rebates and discounts. Rate matches do not identify the account tier or establish an uninterrupted historical schedule."
+    },
+    {
+      "sampling": "opportunistic",
+      "hour": 1768100400000,
+      "bucket": "hl-mainnet-node-data",
+      "key": "node_fills_by_block/hourly/20260111/3.lz4",
+      "sourceBytes": 7668024,
+      "sourceSha256": "ca46c0cdf5c4f6bcb8d2a552cd85d4c23046a027eafa2b3b73470208e79f14a5",
+      "baseBps": {
+        "maker": 1.5,
+        "taker": 4.5
+      },
+      "toleranceUsdc": "0.000001",
+      "minimumNotionalUsdc": "10",
+      "counts": {
+        "btc_account_fill_rows": 3330
+      },
+      "byRole": {
+        "maker": {
+          "analyzed": 1640,
+          "below_base": 1547,
+          "builder_fee_removed": 151,
+          "within_base_tolerance": 93,
+          "excluded_under_10_usdc": 25
+        },
+        "taker": {
+          "analyzed": 1640,
+          "below_base": 1419,
+          "builder_fee_removed": 395,
+          "within_base_tolerance": 221,
+          "excluded_under_10_usdc": 25
+        }
+      },
+      "mostFrequentEffectiveBps": {
+        "maker": {
+          "-0.30": 573,
+          "-0.20": 408,
+          "1.44": 97,
+          "1.20": 94,
+          "1.50": 93,
+          "1.35": 65,
+          "-0.10": 59,
+          "0.00": 47
+        },
+        "taker": {
+          "4.32": 569,
+          "3.60": 260,
+          "4.50": 221,
+          "4.05": 140,
+          "4.00": 139,
+          "1.44": 78,
+          "3.82": 44,
+          "1.82": 35
+        }
+      },
+      "interpretation": "Observed fees include participant-specific tiers, rebates and discounts. Rate matches do not identify the account tier or establish an uninterrupted historical schedule."
+    },
+    {
+      "sampling": "opportunistic",
+      "hour": 1768125600000,
+      "bucket": "hl-mainnet-node-data",
+      "key": "node_fills_by_block/hourly/20260111/10.lz4",
+      "sourceBytes": 9231047,
+      "sourceSha256": "2cdc37a4ff7cfcdd13001f627ef3b0a4f6b8667e9f082184047bbef2018ce5f6",
+      "baseBps": {
+        "maker": 1.5,
+        "taker": 4.5
+      },
+      "toleranceUsdc": "0.000001",
+      "minimumNotionalUsdc": "10",
+      "counts": {
+        "btc_account_fill_rows": 5360
+      },
+      "byRole": {
+        "maker": {
+          "excluded_under_10_usdc": 17,
+          "analyzed": 2663,
+          "below_base": 2555,
+          "within_base_tolerance": 108,
+          "builder_fee_removed": 237
+        },
+        "taker": {
+          "excluded_under_10_usdc": 17,
+          "analyzed": 2663,
+          "below_base": 2337,
+          "builder_fee_removed": 418,
+          "within_base_tolerance": 326
+        }
+      },
+      "mostFrequentEffectiveBps": {
+        "maker": {
+          "-0.30": 1224,
+          "-0.20": 411,
+          "1.44": 161,
+          "-0.10": 137,
+          "0.40": 113,
+          "1.42": 109,
+          "1.50": 108,
+          "0.34": 75
+        },
+        "taker": {
+          "3.00": 579,
+          "4.32": 489,
+          "4.50": 326,
+          "4.00": 325,
+          "0.00": 178,
+          "4.05": 142,
+          "3.60": 131,
+          "3.89": 131
+        }
+      },
+      "interpretation": "Observed fees include participant-specific tiers, rebates and discounts. Rate matches do not identify the account tier or establish an uninterrupted historical schedule."
+    }
+  ]
+}

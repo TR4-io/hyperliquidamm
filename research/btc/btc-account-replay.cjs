@@ -146,8 +146,9 @@ function* accountWindows(start, end, policy, model, options, windowSize, frozenF
     const x = closeValue(book, pos, c);
     equity = cash + x.gross - x.fee;
     peak = Math.max(peak, equity);
-    maxDD = Math.max(maxDD, 1 - equity / peak);
-    if (haltTime === null && 1 - equity / peak >= c.halt) {
+    const drawdown = (peak - equity) / peak;
+    maxDD = Math.max(maxDD, drawdown);
+    if (haltTime === null && drawdown >= c.halt) {
       haltTime = t;
       flatten();
     }
@@ -375,6 +376,28 @@ function selfTest() {
   assert.ok(halted.maxDD >= 0.1);
   assert.ok(halted.haltTime !== null);
   assert.equal(halted.buys, 1);
+  // A one-BTC fixture gives exact dollar liquidation values, including a new peak.
+  function drawdownPath(lowBid) {
+    const books = raw.books.map((b, i) => {
+      let bid = 9999;
+      if (i >= 13 && i < 15) bid = 10499;
+      if (i >= 15 && i < 24) bid = lowBid;
+      return { time: b.time, levels: [[{ px: bid, sz: 2 }], [{ px: bid + 2, sz: 2 }]] };
+    });
+    const laterBuy = { ...trades[0], tid: 2, time: start + 180600 };
+    return run(
+      { books, trades: [...trades, laterBuy], funding: [{ ...raw.funding[0], rate: 0 }] },
+      'touch',
+      { clip: 1, limit: 1, maker: 0, taker: 0 },
+    );
+  }
+  const exact = drawdownPath(9449); // 1 USDC cash plus 9,449 USDC at the bid.
+  assert.equal(exact.maxDD, 0.1);
+  assert.equal(exact.haltTime, start + 75000);
+  assert.equal(exact.finalEquity, 9450);
+  assert.equal(exact.buys, 1);
+  assert.ok(exact.daily.every((d) => d.position === 0));
+  assert.equal(drawdownPath(9450).haltTime, null);
   assert.equal(run({ ...raw, trades: [{ ...trades[0], time: start + 60500 }] }).buys, 0);
   assert.equal(
     run({ ...raw, trades: [{ ...trades[0], time: start + 120501 }] }, 'touch15').buys,

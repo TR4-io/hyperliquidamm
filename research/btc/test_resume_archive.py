@@ -86,12 +86,50 @@ class Resume(unittest.TestCase):
                 self.assertEqual(app.run(data, day, 1), 0)
             clients.assert_called_once()
             plan.assert_called_once()
-            self.assertEqual([x.kwargs["max_gets"] for x in get.call_args_list], [4, 1])
+            self.assertEqual([x.kwargs["max_gets"] for x in get.call_args_list], [4, 4])
+            self.assertEqual(
+                [x.kwargs["start_gets"] for x in get.call_args_list], [4, 1]
+            )
             self.assertEqual([x.args[0] for x in sleep.call_args_list], [8, 10])
             self.assertEqual(
                 [c.args for c in ledger.reserve.call_args_list], [(row, "HEAD")] * 2
             )
             ledger.file.close.assert_called_once()
+
+    def test_download_only_revisits_isolated_object_after_other_dates(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            data = Path(tmp)
+            first = app.AFTER_WEEK
+            second = first + app.ONE
+            for day in (first, second):
+                folder = app.day_dir(data / "annual", day)
+                folder.mkdir(parents=True)
+                (folder / "plan.json").write_text('{"unavailable":[],"unresolved":[]}')
+            error = app.ArchiveGetUnavailable(
+                {"bucket": "test", "key": "isolated"}, {"status": 503}
+            )
+            error.isolated = True
+            with (
+                patch.object(app, "batches", return_value=iter([[first], [second]])),
+                patch.object(app, "clients", return_value=(Mock(), {})),
+                patch.object(app, "plan_days"),
+                patch.object(
+                    app, "collect_days", side_effect=[error, {}, {}]
+                ) as collect,
+                patch.object(app, "fit_prefix") as fit,
+                patch.object(app, "validate_if_ready") as validate,
+                patch.object(app, "materialize") as funding,
+                patch.object(app.time, "sleep") as sleep,
+            ):
+                self.assertEqual(app.run(data, second, 1, download_only=True), 0)
+                self.assertEqual(
+                    [call.args[1] for call in collect.call_args_list],
+                    [[first], [second], [first]],
+                )
+                funding.assert_called_once()
+                fit.assert_not_called()
+                validate.assert_not_called()
+                sleep.assert_not_called()
 
     def test_budget_and_identity_failures_stop(self):
         with tempfile.TemporaryDirectory() as tmp:

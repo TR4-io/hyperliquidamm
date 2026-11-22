@@ -6,6 +6,7 @@ import json
 import logging
 import subprocess
 import time
+from collections import deque
 from contextlib import ExitStack, contextmanager
 from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
@@ -137,7 +138,7 @@ def plan_batch(root, days, ledger, s3, retry_unresolved_only):
     return measured_days, pending_days, head_failure
 
 
-def run(data, through, hours):
+def run(data, through, hours, download_only=False):
     root = data / "annual"
     root.mkdir(parents=True, exist_ok=True)
     status_file = root / "transfer-status.json"
@@ -150,17 +151,20 @@ def run(data, through, hours):
             "batchStart": days[0].isoformat(),
             "batchEnd": days[-1].isoformat(),
             "through": through.isoformat(),
+            "downloadOnly": download_only,
             **fields,
         }
         atomic_json(status_file, record)
         LOG.info("%s", json.dumps(record))
 
     with lock(root / "supervisor.lock", blocking=False):
-        all_days = []
+        scheduled = list(batches(through))
+        all_days = [day for batch in scheduled for day in batch]
+        pending_batches = deque((batch, False) for batch in scheduled)
         analysis_errors = []
 
         def fit_after_download(batch):
-            if batch[0] < VALIDATION:
+            if not download_only and batch[0] < VALIDATION:
                 try:
                     fit_prefix(data)
                 except (OSError, subprocess.CalledProcessError) as exc:
@@ -169,10 +173,10 @@ def run(data, through, hours):
                     )
                     LOG.error("Analysis held; continuing archive acquisition: %s", exc)
 
-        for days in batches(through):
-            all_days.extend(days)
+        while pending_batches:
+            days, revisiting = pending_batches.popleft()
             delay = 30
-            max_gets = 4
+            start_gets = 4
             planned = False
             planning_days = days
             retry_unresolved_only = False
@@ -217,7 +221,12 @@ def run(data, through, hours):
                                 )
                                 probe = None
                             stage = "collecting verified pairs"
-                            report(stage, days, concurrentGETs=max_gets)
+                            report(
+                                stage,
+                                days,
+                                startingConcurrentGETs=start_gets,
+                                maxConcurrentGETs=4,
+                            )
                             progress = (
                                 collect_days(
                                     root,
@@ -225,7 +234,8 @@ def run(data, through, hours):
                                     ledger,
                                     s3,
                                     4,
-                                    max_gets=max_gets,
+                                    max_gets=4,
+                                    start_gets=start_gets,
                                 )
                                 if collect_scope
                                 else {}
@@ -247,7 +257,7 @@ def run(data, through, hours):
                         retry_after = 0
                         if isinstance(exc, ArchiveGetUnavailable):
                             probe = {"bucket": exc.bucket, "key": exc.key}
-                            max_gets = 1
+                            start_gets = 1
                             details.update(
                                 probe, transport=exc.details, progress=exc.progress
                             )
@@ -276,6 +286,21 @@ def run(data, through, hours):
                         if not transient(exc):
                             report("stopped", days, reason=str(exc)[:500], **details)
                             raise
+                        if (
+                            download_only
+                            and not revisiting
+                            and pending_batches
+                            and isinstance(exc, ArchiveGetUnavailable)
+                            and getattr(exc, "isolated", False)
+                            and not retry_after
+                        ):
+                            pending_batches.append((days, True))
+                            report(
+                                "returning to isolated object after other batches",
+                                days,
+                                **details,
+                            )
+                            break
                         remaining = deadline - time.monotonic()
                         if remaining <= 0:
                             report("upstream still unavailable", days, **details)
@@ -303,7 +328,9 @@ def run(data, through, hours):
             missingObjects=sum(len(p["unavailable"]) for p in plans),
             unresolvedObjects=sum(len(p.get("unresolved", [])) for p in plans),
             analysisErrors=analysis_errors,
-            validation=validate_if_ready(data),
+            validation="Deferred in download-only mode"
+            if download_only
+            else validate_if_ready(data),
         )
     return 0
 
@@ -316,9 +343,16 @@ if __name__ == "__main__":
     parser.add_argument("data", type=Path)
     parser.add_argument("--through", type=date.fromisoformat, required=True)
     parser.add_argument("--retry-hours", type=float, default=12)
+    parser.add_argument(
+        "--download-only",
+        action="store_true",
+        help="Acquire and verify data without fitting or replaying a strategy",
+    )
     args = parser.parse_args()
     if not AFTER_WEEK <= args.through <= min(LAST, datetime.now(UTC).date() - ONE):
         parser.error("Select elapsed complete UTC dates inside the study")
     if not 0 < args.retry_hours <= 12:
         parser.error("Select a bounded retry horizon up to 12 hours")
-    raise SystemExit(run(args.data.resolve(), args.through, args.retry_hours))
+    raise SystemExit(
+        run(args.data.resolve(), args.through, args.retry_hours, args.download_only)
+    )

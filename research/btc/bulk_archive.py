@@ -146,6 +146,8 @@ class ArchiveGetUnavailable(RuntimeError):
         self.bucket = row["bucket"]
         self.key = row["key"]
         self.details = details
+        self.isolated = False
+        self.deferred_count = 0
         self.retry_after_seconds = details.get("retry_after_seconds")
         self.progress = {
             "verified_objects": 0,
@@ -644,20 +646,138 @@ def groups(plan):
             yield sorted(group, key=lambda r: r["kind"])
 
 
-def collect_days(root, days, ledger, s3, workers, max_gets=4):
+def acquire_wave(batch, ledger, s3, cpu, io, slots_count, progress, probe_key):
+    """Transfer a bounded wave and normalize downloaded groups while other GETs finish."""
+    from concurrent.futures import as_completed
+
+    from botocore.exceptions import BotoCoreError, ClientError
+
+    pause, counter_lock = threading.Event(), threading.Lock()
+    slots = threading.Semaphore(slots_count)
+    transient = []
+    skipped = []
+    fresh_groups = failures = 0
+
+    def transfer(folder, group):
+        # Probe the affected bucket before spending on the group's other source.
+        priority = (
+            sorted(group, key=lambda r: r["key"] != probe_key) if probe_key else group
+        )
+        fresh = False
+        for row in priority:
+            with slots:
+                if pause.is_set():
+                    return None
+                try:
+                    fetched = fetch(folder, row, ledger, s3)
+                except ArchiveGetUnavailable as exc:
+                    with counter_lock:
+                        transient.append(exc)
+                        pause.set()
+                    raise
+                except (BotoCoreError, ClientError):
+                    pause.set()
+                    raise
+                except ValueError as exc:
+                    if "budget" in str(exc).lower():
+                        pause.set()
+                    raise
+                if fetched:
+                    fresh = True
+                    with counter_lock:
+                        progress["verified_objects"] += 1
+                        progress["verified_bytes"] += row["bytes"]
+        return fresh
+
+    downloads = {
+        io.submit(transfer, folder, group): i for i, (folder, group) in enumerate(batch)
+    }
+    parses = {}
+    for future in as_completed(downloads):
+        i = downloads[future]
+        folder, group = batch[i]
+        try:
+            fresh = future.result()
+        except ArchiveGetUnavailable as exc:
+            atomic_json(
+                folder / f"{group[0]['hour']}.{group[0]['kind']}.error.json",
+                {"stage": "GET", "bucket": exc.bucket, "key": exc.key, **exc.details},
+            )
+            continue
+        except (OSError, ValueError) as exc:
+            if "budget" in str(exc).lower():
+                raise
+            atomic_json(
+                folder / f"{group[0]['hour']}.{group[0]['kind']}.error.json",
+                {"stage": "GET", **error_details(exc)},
+            )
+            failures += 1
+            continue
+        if fresh is None:
+            skipped.append(i)
+        else:
+            parses[cpu.submit(normalize_group, folder, group)] = (folder, group, fresh)
+
+    for future in as_completed(parses):
+        folder, group, fresh = parses[future]
+        error_file = folder / f"{group[0]['hour']}.{group[0]['kind']}.error.json"
+        try:
+            future.result()
+            progress["completed_groups"] += 1
+            fresh_groups += int(fresh)
+            error_file.unlink(missing_ok=True)
+        except (
+            OSError,
+            ValueError,
+            KeyError,
+            TypeError,
+            ArithmeticError,
+            RuntimeError,
+        ) as exc:
+            atomic_json(error_file, {"stage": "normalize", "error": str(exc)})
+            failures += 1
+    return transient, [batch[i] for i in sorted(skipped)], fresh_groups, failures
+
+
+def alternate_group(queue, failure, ledger, s3):
+    """One inexpensive HEAD against a different priced key in the failing bucket."""
+    for entry in queue:
+        folder, group = entry
+        for row in group:
+            if row["bucket"] != failure.bucket or row["key"] == failure.key:
+                continue
+            if raw_paths(folder, row)[1].exists():
+                continue  # This group would not test a fresh GET to the failed route.
+            check = head(row, ledger, s3, attempts=1)
+            if check.get("status"):
+                delay = check.get("details", {}).get("retry_after_seconds")
+                if delay:
+                    failure.retry_after_seconds = max(
+                        failure.retry_after_seconds or 0, delay
+                    )
+                return None
+            if check["bytes"] != row["bytes"] or check["etag"] != row["etag"]:
+                raise ValueError(
+                    "Alternate object changed since the measured plan: " + row["key"]
+                )
+            return entry, row["key"]
+    return None
+
+
+def collect_days(root, days, ledger, s3, workers, max_gets=4, start_gets=None):
     import multiprocessing
     import shutil
-    from concurrent.futures import ProcessPoolExecutor, as_completed
+    from collections import deque
+    from concurrent.futures import ProcessPoolExecutor
 
-    if workers < 1 or not 1 <= max_gets <= 4:
+    active = max_gets if start_gets is None else start_gets
+    if workers < 1 or not 1 <= active <= max_gets <= 4:
         raise ValueError(
-            "Expected at least one normalization worker and 1–4 concurrent GETs"
+            "Expected at least one normalization worker and 1 <= start_gets <= max_gets <= 4"
         )
+
     progress = {"verified_objects": 0, "verified_bytes": 0, "completed_groups": 0}
-    progress_lock = threading.Lock()
-    transient_failure = None
-    # Verify all metadata and compute remaining transfers BEFORE the first GET.
-    remaining = []
+    remaining = deque()
     projected = 0
     for day in days:
         folder = day_dir(root, day)
@@ -670,126 +790,93 @@ def collect_days(root, days, ledger, s3, workers, max_gets=4):
                     projected += estimated_cost(row["bucket"], row["bytes"])
             remaining.append((folder, group))
     used = ledger.require(projected)
+    total = len(remaining)
     print(
         json.dumps(
             {
-                "remaining_groups": len(remaining),
+                "remaining_groups": total,
                 "projected_GET_usd": projected,
                 "gross_with_reservations": used + projected,
             }
         ),
         flush=True,
     )
-    failures = 0
-    # Independent fetch and process pools overlap network transfers with parsing.
-    # Keep at most 3 times the worker count of hourly raw pairs in flight.
+
+    deferred = []
+    probe_key = None
+    successful_streak = failures = waves = 0
     with (
         ProcessPoolExecutor(
             max_workers=workers, mp_context=multiprocessing.get_context("spawn")
         ) as cpu,
         ThreadPoolExecutor(max_workers=workers * 3) as io,
     ):
-        # Start every resumed run with a single group. A failing destination
-        # therefore reserves at most one GET for the failing source on startup.
-        paused = threading.Event()
-        slots = threading.Semaphore(max_gets)
-        starts = (
-            ([0] + list(range(1, len(remaining), workers * 3))) if remaining else []
-        )
-        for i in starts:
-            batch = remaining[i : i + (1 if i == 0 else workers * 3)]
+        while remaining:
+            single_probe = probe_key is not None or not progress["verified_objects"]
+            window = active if active < max_gets else workers * 3
+            count = min(len(remaining), 1 if single_probe else window)
+            batch = [remaining.popleft() for _ in range(count)]
             pending_bytes = sum(r["bytes"] for _, group in batch for r in group)
             if shutil.disk_usage(root).free < 2 * pending_bytes + 2 * 1024**3:
                 raise RuntimeError("Insufficient free space for next bounded batch")
-
-            def get_group(folder, group):
-                nonlocal transient_failure
-                for row in group:
-                    with slots:
-                        if paused.is_set():
-                            return False
-                        try:
-                            downloaded = fetch(folder, row, ledger, s3)
-                            if downloaded:
-                                with progress_lock:
-                                    progress["verified_objects"] += 1
-                                    progress["verified_bytes"] += row["bytes"]
-                        except ArchiveGetUnavailable as exc:
-                            with progress_lock:
-                                if transient_failure is None:
-                                    transient_failure = exc
-                                paused.set()
-                            raise
-                        except Exception as exc:
-                            if retryable(exc) or getattr(exc, "response", {}).get(
-                                "ResponseMetadata", {}
-                            ).get("HTTPStatusCode") in (401, 403):
-                                paused.set()
-                            raise
-                return True
-
-            downloads = {
-                io.submit(get_group, folder, g): (folder, g) for folder, g in batch
-            }
-            parses = {}
-            for fut in as_completed(downloads):
-                folder, g = downloads[fut]
-                try:
-                    if not fut.result():
-                        continue
-                except Exception as exc:
-                    if not retryable(exc):
-                        from botocore.exceptions import BotoCoreError, ClientError
-
-                        if (
-                            isinstance(exc, (BotoCoreError, ClientError))
-                            or "budget" in str(exc).lower()
-                        ):
-                            raise
-                    detail = (
-                        {"bucket": exc.bucket, "key": exc.key, **exc.details}
-                        if isinstance(exc, ArchiveGetUnavailable)
-                        else error_details(exc)
+            errors, skipped, fresh, bad = acquire_wave(
+                batch,
+                ledger,
+                s3,
+                cpu,
+                io,
+                1 if single_probe else active,
+                progress,
+                probe_key,
+            )
+            remaining.extendleft(reversed(skipped))
+            failures += bad
+            if errors:
+                failure = errors[0]
+                failure.progress = progress.copy()
+                # Respect server-imposed throttles. Multiple simultaneous failures
+                # or a failed alternate GET are sufficient reason to pause the route.
+                if (
+                    probe_key
+                    or len(errors) > 1
+                    or failure.retry_after_seconds is not None
+                    or failure.details.get("status") == 429
+                    or failure.details.get("code") in ("SlowDown", "Throttling")
+                ):
+                    raise failure
+                alt = alternate_group(remaining, failure, ledger, s3)
+                if alt is None:
+                    raise failure
+                entry, probe_key = alt
+                remaining.remove(entry)
+                remaining.appendleft(entry)
+                deferred.append(failure)
+                active = 1
+                successful_streak = 0
+            else:
+                # A fresh GET of the alternate source ran first, if requested.
+                probe_key = None
+                successful_streak = 0 if bad else successful_streak + fresh
+                if active < max_gets and successful_streak >= 4:
+                    active = max_gets
+                    print(
+                        json.dumps(
+                            {
+                                "concurrent_GETs": active,
+                                "verified_group_streak": successful_streak,
+                            }
+                        ),
+                        flush=True,
                     )
-                    atomic_json(
-                        folder / f"{g[0]['hour']}.{g[0]['kind']}.error.json",
-                        {"stage": "GET", **detail},
-                    )
-                    failures += 1
-                    continue
-                if len(g) == 2 or g[0]["kind"] == "context":
-                    parses[cpu.submit(normalize_group, folder, g)] = (folder, g)
-            for fut in as_completed(parses):
-                folder, g = parses[fut]
-                errfile = folder / f"{g[0]['hour']}.{g[0]['kind']}.error.json"
-                try:
-                    fut.result()
-                    progress["completed_groups"] += 1
-                    errfile.unlink(missing_ok=True)
-                except (
-                    OSError,
-                    ValueError,
-                    KeyError,
-                    TypeError,
-                    ArithmeticError,
-                    RuntimeError,
-                ) as exc:
-                    atomic_json(errfile, {"stage": "normalize", "error": str(exc)})
-                    failures += 1
-            if transient_failure is not None:
-                transient_failure.progress = progress.copy()
-                raise transient_failure
-            if (
-                i == 0
-                or (i // (workers * 3)) % 10 == 0
-                or i + len(batch) == len(remaining)
-            ):
+            waves += 1
+            if waves == 1 or waves % 10 == 0 or not remaining:
                 print(
                     json.dumps(
                         {
-                            "processed_groups": i + len(batch),
-                            "total": len(remaining),
-                            "failures": failures,
+                            "completed_groups": progress["completed_groups"],
+                            "total": total,
+                            "normalization_failures": failures,
+                            "deferred_GETs": len(deferred),
                             "last_partition_day": batch[-1][0].name,
                         }
                     ),
@@ -799,6 +886,15 @@ def collect_days(root, days, ledger, s3, workers, max_gets=4):
         raise RuntimeError(
             f"{failures} groups need diagnosis; other groups were processed"
         )
+    if deferred:
+        # Every deferred error had a distinct same-bucket alternate GET succeed,
+        # and every other priced group has now been attempted. Subsequent invocations
+        # validate the receipts and only issue GETs for the outstanding objects.
+        failure = deferred[0]
+        failure.progress = progress.copy()
+        failure.isolated = True
+        failure.deferred_count = len(deferred)
+        raise failure
     return progress
 
 
@@ -815,6 +911,7 @@ def main():
     )
     parser.add_argument("--workers", type=int, default=None)
     parser.add_argument("--max-gets", type=int, choices=range(1, 5), default=4)
+    parser.add_argument("--start-gets", type=int, choices=range(1, 5))
     args = parser.parse_args()
     if (
         not AFTER_WEEK
@@ -835,7 +932,15 @@ def main():
         if args.mode == "plan":
             plan_days(args.root, days, ledger, s3, args.workers or 12)
         else:
-            collect_days(args.root, days, ledger, s3, args.workers or 4, args.max_gets)
+            collect_days(
+                args.root,
+                days,
+                ledger,
+                s3,
+                args.workers or 4,
+                args.max_gets,
+                args.start_gets,
+            )
 
 
 if __name__ == "__main__":

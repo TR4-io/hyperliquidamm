@@ -1,0 +1,694 @@
+{
+  "start": 1768003200000,
+  "end": 1768176000000,
+  "capital": 10000,
+  "phase": "chronological training-only development",
+  "modelSha256": "3a423482009820e3f0fdb71e9d59539324b27f47ba4a91b552d3b7aa99039fd4",
+  "trainingCheckpointSourceSha256": "b0f2d1104178cccdbd9aca8d4d7ecf4f1bfb661181c5f4fb7b2700feb92ee31f",
+  "lastTrainingSource": 1767924000000,
+  "replayManifestSha256": "2f59ee67d04d89bb1489cbcb23ff78078759c330af1d1e38fb9d56b7c7fe4915",
+  "fundingSha256": "a293060e0915a88e68b7ccdef97b2fc63f0f891a799a69d12446e60ea71fd01f",
+  "fundingRows": 48,
+  "fundingPrices": "minute-sampled official context oracle proxy",
+  "codeSha256": {
+    "training-followup.cjs": "f8a371f44bf5b99442ff8c8d0de928bcfbf76afcbe8cf74964371200030e0386",
+    "btc-account-replay.cjs": "3ec1d723316f8754d3d67a02d91b1bb59b2342faac80a79a4d7996c44a964475",
+    "btc-quote-model.cjs": "c331c349cb9361dbb63a1514f8f9208fa0554ec8f147cd018dfd4436b6e471f2",
+    "first-week.cjs": "473b4a05bd09405d032d60beeb825531f37a050e47c41b9062c1ea6d567f1e42",
+    "annual.cjs": "e0c3c7f8c6b0a9cb607332403a384a0192ecc1cfd3bcdf1d95b64b5a3db38192",
+    "replay-coverage.cjs": "5ca31142409fc3ad6f4cd4ae6fa52febef1716f66283e78da53cabc8050d74f4",
+    "prediction-audit.cjs": "575844cf28f37628707e720fa4196ca565e82ffe8d57184039c3148947a991b9",
+    "coverage-audit.cjs": "faffb761a7f5d5258dd261b07c78859f62d6843bdcc6f201b2aca87df0e58857"
+  },
+  "cashEquivalentFromFlat": {
+    "states": 36,
+    "activeStates": [],
+    "cashEquivalentFromFlat": true
+  },
+  "promotionEligible": false,
+  "policies": {
+    "model": [
+      "model",
+      {}
+    ],
+    "touch": [
+      "touch",
+      {}
+    ],
+    "touch15": [
+      "touch15",
+      {}
+    ],
+    "wide3": [
+      "wide3",
+      {}
+    ],
+    "cash": [
+      "cash",
+      {}
+    ],
+    "doubleSize": [
+      "model",
+      {
+        "sizeFactor": 2
+      }
+    ],
+    "through1bp": [
+      "model",
+      {
+        "extraThrough": 1
+      }
+    ],
+    "delay1500": [
+      "model",
+      {
+        "delay": 1500
+      }
+    ],
+    "feesPlus1bp": [
+      "model",
+      {
+        "maker": 2.5,
+        "taker": 5.5
+      }
+    ]
+  },
+  "results": {
+    "model": {
+      "policy": "model",
+      "start": 1768003200000,
+      "end": 1768176000000,
+      "initialEquity": 10000,
+      "finalEquity": 10000,
+      "net": 0,
+      "maxDD": 0,
+      "haltTime": null,
+      "peakAbsInventory": 0,
+      "eligible": 5532,
+      "submitted": 0,
+      "postOnlyRejected": 0,
+      "buys": 0,
+      "sells": 0,
+      "mean30sGrossBps": null,
+      "mean30sAfterMakerBps": null,
+      "diagnosticCoverage": {
+        "missingIntervalMs": 5089384,
+        "missingMarkouts": 0,
+        "observationsComplete": false
+      },
+      "inventoryPnl": 0,
+      "executionPnl": 0,
+      "makerFees": 0,
+      "takerFees": 0,
+      "fundingPnl": 0,
+      "fundingCoverage": {
+        "complete": true,
+        "missingHours": [],
+        "missingOraclePrices": 0
+      },
+      "daily": [
+        {
+          "day": "2026-01-10",
+          "net": 0,
+          "closeEquity": 10000,
+          "position": 0
+        },
+        {
+          "day": "2026-01-11",
+          "net": 0,
+          "closeEquity": 10000,
+          "position": 0
+        }
+      ],
+      "fills": []
+    },
+    "touch": {
+      "status": "unobservable",
+      "cause": "UNOBSERVABLE_ACCOUNT",
+      "reason": "Account exposure overlaps missing observations at 2026-01-10T01:00:59.368Z",
+      "time": 1768006859368,
+      "gap": {
+        "start": 1768006859368,
+        "end": 1768006874208,
+        "sources": [
+          "books"
+        ]
+      },
+      "position": -0.002,
+      "liveSides": [
+        1
+      ],
+      "pendingSides": []
+    },
+    "touch15": {
+      "status": "unobservable",
+      "cause": "UNOBSERVABLE_ACCOUNT",
+      "reason": "Account exposure overlaps missing observations at 2026-01-10T01:00:59.368Z",
+      "time": 1768006859368,
+      "gap": {
+        "start": 1768006859368,
+        "end": 1768006874208,
+        "sources": [
+          "books"
+        ]
+      },
+      "position": -0.004,
+      "liveSides": [],
+      "pendingSides": []
+    },
+    "wide3": {
+      "status": "unobservable",
+      "cause": "UNOBSERVABLE_ACCOUNT",
+      "reason": "Account exposure overlaps missing observations at 2026-01-10T01:00:59.368Z",
+      "time": 1768006859368,
+      "gap": {
+        "start": 1768006859368,
+        "end": 1768006874208,
+        "sources": [
+          "books"
+        ]
+      },
+      "position": 0.001,
+      "liveSides": [
+        1,
+        -1
+      ],
+      "pendingSides": []
+    },
+    "cash": {
+      "policy": "cash",
+      "start": 1768003200000,
+      "end": 1768176000000,
+      "initialEquity": 10000,
+      "finalEquity": 10000,
+      "net": 0,
+      "maxDD": 0,
+      "haltTime": null,
+      "peakAbsInventory": 0,
+      "eligible": 5532,
+      "submitted": 0,
+      "postOnlyRejected": 0,
+      "buys": 0,
+      "sells": 0,
+      "mean30sGrossBps": null,
+      "mean30sAfterMakerBps": null,
+      "diagnosticCoverage": {
+        "missingIntervalMs": 5089384,
+        "missingMarkouts": 0,
+        "observationsComplete": false
+      },
+      "inventoryPnl": 0,
+      "executionPnl": 0,
+      "makerFees": 0,
+      "takerFees": 0,
+      "fundingPnl": 0,
+      "fundingCoverage": {
+        "complete": true,
+        "missingHours": [],
+        "missingOraclePrices": 0
+      },
+      "daily": [
+        {
+          "day": "2026-01-10",
+          "net": 0,
+          "closeEquity": 10000,
+          "position": 0
+        },
+        {
+          "day": "2026-01-11",
+          "net": 0,
+          "closeEquity": 10000,
+          "position": 0
+        }
+      ],
+      "fills": []
+    },
+    "doubleSize": {
+      "policy": "model",
+      "start": 1768003200000,
+      "end": 1768176000000,
+      "initialEquity": 10000,
+      "finalEquity": 10000,
+      "net": 0,
+      "maxDD": 0,
+      "haltTime": null,
+      "peakAbsInventory": 0,
+      "eligible": 5532,
+      "submitted": 0,
+      "postOnlyRejected": 0,
+      "buys": 0,
+      "sells": 0,
+      "mean30sGrossBps": null,
+      "mean30sAfterMakerBps": null,
+      "diagnosticCoverage": {
+        "missingIntervalMs": 5089384,
+        "missingMarkouts": 0,
+        "observationsComplete": false
+      },
+      "inventoryPnl": 0,
+      "executionPnl": 0,
+      "makerFees": 0,
+      "takerFees": 0,
+      "fundingPnl": 0,
+      "fundingCoverage": {
+        "complete": true,
+        "missingHours": [],
+        "missingOraclePrices": 0
+      },
+      "daily": [
+        {
+          "day": "2026-01-10",
+          "net": 0,
+          "closeEquity": 10000,
+          "position": 0
+        },
+        {
+          "day": "2026-01-11",
+          "net": 0,
+          "closeEquity": 10000,
+          "position": 0
+        }
+      ],
+      "fills": []
+    },
+    "through1bp": {
+      "policy": "model",
+      "start": 1768003200000,
+      "end": 1768176000000,
+      "initialEquity": 10000,
+      "finalEquity": 10000,
+      "net": 0,
+      "maxDD": 0,
+      "haltTime": null,
+      "peakAbsInventory": 0,
+      "eligible": 5532,
+      "submitted": 0,
+      "postOnlyRejected": 0,
+      "buys": 0,
+      "sells": 0,
+      "mean30sGrossBps": null,
+      "mean30sAfterMakerBps": null,
+      "diagnosticCoverage": {
+        "missingIntervalMs": 5089384,
+        "missingMarkouts": 0,
+        "observationsComplete": false
+      },
+      "inventoryPnl": 0,
+      "executionPnl": 0,
+      "makerFees": 0,
+      "takerFees": 0,
+      "fundingPnl": 0,
+      "fundingCoverage": {
+        "complete": true,
+        "missingHours": [],
+        "missingOraclePrices": 0
+      },
+      "daily": [
+        {
+          "day": "2026-01-10",
+          "net": 0,
+          "closeEquity": 10000,
+          "position": 0
+        },
+        {
+          "day": "2026-01-11",
+          "net": 0,
+          "closeEquity": 10000,
+          "position": 0
+        }
+      ],
+      "fills": []
+    },
+    "delay1500": {
+      "policy": "model",
+      "start": 1768003200000,
+      "end": 1768176000000,
+      "initialEquity": 10000,
+      "finalEquity": 10000,
+      "net": 0,
+      "maxDD": 0,
+      "haltTime": null,
+      "peakAbsInventory": 0,
+      "eligible": 5532,
+      "submitted": 0,
+      "postOnlyRejected": 0,
+      "buys": 0,
+      "sells": 0,
+      "mean30sGrossBps": null,
+      "mean30sAfterMakerBps": null,
+      "diagnosticCoverage": {
+        "missingIntervalMs": 5089384,
+        "missingMarkouts": 0,
+        "observationsComplete": false
+      },
+      "inventoryPnl": 0,
+      "executionPnl": 0,
+      "makerFees": 0,
+      "takerFees": 0,
+      "fundingPnl": 0,
+      "fundingCoverage": {
+        "complete": true,
+        "missingHours": [],
+        "missingOraclePrices": 0
+      },
+      "daily": [
+        {
+          "day": "2026-01-10",
+          "net": 0,
+          "closeEquity": 10000,
+          "position": 0
+        },
+        {
+          "day": "2026-01-11",
+          "net": 0,
+          "closeEquity": 10000,
+          "position": 0
+        }
+      ],
+      "fills": []
+    },
+    "feesPlus1bp": {
+      "policy": "model",
+      "start": 1768003200000,
+      "end": 1768176000000,
+      "initialEquity": 10000,
+      "finalEquity": 10000,
+      "net": 0,
+      "maxDD": 0,
+      "haltTime": null,
+      "peakAbsInventory": 0,
+      "eligible": 5532,
+      "submitted": 0,
+      "postOnlyRejected": 0,
+      "buys": 0,
+      "sells": 0,
+      "mean30sGrossBps": null,
+      "mean30sAfterMakerBps": null,
+      "diagnosticCoverage": {
+        "missingIntervalMs": 5089384,
+        "missingMarkouts": 0,
+        "observationsComplete": false
+      },
+      "inventoryPnl": 0,
+      "executionPnl": 0,
+      "makerFees": 0,
+      "takerFees": 0,
+      "fundingPnl": 0,
+      "fundingCoverage": {
+        "complete": true,
+        "missingHours": [],
+        "missingOraclePrices": 0
+      },
+      "daily": [
+        {
+          "day": "2026-01-10",
+          "net": 0,
+          "closeEquity": 10000,
+          "position": 0
+        },
+        {
+          "day": "2026-01-11",
+          "net": 0,
+          "closeEquity": 10000,
+          "position": 0
+        }
+      ],
+      "fills": []
+    }
+  },
+  "predictions": {
+    "start": 1768003200000,
+    "end": 1768176000000,
+    "source": "Covered UTC decision minutes in the held-back training interval",
+    "excludedMinutes": {
+      "feature": 112,
+      "futureBooks": 53,
+      "venueFills": 0
+    },
+    "pooled": {
+      "opportunities": 16278,
+      "fills": 1181,
+      "unsupported": 0,
+      "grossMarkoutBps": -1.233189904061776,
+      "afterMakerMarkoutBps": -2.733189904061776,
+      "predictions": {
+        "fitted": {
+          "scored": 16278,
+          "scoredFills": 1181,
+          "meanPredictedFillProbability": 0.1841306594397346,
+          "actualScoredFillProbability": 0.07255191055412213,
+          "brier": 0.07661792816865219,
+          "markoutRmseBps": 2.6719776569391294,
+          "markoutMaeBps": 1.8498551940519916,
+          "markoutForecastMinusActualBps": -0.2780340616042685
+        },
+        "sideDepth": {
+          "scored": 16278,
+          "scoredFills": 1181,
+          "meanPredictedFillProbability": 0.23669154228856426,
+          "actualScoredFillProbability": 0.07255191055412213,
+          "brier": 0.09591898667069819,
+          "markoutRmseBps": 2.6428515336347544,
+          "markoutMaeBps": 1.81450107607411,
+          "markoutForecastMinusActualBps": -0.24436129302200388
+        }
+      }
+    },
+    "bySideDepth": {
+      "1/1.5": {
+        "opportunities": 2713,
+        "fills": 363,
+        "unsupported": 0,
+        "grossMarkoutBps": -1.4787831296041662,
+        "afterMakerMarkoutBps": -2.9787831296041665,
+        "predictions": {
+          "fitted": {
+            "scored": 2713,
+            "scoredFills": 363,
+            "meanPredictedFillProbability": 0.3172566905251412,
+            "actualScoredFillProbability": 0.13380022115739035,
+            "brier": 0.14233431805212005,
+            "markoutRmseBps": 2.3100623822843183,
+            "markoutMaeBps": 1.5820777939368074,
+            "markoutForecastMinusActualBps": -0.024629614165035132
+          },
+          "sideDepth": {
+            "scored": 2713,
+            "scoredFills": 363,
+            "meanPredictedFillProbability": 0.3736567164179189,
+            "actualScoredFillProbability": 0.13380022115739035,
+            "brier": 0.17342886029427979,
+            "markoutRmseBps": 2.2877559747620406,
+            "markoutMaeBps": 1.5613435808318137,
+            "markoutForecastMinusActualBps": -0.0029988353220434757
+          }
+        }
+      },
+      "1/3": {
+        "opportunities": 2713,
+        "fills": 176,
+        "unsupported": 0,
+        "grossMarkoutBps": -1.4261249689693034,
+        "afterMakerMarkoutBps": -2.9261249689693036,
+        "predictions": {
+          "fitted": {
+            "scored": 2713,
+            "scoredFills": 176,
+            "meanPredictedFillProbability": 0.18038760573710957,
+            "actualScoredFillProbability": 0.0648728345005529,
+            "brier": 0.0711071289182652,
+            "markoutRmseBps": 3.033715825640916,
+            "markoutMaeBps": 2.0823510801651945,
+            "markoutForecastMinusActualBps": -0.04519442319199846
+          },
+          "sideDepth": {
+            "scored": 2713,
+            "scoredFills": 176,
+            "meanPredictedFillProbability": 0.23171641791043673,
+            "actualScoredFillProbability": 0.0648728345005529,
+            "brier": 0.08850113116946981,
+            "markoutRmseBps": 2.9886970278575786,
+            "markoutMaeBps": 2.070560828951332,
+            "markoutForecastMinusActualBps": -0.073859486157082
+          }
+        }
+      },
+      "1/6": {
+        "opportunities": 2713,
+        "fills": 52,
+        "unsupported": 0,
+        "grossMarkoutBps": -0.8777819455664468,
+        "afterMakerMarkoutBps": -2.377781945566447,
+        "predictions": {
+          "fitted": {
+            "scored": 2713,
+            "scoredFills": 52,
+            "meanPredictedFillProbability": 0.05983242207542432,
+            "actualScoredFillProbability": 0.01916697382970881,
+            "brier": 0.019545133809274202,
+            "markoutRmseBps": 3.282529175508174,
+            "markoutMaeBps": 2.7100936114585363,
+            "markoutForecastMinusActualBps": -0.36403381783094235
+          },
+          "sideDepth": {
+            "scored": 2713,
+            "scoredFills": 52,
+            "meanPredictedFillProbability": 0.09455223880596587,
+            "actualScoredFillProbability": 0.01916697382970881,
+            "brier": 0.024482539119461407,
+            "markoutRmseBps": 3.2755952759884654,
+            "markoutMaeBps": 2.6975763025147756,
+            "markoutForecastMinusActualBps": -0.39780711449981826
+          }
+        }
+      },
+      "-1/1.5": {
+        "opportunities": 2713,
+        "fills": 394,
+        "unsupported": 0,
+        "grossMarkoutBps": -1.0683265559105484,
+        "afterMakerMarkoutBps": -2.5683265559105486,
+        "predictions": {
+          "fitted": {
+            "scored": 2713,
+            "scoredFills": 394,
+            "meanPredictedFillProbability": 0.30849847128443997,
+            "actualScoredFillProbability": 0.14522668632510136,
+            "brier": 0.1437345335190564,
+            "markoutRmseBps": 2.239585048832711,
+            "markoutMaeBps": 1.6203000695698777,
+            "markoutForecastMinusActualBps": -0.5008996257419773
+          },
+          "sideDepth": {
+            "scored": 2713,
+            "scoredFills": 394,
+            "meanPredictedFillProbability": 0.3808208955223627,
+            "actualScoredFillProbability": 0.14522668632510136,
+            "brier": 0.17964052731142957,
+            "markoutRmseBps": 2.2089726025530725,
+            "markoutMaeBps": 1.5686660852007979,
+            "markoutForecastMinusActualBps": -0.4592453421037899
+          }
+        }
+      },
+      "-1/3": {
+        "opportunities": 2713,
+        "fills": 154,
+        "unsupported": 0,
+        "grossMarkoutBps": -0.9796339679466959,
+        "afterMakerMarkoutBps": -2.479633967946696,
+        "predictions": {
+          "fitted": {
+            "scored": 2713,
+            "scoredFills": 154,
+            "meanPredictedFillProbability": 0.17720291197412372,
+            "actualScoredFillProbability": 0.05676373018798378,
+            "brier": 0.06619734205488388,
+            "markoutRmseBps": 3.3055956582305734,
+            "markoutMaeBps": 2.2105798827383834,
+            "markoutForecastMinusActualBps": -0.5082209936062665
+          },
+          "sideDepth": {
+            "scored": 2713,
+            "scoredFills": 154,
+            "meanPredictedFillProbability": 0.24029850746269538,
+            "actualScoredFillProbability": 0.05676373018798378,
+            "brier": 0.08722662359240568,
+            "markoutRmseBps": 3.2727313176832102,
+            "markoutMaeBps": 2.159772662547847,
+            "markoutForecastMinusActualBps": -0.4327696075558205
+          }
+        }
+      },
+      "-1/6": {
+        "opportunities": 2713,
+        "fills": 42,
+        "unsupported": 0,
+        "grossMarkoutBps": -1.2183821630963596,
+        "afterMakerMarkoutBps": -2.7183821630963596,
+        "predictions": {
+          "fitted": {
+            "scored": 2713,
+            "scoredFills": 42,
+            "meanPredictedFillProbability": 0.06160585504212629,
+            "actualScoredFillProbability": 0.015481017323995577,
+            "brier": 0.016789112658325774,
+            "markoutRmseBps": 3.950710084159114,
+            "markoutMaeBps": 2.955679945694723,
+            "markoutForecastMinusActualBps": -0.4026955772864004
+          },
+          "sideDepth": {
+            "scored": 2713,
+            "scoredFills": 42,
+            "meanPredictedFillProbability": 0.0991044776119438,
+            "actualScoredFillProbability": 0.015481017323995577,
+            "brier": 0.022234238537138858,
+            "markoutRmseBps": 3.924835590649246,
+            "markoutMaeBps": 2.876332137473532,
+            "markoutForecastMinusActualBps": -0.14827823730852993
+          }
+        }
+      }
+    },
+    "byUtcDay": {
+      "2026-01-10": {
+        "opportunities": 8166,
+        "fills": 390,
+        "unsupported": 0,
+        "grossMarkoutBps": -0.95380687973302,
+        "afterMakerMarkoutBps": -2.45380687973302,
+        "predictions": {
+          "fitted": {
+            "scored": 8166,
+            "scoredFills": 390,
+            "meanPredictedFillProbability": 0.17678053536382551,
+            "actualScoredFillProbability": 0.04775900073475386,
+            "brier": 0.06326221763701954,
+            "markoutRmseBps": 1.683383461849061,
+            "markoutMaeBps": 1.274862068400324,
+            "markoutForecastMinusActualBps": -0.5680706245831324
+          },
+          "sideDepth": {
+            "scored": 8166,
+            "scoredFills": 390,
+            "meanPredictedFillProbability": 0.23669154228857214,
+            "actualScoredFillProbability": 0.04775900073475386,
+            "brier": 0.08475340073678318,
+            "markoutRmseBps": 1.6579233349269908,
+            "markoutMaeBps": 1.2501295621668398,
+            "markoutForecastMinusActualBps": -0.5370214139973594
+          }
+        }
+      },
+      "2026-01-11": {
+        "opportunities": 8112,
+        "fills": 791,
+        "unsupported": 0,
+        "grossMarkoutBps": -1.3709388035411907,
+        "afterMakerMarkoutBps": -2.8709388035411907,
+        "predictions": {
+          "fitted": {
+            "scored": 8112,
+            "scoredFills": 791,
+            "meanPredictedFillProbability": 0.191529711856372,
+            "actualScoredFillProbability": 0.09750986193293885,
+            "brier": 0.09006254505737808,
+            "markoutRmseBps": 3.043413966195291,
+            "markoutMaeBps": 2.133353701010461,
+            "markoutForecastMinusActualBps": -0.13503246923795145
+          },
+          "sideDepth": {
+            "scored": 8112,
+            "scoredFills": 791,
+            "meanPredictedFillProbability": 0.236691542288572,
+            "actualScoredFillProbability": 0.09750986193293885,
+            "brier": 0.10715889972991141,
+            "markoutRmseBps": 3.0121732871609,
+            "markoutMaeBps": 2.0927626316036094,
+            "markoutForecastMinusActualBps": -0.10006616384325717
+          }
+        }
+      }
+    }
+  }
+}

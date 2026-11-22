@@ -86,3 +86,13 @@ The development lock can be created as soon as validation completes. It hashes t
 The worker runs `python research/btc/resume_archive.py data/btc --through 2026-11-21` with its existing AWS profile. It checks identity before each batch, prices the measured archive objects under the shared gross cap, and retries temporary upstream failures for up to 12 hours with backoff. The supervisor holds one process lock, checkpoints transfer status in `data/btc/annual/transfer-status.json`, invokes `fit-ready` on training batches, and runs a validation diagnostic when its inputs are complete. Credential, budget and integrity failures are reported separately. Cached packets and offline research remain usable after the AWS session expires.
 
 After a transient S3 GET failure, the supervisor retains the verified clients and the measured plan for that batch. It probes the failed object with a journaled HEAD before reserving another transfer, then resumes with one GET in flight while normalization remains parallel. A successful transfer shortens the next retry delay. The status file includes the failed stage, object key, available AWS request ID, gateway indicators, and verified progress. During sizing, the collector records confirmed 404s separately from temporary HEAD failures. It downloads measured pairs first, retries unresolved keys under the same budget, and probes one object before resuming parallel metadata requests after a widespread outage. A timeout leaves the missing keys in the status and plan files for the next run.
+
+## January 10–11 training replay
+
+The January 8 checkpoint predicted an 18.41% trade-through rate on 16,278 hypothetical quotes. The observed rate was 7.26%. The 1,181 qualifying observations averaged −2.73 bps after one maker fee at the 30-second mark. The simulated model submitted zero orders. A book gap encountered all three active benchmarks with open inventory, leaving their two-day P&L unknown. [Two-day result](evidence/rolling-replay-20260110-20260111.json)
+
+With the verified training packets and daily context proxies in the study data folder, the following command reproduces the result. The end date is exclusive. The runner checks that both training labels and training source packets finish before or at the replay start.
+
+```sh
+node research/btc/training-followup.cjs data/btc jan10-11-replay.json research/btc/evidence/development-model-through-2026-01-08.json 2026-01-10 2026-01-12
+```

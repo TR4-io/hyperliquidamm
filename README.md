@@ -29,4 +29,6 @@ git clone --depth 1 --single-branch --branch data-btc-training-20260107-20260109
 (cd btc-jan07-09 && sha256sum --quiet -c SHA256SUMS)
 ```
 
+January 10–11, 2026 UTC adds 48 hourly packets, 48 hourly BTC context samples, and 102 file checksums. [Browse January 10–11 on GitHub](https://github.com/TR4-io/hyperliquidamm/tree/data-btc-training-20260110-20260111)
+
 New date-bounded batches can be found in the [repository releases](https://github.com/TR4-io/hyperliquidamm/releases) or [data branches](https://github.com/TR4-io/hyperliquidamm/branches/all?query=data-btc).

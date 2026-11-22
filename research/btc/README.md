@@ -106,3 +106,10 @@ After market data collection, run the settlement collector for complete elapsed 
 python research/btc/study_settlements.py data/btc --start 2025-12-30 --through 2026-11-21 --estimate-only
 python research/btc/study_settlements.py data/btc --start 2025-12-30 --through 2026-11-21
 ```
+
+
+## BTC asset context coverage
+
+For newly downloaded daily asset-context archives, `context-series.json.gz` retains every observed BTC row and its public market fields before the venue-wide source is removed. The accompanying `context-series.manifest.json` records the source key, size, ETag, checksums, observation count, number of distinct UTC minutes, first and last observations, and largest observed gap. A minute with no observation stays empty. The hourly file contains the observations timestamped exactly on the hour.
+
+The first seven days also have BTC minute data from the original archive. January 6–11 were compacted before full-series retention was added, so those dates have the sampled hourly contexts. A missing full-series file on a legacy day does not invalidate the previously verified hourly packet. Development publication verifies that both context files come from the same source and that the hourly file matches the corresponding rows of the full series.

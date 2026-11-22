@@ -8,6 +8,7 @@ import argparse
 import gzip
 import hashlib
 import io
+import itertools
 import json
 import math
 import re
@@ -15,6 +16,7 @@ import subprocess
 import tarfile
 import tempfile
 import time as clock
+import zlib
 from datetime import UTC, date, datetime, time, timedelta
 from pathlib import Path
 
@@ -96,8 +98,71 @@ def verify_clock(clock, extra):
         )
 
 
+def unique_fields(pairs):
+    obj = {}
+    for key, value in pairs:
+        require(key not in obj, "Duplicate context field")
+        obj[key] = value
+    return obj
+
+
+def verify_context_rows(rows, meta, start, kind):
+    required = {"funding", "oracle_px", "mark_px"}
+    require(
+        isinstance(rows, list) and count(meta["rows"]) and meta["rows"] == len(rows),
+        "Invalid context row count",
+    )
+    times = []
+    fields = None
+    for row in rows:
+        require(isinstance(row, dict), "Invalid context row")
+        keys = set(row) - {"coin", "time"}
+        require(
+            required <= keys <= CONTEXT_FIELDS and (fields is None or fields == keys),
+            "Unexpected context schema",
+        )
+        fields = keys
+        t = row.get("time")
+        require(
+            row.get("coin") == "BTC"
+            and count(t)
+            and start <= t < start + 24 * HOUR
+            and (not times or t > times[-1]),
+            "Invalid context instrument or time",
+        )
+        for k in keys:
+            v = row[k]
+            require(
+                type(v) is str and ((v == "" and k not in required) or finite(v)),
+                "Invalid context value",
+            )
+        times.append(t)
+    if kind == "series":
+        expected = {
+            "first_ms": times[0] if times else None,
+            "last_ms": times[-1] if times else None,
+            "max_gap_ms": max((b - a for a, b in itertools.pairwise(times)), default=0),
+            "observed_minutes": len({(t - start) // 60000 for t in times}),
+            "expected_minutes": 1440,
+        }
+        coverage = meta.get("coverage")
+        require(
+            isinstance(coverage, dict)
+            and coverage == expected
+            and all(v is None or count(v) for v in coverage.values()),
+            "Context coverage mismatch",
+        )
+    else:
+        require(
+            all(t % HOUR == 0 for t in times),
+            "Hourly context includes a non-hourly timestamp",
+        )
+
+
 def verify_pair(packet, manifest, stamp, hour, context=False):
-    meta = json.loads(manifest)
+    linked_context = context in ("series", "series-hourly")
+    decoder = {"object_pairs_hook": unique_fields} if linked_context else {}
+    meta = json.loads(manifest, **decoder)
     start = int(
         datetime.combine(date.fromisoformat(stamp), time(), tzinfo=UTC).timestamp()
         * 1000
@@ -116,7 +181,14 @@ def verify_pair(packet, manifest, stamp, hour, context=False):
             "stale_books_skipped",
         }
     )
+    if context == "series":
+        expected.add("coverage")
     require(set(meta) == expected and meta["hour"] == t, "Unexpected packet manifest")
+    if linked_context:
+        require(
+            count(meta["hour"]) and count(meta["packet_bytes"]),
+            "Invalid context manifest numbers",
+        )
     require(
         meta["packet_bytes"] == len(packet) and meta["packet_sha256"] == digest(packet),
         "Packet does not match its source manifest",
@@ -147,7 +219,21 @@ def verify_pair(packet, manifest, stamp, hour, context=False):
         and all(re.fullmatch(r'"[0-9a-f]{32}(-[0-9]+)?"', x) for x in etags),
         "Invalid source ETag",
     )
-    obj = json.loads(gzip.decompress(packet))
+    if linked_context:
+        # The collector emits a single gzip member. Its public schema does not include
+        # arbitrary filename, comment or extra-header metadata.
+        require(packet[:4] == b"\x1f\x8b\x08\x00", "Unexpected context gzip header")
+        inflater = zlib.decompressobj(16 + zlib.MAX_WBITS)
+        decoded = inflater.decompress(packet)
+        require(
+            inflater.eof and not inflater.unused_data, "Unexpected context gzip member"
+        )
+    else:
+        decoded = gzip.decompress(packet)
+    obj = json.loads(decoded, **decoder)
+    if linked_context:
+        verify_context_rows(obj, meta, t, context)
+        return meta, obj
     if context:
         require(meta["rows"] == len(obj) == 24, "Incomplete hourly BTC context")
         for i, row in enumerate(obj):
@@ -205,7 +291,33 @@ def verify_pair(packet, manifest, stamp, hour, context=False):
     require(len(tids) == len(obj["trades"]), "Duplicate trade ID")
 
 
+def optional_series(folder, stamp, hourly_packet, hourly_manifest):
+    series = folder / "context-series.json.gz"
+    record = folder / "context-series.manifest.json"
+    require(
+        not series.is_symlink() and not record.is_symlink(),
+        "Linked context sidecar path",
+    )
+    require(series.exists() == record.exists(), "Orphan context series")
+    if not series.exists():
+        verify_pair(hourly_packet, hourly_manifest, stamp, 0, True)
+        return []
+    data, manifest = series.read_bytes(), record.read_bytes()
+    sm, rows = verify_pair(data, manifest, stamp, 0, "series")
+    hm, samples = verify_pair(hourly_packet, hourly_manifest, stamp, 0, "series-hourly")
+    require(
+        sm["sources"] == hm["sources"] and sm["origin"] == hm["origin"],
+        "Context series source mismatch",
+    )
+    require(
+        samples == [r for r in rows if r["time"] % HOUR == 0],
+        "Context hourly subset mismatch",
+    )
+    return [(series.name, data), (record.name, manifest)]
+
+
 def pack_day(root, out, day):
+    require(FIRST_ANNUAL <= day < FINAL, "Only development days may be packaged")
     stamp = day.strftime("%Y%m%d")
     split = "training" if day < VALIDATION else "validation"
     relative = Path("data/btc/annual", split, stamp)
@@ -223,14 +335,12 @@ def pack_day(root, out, day):
             for packet_name, manifest_name, hour in paths:
                 packet = (folder / packet_name).read_bytes()
                 manifest = (folder / manifest_name).read_bytes()
-                verify_pair(
-                    packet,
-                    manifest,
-                    stamp,
-                    hour,
-                    packet_name == "context-samples.json.gz",
-                )
-                for name, data in [(packet_name, packet), (manifest_name, manifest)]:
+                members = [(packet_name, packet), (manifest_name, manifest)]
+                if packet_name == "context-samples.json.gz":
+                    members.extend(optional_series(folder, stamp, packet, manifest))
+                else:
+                    verify_pair(packet, manifest, stamp, hour)
+                for name, data in members:
                     path = str(relative / name)
                     member = tarfile.TarInfo(path)
                     member.size = len(data)
@@ -283,15 +393,20 @@ def api(endpoint, body=None, paginate=False):
     )
 
 
-def publish(tag, sums, out, split, dates):
+def publish(tag, sums, out, split, dates, *, has_series=False):
     existing = [
         r for r in api("releases?per_page=100", paginate=True) if r["tag_name"] == tag
     ]
     title = f"BTC {split} packets, {dates[0]} through {dates[-1]} UTC"
     checksum = out / "SHA256SUMS"
+    context_description = (
+        "observed BTC context. Daily context-series manifests report minute coverage where available"
+        if has_series
+        else "24 sampled hourly context rows"
+    )
     notes = (
         f"Each tar contains 24 verified hourly BTC book and taker-trade packets, their official "
-        f"source manifests, and 24 sampled hourly context rows. Each day has its own checksum list. "
+        f"source manifests, and {context_description}. Each day has its own checksum list. "
         f"Download the assets together and run `sha256sum -c SHA256SUMS` before extracting. "
         f"Sampled books can contain gaps. Batch SHA256SUMS digest: `{file_digest(checksum)}`."
     )
@@ -402,7 +517,9 @@ def publish_git_batch(tag, out, sums):
         git("remote", "add", "origin", url)
         index = []
         for name in sorted(sums):
-            require(file_digest(out / name) == sums[name], "Changed local asset: " + name)
+            require(
+                file_digest(out / name) == sums[name], "Changed local asset: " + name
+            )
             with tarfile.open(out / name) as tar:
                 tar.extractall(checkout, filter="data")
         for p in sorted((checkout / "data").rglob("*")):
@@ -491,7 +608,13 @@ def main():
         except FileExistsError:
             require(checksum.read_bytes() == index, "Changed batch inputs")
     if args.publish:
-        publish(tag, sums, out, split, dates)
+        has_series = False
+        for asset in sums:
+            with tarfile.open(out / asset) as tar:
+                if any(m.name.endswith("/context-series.manifest.json") for m in tar):
+                    has_series = True
+                    break
+        publish(tag, sums, out, split, dates, has_series=has_series)
     elif args.publish_git_batch:
         publish_git_batch(tag, out, sums)
 

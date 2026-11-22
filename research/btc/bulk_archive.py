@@ -549,57 +549,81 @@ def complete(folder, group):
     target, path = packet_paths(folder, group)
     if not path.exists():
         return False
-    record = json.loads(path.read_bytes())
-    if (
-        record["origin"] != {"etags": [r["etag"] for r in group]}
-        or [(s["bucket"], s["key"], s["bytes"]) for s in record["sources"]]
-        != [(r["bucket"], r["key"], r["bytes"]) for r in group]
-        or target.stat().st_size != record["packet_bytes"]
-        or sha(target) != record["packet_sha256"]
-    ):
-        raise ValueError("Checksum/source mismatch in " + str(path))
+    packets = [(target, path)]
+    if group[0]["kind"] == "context":
+        series = (
+            folder / "context-series.json.gz",
+            folder / "context-series.manifest.json",
+        )
+        if any(part.exists() for part in series):
+            packets.append(series)
+    original = None
+    for target, path in packets:
+        record = json.loads(path.read_bytes())
+        if (
+            record["origin"] != {"etags": [r["etag"] for r in group]}
+            or [(s["bucket"], s["key"], s["bytes"]) for s in record["sources"]]
+            != [(r["bucket"], r["key"], r["bytes"]) for r in group]
+            or (original is not None and original != record["sources"])
+            or target.stat().st_size != record["packet_bytes"]
+            or sha(target) != record["packet_sha256"]
+        ):
+            raise ValueError("Checksum/source mismatch in " + str(path))
+        original = record["sources"]
     return True
 
 
 def normalize_context(folder, row):
-    import csv
     import gzip
 
-    import lz4.frame
-    from archive import sha
+    from asset_context import DAY_MS, read_context
 
-    raw, receipt = raw_paths(folder, row)
-    samples = []
-    with lz4.frame.open(raw, "rt") as src:
-        for r in csv.DictReader(src):
-            if r["coin"] != "BTC":
-                continue
-            dt = datetime.fromisoformat(r["time"])
-            if dt.tzinfo is None:
-                raise ValueError("Timezone absent from source context")
-            t = int(dt.timestamp() * 1000)
-            if t % HOUR == 0:
-                samples.append({**r, "time": t})
-    target, manifest = packet_paths(folder, [row])
-    data = gzip.compress(
-        json.dumps(samples, separators=(",", ":")).encode(), compresslevel=1, mtime=0
+    start = row["hour"]
+    key = datetime.fromtimestamp(start / 1000, UTC).strftime(
+        "asset_ctxs/%Y%m%d.csv.lz4"
     )
-    tmp = target.with_suffix(".tmp")
-    tmp.write_bytes(data)
-    os.replace(tmp, target)
+    if (
+        start % DAY_MS
+        or row["kind"] != "context"
+        or row["bucket"] != "hyperliquid-archive"
+        or row["key"] != key
+        or not valid_cache(folder, row)
+    ):
+        raise ValueError("Invalid official context source or receipt")
+    raw, receipt = raw_paths(folder, row)
     source = {k: row[k] for k in ("bucket", "key", "bytes")}
     source["sha256"] = json.loads(receipt.read_bytes())["sha256"]
-    atomic_json(
-        manifest,
-        {
-            "hour": row["hour"],
-            "sources": [source],
-            "rows": len(samples),
-            "origin": {"etags": [row["etag"]]},
-            "packet_bytes": len(data),
-            "packet_sha256": sha(target),
-        },
+    samples, coverage = read_context(raw, start)
+
+    def write(rows, target, manifest, **metadata):
+        data = gzip.compress(
+            json.dumps(rows, separators=(",", ":")).encode(), compresslevel=1, mtime=0
+        )
+        tmp = target.with_suffix(".tmp")
+        tmp.write_bytes(data)
+        os.replace(tmp, target)
+        atomic_json(
+            manifest,
+            {
+                "hour": start,
+                "sources": [source],
+                "rows": len(rows),
+                "origin": {"etags": [row["etag"]]},
+                "packet_bytes": len(data),
+                "packet_sha256": hashlib.sha256(data).hexdigest(),
+                **metadata,
+            },
+        )
+
+    # Publish the complete series before the hourly completion marker so a retry
+    # can finish either artifact from the retained raw input without a second GET.
+    write(
+        samples,
+        folder / "context-series.json.gz",
+        folder / "context-series.manifest.json",
+        coverage=coverage,
     )
+    write([r for r in samples if r["time"] % HOUR == 0], *packet_paths(folder, [row]))
 
 
 def normalize_group(folder, group):

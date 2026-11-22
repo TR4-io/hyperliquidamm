@@ -8,7 +8,7 @@ The rolling development fit through January 11 declines to quote in all 36 flat-
 
 ## Download the development snapshot
 
-The data branch includes the strategy source, fitted development models, 192 hourly BTC book/trade packets from December 30, 2025 through January 6, 2026 UTC, daily BTC context samples at one-minute intervals, and 7,200 hourly funding rates covering training and validation. Each packet has source and coverage metadata. The final test stays sealed. [Browse the development data](https://github.com/TR4-io/hyperliquidamm/tree/btc-development-data)
+The data branch includes the strategy source, fitted development models, 192 hourly BTC book/trade packets from December 30, 2025 through January 6, 2026 UTC, minute-level BTC context samples for the first seven days, hourly context samples on January 6, and 7,200 hourly funding rates covering training and validation. The branch also includes verified funding cash evidence for the first 168 hours. Each packet has source and coverage metadata. The final test stays sealed. [Browse the development data](https://github.com/TR4-io/hyperliquidamm/tree/btc-development-data)
 
 To download the verified snapshot and run the offline model and account checks:
 

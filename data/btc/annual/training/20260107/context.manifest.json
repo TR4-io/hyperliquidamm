@@ -1,0 +1,19 @@
+{
+  "hour": 1767744000000,
+  "sources": [
+    {
+      "bucket": "hyperliquid-archive",
+      "key": "asset_ctxs/20260107.csv.lz4",
+      "bytes": 11182637,
+      "sha256": "9f99b9aee099dd34c83a1f968e71c5ce404a5d54d1c9833915cd569ce7554a6e"
+    }
+  ],
+  "rows": 24,
+  "origin": {
+    "etags": [
+      "\"96157f278a796f7ffb553751527e4f53-2\""
+    ]
+  },
+  "packet_bytes": 1711,
+  "packet_sha256": "1ff5e87e1c7a4287d0ea32162b1c443f130247656b2c36551090f837fc5ae776"
+}

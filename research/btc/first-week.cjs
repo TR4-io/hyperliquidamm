@@ -52,7 +52,8 @@ function checkFunding(folder, useContext = false) {
 }
 function readPackets(folder, sourceEnd) {
   const manifests = new Map(),
-    cache = new Map();
+    cache = new Map(),
+    venueGaps = [];
   const trainingManifest = crypto.createHash('sha256');
   let prev;
   for (let t = start; t < sourceEnd; t += M.hour) {
@@ -73,20 +74,16 @@ function readPackets(folder, sourceEnd) {
     assert.equal(m.hour, t);
     const book = m.books;
     assert.ok(book.rows > 0 && book.first <= book.last && book.max_gap_ms >= 0);
-    for (const k of ['venue_blocks']) {
-      const r = m[k];
-      if (
-        !(
-          r.rows > 0 &&
-          r.max_gap_ms >= 0 &&
-          r.max_gap_ms <= M.defaults.gap &&
-          Math.abs(r.first - t) <= M.defaults.gap &&
-          Math.abs(r.last - t - M.hour) <= M.defaults.gap
-        )
-      )
-        throw Error('Insufficient ' + k + ' coverage: ' + t);
-      if (prev && Math.abs(r.first - prev[k].last) > M.defaults.gap) throw Error('Hour seam: ' + t);
-    }
+    const venue = m.venue_blocks;
+    assert.ok(venue.rows > 0 && venue.first <= venue.last && venue.max_gap_ms >= 0);
+    if (
+      venue.max_gap_ms > M.defaults.gap ||
+      Math.abs(venue.first - t) > M.defaults.gap ||
+      Math.abs(venue.last - t - M.hour) > M.defaults.gap
+    )
+      venueGaps.push([t, t + M.hour]);
+    if (prev && venue.first - prev.venue_blocks.last > M.defaults.gap)
+      venueGaps.push([prev.venue_blocks.last, venue.first]);
     manifests.set(t, m);
     prev = m;
   }
@@ -122,7 +119,10 @@ function readPackets(folder, sourceEnd) {
         }
       for (const trade of raw.trades) if (trade.time >= a && trade.time < b) trades.push(trade);
     }
-    return M.prepare({ books: [...books.values()], trades });
+    return {
+      ...M.prepare({ books: [...books.values()], trades }),
+      venueGaps: venueGaps.filter(([lo, hi]) => lo < b && hi > a),
+    };
   }
   return { interval, trainingManifestSha256: trainingManifest.digest('hex') };
 }
@@ -196,8 +196,25 @@ function study(folder, model = fitWeek(folder), developmentDiagnostic = false) {
   const funding = checkFunding(folder, developmentDiagnostic);
   const tape = packets.interval(cut, end);
   tape.funding = funding;
+  const uninterrupted = [];
+  let cursor = cut;
+  const gaps = [...tape.venueGaps].sort((a, b) => a[0] - b[0]);
+  for (const [lo, hi] of gaps) {
+    if (lo > cursor) uninterrupted.push([cursor, lo]);
+    cursor = Math.max(cursor, hi);
+  }
+  if (cursor < end) uninterrupted.push([cursor, end]);
+  if (!developmentDiagnostic && gaps.length) throw Error('Incomplete venue fill coverage');
   const [from, to] = developmentDiagnostic
-    ? longestBookRun(tape.books, cut, end, M.defaults.gap)
+    ? uninterrupted
+        .map(([a, b]) => {
+          const books = tape.books.slice(
+            M.indexAfter(tape.books, a - 1),
+            M.indexAfter(tape.books, b - 1),
+          );
+          return books.length ? longestBookRun(books, a, b, M.defaults.gap) : [a, a];
+        })
+        .reduce((best, pair) => (pair[1] - pair[0] > best[1] - best[0] ? pair : best), [cut, cut])
     : [cut, end];
   if (to - from < 2 * M.minute) throw Error('No usable chronological replay interval');
   const coverage = {

@@ -215,8 +215,11 @@ function fit(tape, start, end, c = defaults, decisionEnd = end, allowBookGaps = 
     t += minute
   ) {
     const f = features(tape.books, t, c);
+    const labelEnd = t + c.delay + c.life + c.horizon;
+    const missingTrades = tape.venueGaps?.some(([lo, hi]) => lo < labelEnd && hi > t);
     if (
       !f ||
+      missingTrades ||
       (allowBookGaps &&
         !hasForwardBookCoverage(tape.books, t, t + c.delay + c.life + c.horizon, c.gap))
     ) {

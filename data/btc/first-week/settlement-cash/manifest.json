@@ -1,0 +1,4218 @@
+{
+  "start": 1767052800000,
+  "endExclusive": 1767657600000,
+  "rateSource": "https://api.hyperliquid.xyz/info",
+  "ratePageSha256": "873b8f4c45ba97ba6040dc2ae1de2022345b9451d0b87951f74a9bbc58f6256e",
+  "contextPricesSha256": "e915e889e869a43b6f8cc06ee4ae688a067efa45e8a70372170bea60821d6b2c",
+  "cashRoundingAllowancePerPositionUsdc": "0.000001",
+  "observedHours": 168,
+  "requiredHours": 168,
+  "coverageGaps": {},
+  "settlementOracleIndependentlyVerified": false,
+  "settlementMarkIndependentlyVerified": false,
+  "scope": "Observed Funding cash per signed BTC by block. Implied price at the published rate is diagnostic only.",
+  "positionCapBtc": "0.01",
+  "maxCashIntervalWidthAtPositionCapUsdc": "2.544847303245035318E-11",
+  "events": [
+    {
+      "time": 1767052800010,
+      "blockNumber": 844788899,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 15696,
+      "longCount": 9753,
+      "shortCount": 5943,
+      "chargePerLongBtcUsdcLower": "1.090474997912270893600354151",
+      "chargePerLongBtcUsdcUpper": "1.090475000131104441294053277",
+      "cashIntervalWidthAtPositionCapUsdc": "2.218833547693699126E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87237.99983298167148802833208",
+        "87238.00001048835530352426216"
+      ],
+      "contextSampledOracle": "87238",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251230/0.lz4",
+        "etag": "\"26e5458346e155e1a0edd212da57894e\"",
+        "bytes": 7230752,
+        "range_prefix_bytes": 4194304,
+        "sha256": "c355a6eaf46b3379609991b3747168727a8ee35e417da54850daf07fb667ac82"
+      }
+    },
+    {
+      "time": 1767056400049,
+      "blockNumber": 844833085,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3865,
+      "longCount": 2466,
+      "shortCount": 1399,
+      "chargePerLongBtcUsdcLower": "1.090624997574442414094575713",
+      "chargePerLongBtcUsdcUpper": "1.090625000119289717339611031",
+      "cashIntervalWidthAtPositionCapUsdc": "2.544847303245035318E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87249.99980595539312756605704",
+        "87250.00000954317738716888248"
+      ],
+      "contextSampledOracle": "87250",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251230/1.lz4",
+        "bytes": 7165945,
+        "etag": "\"7087e5b79419901cea116ef1cad6183d\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "1230b50353f24b996ef84e527b0ca53647f834eecdd46f319d00310e0cb35b86"
+      }
+    },
+    {
+      "time": 1767060000033,
+      "blockNumber": 844876702,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3874,
+      "longCount": 2465,
+      "shortCount": 1409,
+      "chargePerLongBtcUsdcLower": "1.091324997909244761198350936",
+      "chargePerLongBtcUsdcUpper": "1.091325000453516423871486396",
+      "cashIntervalWidthAtPositionCapUsdc": "2.544271662673135460E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87305.99983273958089586807488",
+        "87306.00003628131390971891168"
+      ],
+      "contextSampledOracle": "87306",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251230/2.lz4",
+        "bytes": 7220832,
+        "etag": "\"a1ad6fed41060e273e1049ec5ac9d808\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "960157041c29602c815f140c0da141fdfd5bfce3fc97a2259362601aecf49f4a"
+      }
+    },
+    {
+      "time": 1767063600041,
+      "blockNumber": 844920567,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3889,
+      "longCount": 2473,
+      "shortCount": 1416,
+      "chargePerLongBtcUsdcLower": "1.088799997832280543402488588",
+      "chargePerLongBtcUsdcUpper": "1.088800000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "2.167719456597511412E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87103.99982658244347219908704",
+        "87104.00000000000000000000"
+      ],
+      "contextSampledOracle": "87104",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251230/3.lz4",
+        "bytes": 7210852,
+        "etag": "\"13ea78007f3806301ce6d86788e7f4ba\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "322298023fda2b8a848411d5e194426b954400badc3428c11c5864dd5de49ce2"
+      }
+    },
+    {
+      "time": 1767067200063,
+      "blockNumber": 844964450,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3883,
+      "longCount": 2470,
+      "shortCount": 1413,
+      "chargePerLongBtcUsdcLower": "1.092187498370075966100022596",
+      "chargePerLongBtcUsdcUpper": "1.092187500000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "1.629924033899977404E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87374.99986960607728800180768",
+        "87375.00000000000000000000"
+      ],
+      "contextSampledOracle": "87375",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251230/4.lz4",
+        "bytes": 7230034,
+        "etag": "\"6b25f6705977772f7c25e7b1f8e4b8c9\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "8227ad59a0fd4e64d53ec2bcb6f12b64a3321b99524eebb89c9531fdb10438f9"
+      }
+    },
+    {
+      "time": 1767070800069,
+      "blockNumber": 845009255,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3890,
+      "longCount": 2484,
+      "shortCount": 1406,
+      "chargePerLongBtcUsdcLower": "1.091249997869172482511249052",
+      "chargePerLongBtcUsdcUpper": "1.091250000228780892512696882",
+      "cashIntervalWidthAtPositionCapUsdc": "2.359608410001447830E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87299.99982953379860089992416",
+        "87300.00001830247140101575056"
+      ],
+      "contextSampledOracle": "87300",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251230/5.lz4",
+        "bytes": 7326816,
+        "etag": "\"bb87956d7568505ff5bf179b40426f51\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "8fa4ff74809b7dc930c752355d5f0970bc215d096c243a9f1d9e6b45a3501a14"
+      }
+    },
+    {
+      "time": 1767074400067,
+      "blockNumber": 845054167,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3889,
+      "longCount": 2476,
+      "shortCount": 1413,
+      "chargePerLongBtcUsdcLower": "1.090699997575309105472501906",
+      "chargePerLongBtcUsdcUpper": "1.090700000119580768145637366",
+      "cashIntervalWidthAtPositionCapUsdc": "2.544271662673135460E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87255.99980602472843780015248",
+        "87256.00000956646145165098928"
+      ],
+      "contextSampledOracle": "87256",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251230/6.lz4",
+        "bytes": 7300604,
+        "etag": "\"477de4a5196e14f046e6ff0768c8b102\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "77bf6ef990d7746de8f16eb60abec29d42f9aec2aa159254eb3b76cc9499d6b4"
+      }
+    },
+    {
+      "time": 1767078000062,
+      "blockNumber": 845098389,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3883,
+      "longCount": 2487,
+      "shortCount": 1396,
+      "chargePerLongBtcUsdcLower": "1.093037497552092626550609545",
+      "chargePerLongBtcUsdcUpper": "1.093037500096364289223745005",
+      "cashIntervalWidthAtPositionCapUsdc": "2.544271662673135460E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87442.9998041674101240487636",
+        "87443.0000077091431378996004"
+      ],
+      "contextSampledOracle": "87443",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251230/7.lz4",
+        "bytes": 7358787,
+        "etag": "\"2902c2ca4348adf7afbd50113077d162\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "b540e9c16b9f3ff17da56312aab5525568c4b5798e969755d2441265eb8e6f0e"
+      }
+    },
+    {
+      "time": 1767081600028,
+      "blockNumber": 845142698,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3886,
+      "longCount": 2494,
+      "shortCount": 1392,
+      "chargePerLongBtcUsdcLower": "1.093712497912743134734526497",
+      "chargePerLongBtcUsdcUpper": "1.093712500127900505418310281",
+      "cashIntervalWidthAtPositionCapUsdc": "2.215157370683783784E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87496.99983301945077876211976",
+        "87497.00001023204043346482248"
+      ],
+      "contextSampledOracle": "87497",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251230/8.lz4",
+        "bytes": 7556251,
+        "etag": "\"694154ea047684fd750d0072b26d2249\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "50b945fd1e2a6118654ca1df5d1108fa2e5b72be793856bc48f1615008bfa1f9"
+      }
+    },
+    {
+      "time": 1767085200045,
+      "blockNumber": 845187453,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3876,
+      "longCount": 2390,
+      "shortCount": 1486,
+      "chargePerLongBtcUsdcLower": "1.098412497879667603119775736",
+      "chargePerLongBtcUsdcUpper": "1.098412500423939265792911196",
+      "cashIntervalWidthAtPositionCapUsdc": "2.544271662673135460E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87872.99983037340824958205888",
+        "87873.00003391514126343289568"
+      ],
+      "contextSampledOracle": "87873",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251230/9.lz4",
+        "bytes": 7447158,
+        "etag": "\"277be1e1b9fd2889105461918c698c0b\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "57af0a9eab985b69c2b99e838cf02daca5a65d6bb14bd51c7cbda1827febd3e0"
+      }
+    },
+    {
+      "time": 1767088800080,
+      "blockNumber": 845231756,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3880,
+      "longCount": 2383,
+      "shortCount": 1497,
+      "chargePerLongBtcUsdcLower": "1.099862498654398324403745484",
+      "chargePerLongBtcUsdcUpper": "1.099862500230483330128517505",
+      "cashIntervalWidthAtPositionCapUsdc": "1.576085005724772021E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87988.99989235186595229963872",
+        "87989.0000184386664102814004"
+      ],
+      "contextSampledOracle": "87989",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251230/10.lz4",
+        "bytes": 7392659,
+        "etag": "\"712a8283900bfd6564c376e37f14ee7d\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "2455072eb9603b576d5608ebe4958b827ab42c1a15e464a26c9913bfb3fe0df7"
+      }
+    },
+    {
+      "time": 1767092400054,
+      "blockNumber": 845275903,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3890,
+      "longCount": 2379,
+      "shortCount": 1511,
+      "chargePerLongBtcUsdcLower": "1.099387498400607226052100221",
+      "chargePerLongBtcUsdcUpper": "1.0993875",
+      "cashIntervalWidthAtPositionCapUsdc": "1.599392773947899779E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87950.99987204857808416801768",
+        "87951"
+      ],
+      "contextSampledOracle": "87951",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251230/11.lz4",
+        "bytes": 7381723,
+        "etag": "\"1a5b5f7f2b737b1c989e8e110c1ff7bf\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "86aaf2e4fd7e110ed58565f8d93f9e92539a408f14ded9ca4053be6114e8725b"
+      }
+    },
+    {
+      "time": 1767096000003,
+      "blockNumber": 845319413,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3886,
+      "longCount": 2372,
+      "shortCount": 1514,
+      "chargePerLongBtcUsdcLower": "1.098774998073350283440768173",
+      "chargePerLongBtcUsdcUpper": "1.098775000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "1.926649716559231827E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87901.99984586802267526145384",
+        "87902.00000000000000000000"
+      ],
+      "contextSampledOracle": "87902",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251230/12.lz4",
+        "bytes": 7314269,
+        "etag": "\"452edba7137780b4fbd5809bba6b0248\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "a4a332ac89bd8151ca02162ee91cb54a2cf7b0723d5e457d9f5871b3cf0def4f"
+      }
+    },
+    {
+      "time": 1767099600121,
+      "blockNumber": 845363487,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3892,
+      "longCount": 2365,
+      "shortCount": 1527,
+      "chargePerLongBtcUsdcLower": "1.100262497595981312731721132",
+      "chargePerLongBtcUsdcUpper": "1.1002625",
+      "cashIntervalWidthAtPositionCapUsdc": "2.404018687268278868E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88020.99980767850501853769056",
+        "88021"
+      ],
+      "contextSampledOracle": "88021",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251230/13.lz4",
+        "bytes": 7262612,
+        "etag": "\"dedfb9580a7a2fbce73790d645dc1ec2\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "cc45ee8eeb2b3da05ae7d5cc78d33192e09429bef518724fb9429aac32eaf8b5"
+      }
+    },
+    {
+      "time": 1767103200031,
+      "blockNumber": 845407008,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3900,
+      "longCount": 2370,
+      "shortCount": 1530,
+      "chargePerLongBtcUsdcLower": "1.101487498250495197954385229",
+      "chargePerLongBtcUsdcUpper": "1.101487500584709349335436060",
+      "cashIntervalWidthAtPositionCapUsdc": "2.334214151381050831E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88118.99986003961583635081832",
+        "88119.0000467767479468348848"
+      ],
+      "contextSampledOracle": "88119",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251230/14.lz4",
+        "bytes": 7315554,
+        "etag": "\"16890d3dfc73e7004a044b15fb84586e\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "bd770bae8b07acea296506e30e75d58a24a4b7053378b529f47db9740763bc92"
+      }
+    },
+    {
+      "time": 1767106800036,
+      "blockNumber": 845451057,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3820,
+      "longCount": 2322,
+      "shortCount": 1498,
+      "chargePerLongBtcUsdcLower": "1.110999998244452552755536533",
+      "chargePerLongBtcUsdcUpper": "1.111000000276214938311536752",
+      "cashIntervalWidthAtPositionCapUsdc": "2.031762385556000219E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88879.99985955620422044292264",
+        "88880.00002209719506492294016"
+      ],
+      "contextSampledOracle": "88880",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251230/15.lz4",
+        "bytes": 7299573,
+        "etag": "\"d50f04d1fb2b62bd02f0fff1ae0a85d0\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "c42be987ee3ab6d0ffc065ff110649fcf9751b4183f7a1c20929fbe300cf237b"
+      }
+    },
+    {
+      "time": 1767110400039,
+      "blockNumber": 845494409,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3810,
+      "longCount": 2284,
+      "shortCount": 1526,
+      "chargePerLongBtcUsdcLower": "1.112612497833870713191659298",
+      "chargePerLongBtcUsdcUpper": "1.1126125",
+      "cashIntervalWidthAtPositionCapUsdc": "2.166129286808340702E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "89008.99982670965705533274384",
+        "89009"
+      ],
+      "contextSampledOracle": "89009",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251230/16.lz4",
+        "bytes": 7293818,
+        "etag": "\"b7283d99dcb1e37a4667175e31df1f2f\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "cbd442efc3dbb72ff818e69a6d377bb2877021deea1af567dbf7025e1eeac85a"
+      }
+    },
+    {
+      "time": 1767114000051,
+      "blockNumber": 845538347,
+      "settledRate": "0.000009776",
+      "distinctBtcPositionsInPrefix": 3791,
+      "longCount": 2236,
+      "shortCount": 1555,
+      "chargePerLongBtcUsdcLower": "0.8675748491011558906033406948",
+      "chargePerLongBtcUsdcUpper": "0.8675748516454275532764761552",
+      "cashIntervalWidthAtPositionCapUsdc": "2.5442716626731354604E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88745.38145470088897333681412",
+        "88745.38171495781027787194714"
+      ],
+      "contextSampledOracle": "88745",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251230/17.lz4",
+        "bytes": 7264058,
+        "etag": "\"4db9bbb6a0053d39e4998d23821c3a25\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "3a854214a3b1076c16ac2bc3926199af886f11bba39f4f4d649de4a01af6d898"
+      }
+    },
+    {
+      "time": 1767117600071,
+      "blockNumber": 845581962,
+      "settledRate": "0.0000085988",
+      "distinctBtcPositionsInPrefix": 15545,
+      "longCount": 8915,
+      "shortCount": 6630,
+      "chargePerLongBtcUsdcLower": "0.7599085186766197855026131077",
+      "chargePerLongBtcUsdcUpper": "0.7599085203613028601007755515",
+      "cashIntervalWidthAtPositionCapUsdc": "1.6846830745981624438E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88373.78688614920518009642133",
+        "88373.78708206992372200487876"
+      ],
+      "contextSampledOracle": "88374",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251230/18.lz4",
+        "etag": "\"fe90ddfac0f2cc730073db9d5750b13d\"",
+        "bytes": 7242300,
+        "range_prefix_bytes": 4194304,
+        "sha256": "345d8f8c86e2a0b30c1a7f2e1961d71e1c299dba12aed6e4750e48b9c7766442"
+      }
+    },
+    {
+      "time": 1767121200033,
+      "blockNumber": 845625850,
+      "settledRate": "0.0000121099",
+      "distinctBtcPositionsInPrefix": 3784,
+      "longCount": 2231,
+      "shortCount": 1553,
+      "chargePerLongBtcUsdcLower": "1.069379604034492283847393670",
+      "chargePerLongBtcUsdcUpper": "1.069379606551005457715532818",
+      "cashIntervalWidthAtPositionCapUsdc": "2.516513173868139148E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88306.22912117294807119742277",
+        "88306.22932897922011870724102"
+      ],
+      "contextSampledOracle": "88306",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251230/19.lz4",
+        "bytes": 7278363,
+        "etag": "\"81c25d3e6b593d77850f49a6837874cf\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "03f71eb6cfbf16764e571afbcd05fda7ccbce2d5075be27ec8fa4204a0d3657f"
+      }
+    },
+    {
+      "time": 1767124800120,
+      "blockNumber": 845670102,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3791,
+      "longCount": 2237,
+      "shortCount": 1554,
+      "chargePerLongBtcUsdcLower": "1.102824997692981669871134421",
+      "chargePerLongBtcUsdcUpper": "1.102825000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "2.307018330128865579E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88225.99981543853358969075368",
+        "88226.00000000000000000000"
+      ],
+      "contextSampledOracle": "88226",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251230/20.lz4",
+        "bytes": 7190354,
+        "etag": "\"b25a2dad20dd93cd0907387256404566\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "0e3161f6808716a88a2d4eda289a288024fbb845a581d43ee208abb7e9f1efba"
+      }
+    },
+    {
+      "time": 1767128400041,
+      "blockNumber": 845713758,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3774,
+      "longCount": 2223,
+      "shortCount": 1551,
+      "chargePerLongBtcUsdcLower": "1.099124998260354250647243629",
+      "chargePerLongBtcUsdcUpper": "1.099125000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "1.739645749352756371E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87929.99986082834005177949032",
+        "87930.00000000000000000000"
+      ],
+      "contextSampledOracle": "87930",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251230/21.lz4",
+        "bytes": 7194133,
+        "etag": "\"dcd24f1f33e895c30599bfeeeb6a13bc\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "0b8a41af73cd9b70d4eaf49341e7072b2a1d46d4edb8e4bce695ceb754788885"
+      }
+    },
+    {
+      "time": 1767132000003,
+      "blockNumber": 845758183,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3764,
+      "longCount": 2228,
+      "shortCount": 1536,
+      "chargePerLongBtcUsdcLower": "1.103374997986845046909881567",
+      "chargePerLongBtcUsdcUpper": "1.103375000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "2.013154953090118433E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88269.99983894760375279052536",
+        "88270.00000000000000000000"
+      ],
+      "contextSampledOracle": "88270",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251230/22.lz4",
+        "bytes": 7270792,
+        "etag": "\"cf75ab2805d05131fbed83b16032e511\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "f9c5384e76970ccd352a0fa609aa8333a8facd77e3e1c14bbd90896b945eb4c7"
+      }
+    },
+    {
+      "time": 1767135600047,
+      "blockNumber": 845802144,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3767,
+      "longCount": 2237,
+      "shortCount": 1530,
+      "chargePerLongBtcUsdcLower": "1.105374997783303313896030730",
+      "chargePerLongBtcUsdcUpper": "1.105375000233538124093836694",
+      "cashIntervalWidthAtPositionCapUsdc": "2.450234810197805964E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88429.9998226642651116824584",
+        "88430.00001868304992750693552"
+      ],
+      "contextSampledOracle": "88430",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251230/23.lz4",
+        "bytes": 7240575,
+        "etag": "\"1c0d4d7398888f18270cbada5009607e\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "50f64b74eafeeae6300a15c9050e8a813be9e953e05870a7f325fd60344cceca"
+      }
+    },
+    {
+      "time": 1767139200021,
+      "blockNumber": 845846155,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3779,
+      "longCount": 2250,
+      "shortCount": 1529,
+      "chargePerLongBtcUsdcLower": "1.106212498230777092568668429",
+      "chargePerLongBtcUsdcUpper": "1.1062125",
+      "cashIntervalWidthAtPositionCapUsdc": "1.769222907431331571E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88496.99985846216740549347432",
+        "88497"
+      ],
+      "contextSampledOracle": "88497",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251231/0.lz4",
+        "bytes": 7229624,
+        "etag": "\"a48b83745aa3c9c1463a5a8f2992ed50\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "b97729fb617680570869dfe0b4a1f6be0dc7409eb223d261536db2998619c499"
+      }
+    },
+    {
+      "time": 1767142800022,
+      "blockNumber": 845890235,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3783,
+      "longCount": 2247,
+      "shortCount": 1536,
+      "chargePerLongBtcUsdcLower": "1.103237497913379202650194781",
+      "chargePerLongBtcUsdcUpper": "1.1032375",
+      "cashIntervalWidthAtPositionCapUsdc": "2.086620797349805219E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88258.99983307033621201558248",
+        "88259"
+      ],
+      "contextSampledOracle": "88259",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251231/1.lz4",
+        "bytes": 7191547,
+        "etag": "\"0a6d2420857685d38f26c1404ca1fef7\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "f0cc395fa1bcf6071c7288b707c2854dd629e0663a226d62ccce80b7329bfe6e"
+      }
+    },
+    {
+      "time": 1767146400037,
+      "blockNumber": 845933311,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3775,
+      "longCount": 2250,
+      "shortCount": 1525,
+      "chargePerLongBtcUsdcLower": "1.108112497973805654638681748",
+      "chargePerLongBtcUsdcUpper": "1.108112500148083439738796264",
+      "cashIntervalWidthAtPositionCapUsdc": "2.174277785100114516E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88648.99983790445237109453984",
+        "88649.00001184667517910370112"
+      ],
+      "contextSampledOracle": "88649",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251231/2.lz4",
+        "bytes": 7191192,
+        "etag": "\"f26188eb1e87d863309ea5cbcf9a2625\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "23973307500e0797f2499d061df89403909c9f1e5418967b2130474b82bceb02"
+      }
+    },
+    {
+      "time": 1767150000053,
+      "blockNumber": 845977272,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3778,
+      "longCount": 2249,
+      "shortCount": 1529,
+      "chargePerLongBtcUsdcLower": "1.108424998140773482501606263",
+      "chargePerLongBtcUsdcUpper": "1.108425000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "1.859226517498393737E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88673.99985126187860012850104",
+        "88674.00000000000000000000"
+      ],
+      "contextSampledOracle": "88674",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251231/3.lz4",
+        "bytes": 7136966,
+        "etag": "\"3a3b1a699c5c9fcd7c3422f9a2c42096\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "8a061ef46d581c40205b1e298c5480790c2893ab52d4165c6b05a3607a947cf5"
+      }
+    },
+    {
+      "time": 1767153600057,
+      "blockNumber": 846021562,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3779,
+      "longCount": 2248,
+      "shortCount": 1531,
+      "chargePerLongBtcUsdcLower": "1.105662497936913715529921284",
+      "chargePerLongBtcUsdcUpper": "1.1056625",
+      "cashIntervalWidthAtPositionCapUsdc": "2.063086284470078716E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88452.99983495309724239370272",
+        "88453"
+      ],
+      "contextSampledOracle": "88453",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251231/4.lz4",
+        "bytes": 7181760,
+        "etag": "\"5f684230761c1abf7cb88be9f5dafa4d\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "38e1994f412c6a9438740a03a1acb0874927abc25a795f034be7cfe04d434a24"
+      }
+    },
+    {
+      "time": 1767157200011,
+      "blockNumber": 846065528,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3787,
+      "longCount": 2251,
+      "shortCount": 1536,
+      "chargePerLongBtcUsdcLower": "1.104149998400925260009934363",
+      "chargePerLongBtcUsdcUpper": "1.104150000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "1.599074739990065637E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88331.99987207402080079474904",
+        "88332.00000000000000000000"
+      ],
+      "contextSampledOracle": "88332",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251231/5.lz4",
+        "bytes": 7167886,
+        "etag": "\"5d5c697722d3116ea07f1c0a332e7bdb\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "e937971543a4ed9b1437be3a5884293507b3436ac050b811a139458bb2ed4d9b"
+      }
+    },
+    {
+      "time": 1767160800002,
+      "blockNumber": 846110142,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3788,
+      "longCount": 2255,
+      "shortCount": 1533,
+      "chargePerLongBtcUsdcLower": "1.105787498003700846675091090",
+      "chargePerLongBtcUsdcUpper": "1.1057875",
+      "cashIntervalWidthAtPositionCapUsdc": "1.996299153324908910E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88462.9998402960677340072872",
+        "88463"
+      ],
+      "contextSampledOracle": "88463",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251231/6.lz4",
+        "bytes": 7265171,
+        "etag": "\"d4e9470796924632861d2b23a248d91e\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "670aa63b5f89a20f340f20263bc98a2d6669b9558e555ee1cd63e0b077b70a1e"
+      }
+    },
+    {
+      "time": 1767164400029,
+      "blockNumber": 846154655,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3787,
+      "longCount": 2256,
+      "shortCount": 1531,
+      "chargePerLongBtcUsdcLower": "1.106412497757454351461903203",
+      "chargePerLongBtcUsdcUpper": "1.1064125",
+      "cashIntervalWidthAtPositionCapUsdc": "2.242545648538096797E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88512.99982059634811695225624",
+        "88513"
+      ],
+      "contextSampledOracle": "88513",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251231/7.lz4",
+        "bytes": 7255811,
+        "etag": "\"bfe7e17f8e3a430a969f77989f58e5d6\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "70f44024c0c44dea679f5acdb961f55445114c528f9bc0ccfb227a3e162dd826"
+      }
+    },
+    {
+      "time": 1767168000063,
+      "blockNumber": 846198992,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3800,
+      "longCount": 2266,
+      "shortCount": 1534,
+      "chargePerLongBtcUsdcLower": "1.107674997858882405039622313",
+      "chargePerLongBtcUsdcUpper": "1.107675000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "2.141117594960377687E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88613.99982871059240316978504",
+        "88614.00000000000000000000"
+      ],
+      "contextSampledOracle": "88614",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251231/8.lz4",
+        "bytes": 7460248,
+        "etag": "\"c32c815effd4f653568d7adb4c87ec88\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "50cf4cb6faa035d935d6743be17417867f24c3993fba7bfa671f8b8e16bef726"
+      }
+    },
+    {
+      "time": 1767171600019,
+      "blockNumber": 846242761,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3805,
+      "longCount": 2356,
+      "shortCount": 1449,
+      "chargePerLongBtcUsdcLower": "1.105437497540608167950917521",
+      "chargePerLongBtcUsdcUpper": "1.1054375",
+      "cashIntervalWidthAtPositionCapUsdc": "2.459391832049082479E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88434.99980324865343607340168",
+        "88435"
+      ],
+      "contextSampledOracle": "88435",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251231/9.lz4",
+        "bytes": 7409857,
+        "etag": "\"e2af3604b37b43caa01779d8daa386bf\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "2b46f586d6603c0a1710473c6518d3bfe89edf13d7b4301d2ce4294fb909be83"
+      }
+    },
+    {
+      "time": 1767175200002,
+      "blockNumber": 846286654,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3794,
+      "longCount": 2346,
+      "shortCount": 1448,
+      "chargePerLongBtcUsdcLower": "1.108274997894493508490106765",
+      "chargePerLongBtcUsdcUpper": "1.108275000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "2.105506491509893235E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88661.9998315594806792085412",
+        "88662.00000000000000000000"
+      ],
+      "contextSampledOracle": "88662",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251231/10.lz4",
+        "bytes": 7400811,
+        "etag": "\"43a9d5ffcf67a15d714c347a6220f156\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "ae956389a776bf0db60f49f93ba1891d7e093fe2d13074e667cbe61b6328ad26"
+      }
+    },
+    {
+      "time": 1767178800050,
+      "blockNumber": 846330814,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3812,
+      "longCount": 2362,
+      "shortCount": 1450,
+      "chargePerLongBtcUsdcLower": "1.110599998509420955572579359",
+      "chargePerLongBtcUsdcUpper": "1.110600000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "1.490579044427420641E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88847.99988075367644580634872",
+        "88848.00000000000000000000"
+      ],
+      "contextSampledOracle": "88848",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251231/11.lz4",
+        "bytes": 7383974,
+        "etag": "\"21d669f941a63331f4fa1e08f24f079d\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "546738c11aa13883e912dc64617088dba31d5af46e8a5d579b74b41ec8f228bc"
+      }
+    },
+    {
+      "time": 1767182400095,
+      "blockNumber": 846374915,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3804,
+      "longCount": 2358,
+      "shortCount": 1446,
+      "chargePerLongBtcUsdcLower": "1.112687498500836135990766142",
+      "chargePerLongBtcUsdcUpper": "1.1126875",
+      "cashIntervalWidthAtPositionCapUsdc": "1.499163864009233858E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "89014.99988006689087926129136",
+        "89015"
+      ],
+      "contextSampledOracle": "89015",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251231/12.lz4",
+        "bytes": 7332810,
+        "etag": "\"db2c289905eb1ca266f0640ec96c2534\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "532b589351e74b5a221d985e27910e56ea6396caad350a9208c56aaa18afed02"
+      }
+    },
+    {
+      "time": 1767186000002,
+      "blockNumber": 846418581,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3827,
+      "longCount": 2354,
+      "shortCount": 1473,
+      "chargePerLongBtcUsdcLower": "1.109724998086539102098076489",
+      "chargePerLongBtcUsdcUpper": "1.109725000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "1.913460897901923511E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88777.99984692312816784611912",
+        "88778.00000000000000000000"
+      ],
+      "contextSampledOracle": "88778",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251231/13.lz4",
+        "bytes": 7255348,
+        "etag": "\"62536cff99486df056d7dc259a7ddb1e\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "735f590e3500e796957046cb7491b877783fc01167cfbe4b9bc442ea2eabbf0c"
+      }
+    },
+    {
+      "time": 1767189600008,
+      "blockNumber": 846462695,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3819,
+      "longCount": 2339,
+      "shortCount": 1480,
+      "chargePerLongBtcUsdcLower": "1.112387497847118022649730127",
+      "chargePerLongBtcUsdcUpper": "1.1123875",
+      "cashIntervalWidthAtPositionCapUsdc": "2.152881977350269873E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88990.99982776944181197841016",
+        "88991"
+      ],
+      "contextSampledOracle": "88991",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251231/14.lz4",
+        "bytes": 7383861,
+        "etag": "\"f6281e9c382593bf62dbb164f4e8f0a9\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "c48fba6d4a93ff1e75c70bb0d33c27ce393e83546ba1712fb91b6ed278297b1e"
+      }
+    },
+    {
+      "time": 1767193200015,
+      "blockNumber": 846506777,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3835,
+      "longCount": 2351,
+      "shortCount": 1484,
+      "chargePerLongBtcUsdcLower": "1.105999997812460788041669366",
+      "chargePerLongBtcUsdcUpper": "1.106000000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "2.187539211958330634E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88479.99982499686304333354928",
+        "88480.00000000000000000000"
+      ],
+      "contextSampledOracle": "88480",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251231/15.lz4",
+        "bytes": 7284473,
+        "etag": "\"310731b85a91cb1fdd43d97f4d452ca8\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "09ae4d2b64dbbf7016719dc1fe7368d888ff316d0cc01ec19f7857fdc8ee78cb"
+      }
+    },
+    {
+      "time": 1767196800089,
+      "blockNumber": 846550500,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3839,
+      "longCount": 2374,
+      "shortCount": 1465,
+      "chargePerLongBtcUsdcLower": "1.099312498395910563324160167",
+      "chargePerLongBtcUsdcUpper": "1.0993125",
+      "cashIntervalWidthAtPositionCapUsdc": "1.604089436675839833E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87944.99987167284506593281336",
+        "87945"
+      ],
+      "contextSampledOracle": "87945",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251231/16.lz4",
+        "bytes": 7226020,
+        "etag": "\"aea3950409f4509518592b8986943a53\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "51f2540aba7022689d23ec0f461884ec29ec97bf90ac9059d9b3dc54aac50882"
+      }
+    },
+    {
+      "time": 1767200400072,
+      "blockNumber": 846594074,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3835,
+      "longCount": 2383,
+      "shortCount": 1452,
+      "chargePerLongBtcUsdcLower": "1.095712498182243942621253454",
+      "chargePerLongBtcUsdcUpper": "1.095712500725894189084428610",
+      "cashIntervalWidthAtPositionCapUsdc": "2.543650246463175156E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87656.99985457951540970027632",
+        "87657.0000580715351267542888"
+      ],
+      "contextSampledOracle": "87657",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251231/17.lz4",
+        "bytes": 7206863,
+        "etag": "\"d2d13877445d99c2f6b1bd81e5f824cb\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "98c73c602b09f92deaba47a590d1789a68fe81a78bd3b17c4bae10fa9e5c1308"
+      }
+    },
+    {
+      "time": 1767204000050,
+      "blockNumber": 846638713,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3836,
+      "longCount": 2398,
+      "shortCount": 1438,
+      "chargePerLongBtcUsdcLower": "1.095262498473491895841287010",
+      "chargePerLongBtcUsdcUpper": "1.0952625",
+      "cashIntervalWidthAtPositionCapUsdc": "1.526508104158712990E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87620.9998778793516673029608",
+        "87621"
+      ],
+      "contextSampledOracle": "87621",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251231/18.lz4",
+        "bytes": 7238497,
+        "etag": "\"2d36af504272be07e9b699f90f92a8b7\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "b86d1d35f3e87e6edfe988226484f91458f125a2b0984b474978dbe819d65bad"
+      }
+    },
+    {
+      "time": 1767207600053,
+      "blockNumber": 846682336,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3824,
+      "longCount": 2413,
+      "shortCount": 1411,
+      "chargePerLongBtcUsdcLower": "1.096049998599720539322022077",
+      "chargePerLongBtcUsdcUpper": "1.096050000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "1.400279460677977923E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87683.99988797764314576176616",
+        "87684.00000000000000000000"
+      ],
+      "contextSampledOracle": "87684",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251231/19.lz4",
+        "bytes": 7244589,
+        "etag": "\"25b780c2867e07a8e5eadcc0040b94b2\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "cf9d445aef091fb94467913157603a6b225b52e82b375934788c1bbb9a6ea798"
+      }
+    },
+    {
+      "time": 1767211200058,
+      "blockNumber": 846726156,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3833,
+      "longCount": 2429,
+      "shortCount": 1404,
+      "chargePerLongBtcUsdcLower": "1.094274997487509469055998740",
+      "chargePerLongBtcUsdcUpper": "1.094275000031159715519173896",
+      "cashIntervalWidthAtPositionCapUsdc": "2.543650246463175156E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87541.9997990007575244798992",
+        "87542.00000249277724153391168"
+      ],
+      "contextSampledOracle": "87542",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251231/20.lz4",
+        "bytes": 7292017,
+        "etag": "\"dad380b46a3ad8f51a9b3c392bbc1963\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "0d0a8cc3e80441d0d94f33e21e2122baed5729daf3fbf7814956efb924ec00d0"
+      }
+    },
+    {
+      "time": 1767214800043,
+      "blockNumber": 846770758,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3818,
+      "longCount": 2407,
+      "shortCount": 1411,
+      "chargePerLongBtcUsdcLower": "1.096324997715166166114452916",
+      "chargePerLongBtcUsdcUpper": "1.096325000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "2.284833833885547084E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87705.99981721329328915623328",
+        "87706.00000000000000000000"
+      ],
+      "contextSampledOracle": "87706",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251231/21.lz4",
+        "bytes": 7195440,
+        "etag": "\"4579022a817ea0703d477f5dbfdfac58\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "23d8d6febbb8caf9864175c15a79e7df904c0c92b457a82f8c3cdc3eea58cc09"
+      }
+    },
+    {
+      "time": 1767218400100,
+      "blockNumber": 846815226,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3820,
+      "longCount": 2420,
+      "shortCount": 1400,
+      "chargePerLongBtcUsdcLower": "1.097449998258871406295956606",
+      "chargePerLongBtcUsdcUpper": "1.097450000014861265626992339",
+      "cashIntervalWidthAtPositionCapUsdc": "1.755989859331035733E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87795.99986070971250367652848",
+        "87796.00000118890125015938712"
+      ],
+      "contextSampledOracle": "87796",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251231/22.lz4",
+        "bytes": 7224913,
+        "etag": "\"50ba40dab634caeb95d11295e7ca3059\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "33f1f5f327b774de791eb8e23bcccacfbbc24bcf8d7e7d36c95d7ed66a9ba462"
+      }
+    },
+    {
+      "time": 1767222000093,
+      "blockNumber": 846859254,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3838,
+      "longCount": 2432,
+      "shortCount": 1406,
+      "chargePerLongBtcUsdcLower": "1.096599998102436916138471334",
+      "chargePerLongBtcUsdcUpper": "1.096600000232862559330998568",
+      "cashIntervalWidthAtPositionCapUsdc": "2.130425643192527234E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87727.99984819495329107770672",
+        "87728.00001862900474647988544"
+      ],
+      "contextSampledOracle": "87728",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251231/23.lz4",
+        "bytes": 7143237,
+        "etag": "\"7fbe963ccb99f6dadfa8fc0148462cdb\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "77af236ca7b96e6e190bddeb83680041532295ceb66b025bb87ef160f80567b4"
+      }
+    },
+    {
+      "time": 1767225600063,
+      "blockNumber": 846903317,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3846,
+      "longCount": 2440,
+      "shortCount": 1406,
+      "chargePerLongBtcUsdcLower": "1.095537497588937522633717849",
+      "chargePerLongBtcUsdcUpper": "1.095537500132587769096893005",
+      "cashIntervalWidthAtPositionCapUsdc": "2.543650246463175156E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87642.99980711500181069742792",
+        "87643.0000106070215277514404"
+      ],
+      "contextSampledOracle": "87643",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260101/0.lz4",
+        "bytes": 7167720,
+        "etag": "\"9cdb55ab1c6ca79f093382020ee0d869\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "8da2a1a7d48a7e2dc150141404601f65f6b49738ce09ba7d245048832769de33"
+      }
+    },
+    {
+      "time": 1767229200053,
+      "blockNumber": 846946780,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3857,
+      "longCount": 2448,
+      "shortCount": 1409,
+      "chargePerLongBtcUsdcLower": "1.097612498083041583009189623",
+      "chargePerLongBtcUsdcUpper": "1.097612500037435124928498912",
+      "cashIntervalWidthAtPositionCapUsdc": "1.954393541919309289E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87808.99984664332664073516984",
+        "87809.00000299480999427991296"
+      ],
+      "contextSampledOracle": "87809",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260101/1.lz4",
+        "bytes": 7324352,
+        "etag": "\"a58c8c06d7760200461bbc2c8313cd7d\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "7be0a4ba0d39b468693e00c286debfca5f9d86cd0cbb97997a180a6b0ca7ac09"
+      }
+    },
+    {
+      "time": 1767232800024,
+      "blockNumber": 846991455,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3855,
+      "longCount": 2455,
+      "shortCount": 1400,
+      "chargePerLongBtcUsdcLower": "1.099487497717391860080108195",
+      "chargePerLongBtcUsdcUpper": "1.099487500261042106543283351",
+      "cashIntervalWidthAtPositionCapUsdc": "2.543650246463175156E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87958.9998173913488064086556",
+        "87959.00002088336852346266808"
+      ],
+      "contextSampledOracle": "87959",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260101/2.lz4",
+        "bytes": 7252727,
+        "etag": "\"a34187e471bb32af86c3f4d027c25198\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "80da2ee7570d83bbab1203cad3bbf13559da778279a3a866437f73da1908edbf"
+      }
+    },
+    {
+      "time": 1767236400012,
+      "blockNumber": 847036456,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3868,
+      "longCount": 2473,
+      "shortCount": 1395,
+      "chargePerLongBtcUsdcLower": "1.098924998717364363220943928",
+      "chargePerLongBtcUsdcUpper": "1.098925000020293739706000534",
+      "cashIntervalWidthAtPositionCapUsdc": "1.302929376485056606E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87913.99989738914905767551424",
+        "87914.00000162349917648004272"
+      ],
+      "contextSampledOracle": "87914",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260101/3.lz4",
+        "bytes": 7214187,
+        "etag": "\"cdb1155d786e9961cc7fce0189acb6a6\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "8eebfc2c15839eae68017c77fe636db4139d6f7f5fe239571956194beae3a672"
+      }
+    },
+    {
+      "time": 1767240000036,
+      "blockNumber": 847080358,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3877,
+      "longCount": 2473,
+      "shortCount": 1404,
+      "chargePerLongBtcUsdcLower": "1.098074998560929873063458656",
+      "chargePerLongBtcUsdcUpper": "1.09807500",
+      "cashIntervalWidthAtPositionCapUsdc": "1.439070126936541344E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87845.99988487438984507669248",
+        "87846.0"
+      ],
+      "contextSampledOracle": "87846",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260101/4.lz4",
+        "bytes": 7140796,
+        "etag": "\"07b8b34be1bff0cc2424152628086a62\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "8a1d8ed3a1e67121a6f8566a26f5217e8c9e5227aa66266e4ef976e5e6736013"
+      }
+    },
+    {
+      "time": 1767243600040,
+      "blockNumber": 847124616,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3882,
+      "longCount": 2469,
+      "shortCount": 1413,
+      "chargePerLongBtcUsdcLower": "1.094874997523120572506483192",
+      "chargePerLongBtcUsdcUpper": "1.094875000066770818969658348",
+      "cashIntervalWidthAtPositionCapUsdc": "2.543650246463175156E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87589.99980184964580051865536",
+        "87590.00000534166551757266784"
+      ],
+      "contextSampledOracle": "87590",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260101/5.lz4",
+        "bytes": 7156732,
+        "etag": "\"7145096c3052912ea4ef47a3cf66a37c\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "a749211c1293028c07e430e865f30c645592f30521934bcef9785ee8e88c1870"
+      }
+    },
+    {
+      "time": 1767247200053,
+      "blockNumber": 847168695,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3896,
+      "longCount": 2482,
+      "shortCount": 1414,
+      "chargePerLongBtcUsdcLower": "1.096274998564739590356652199",
+      "chargePerLongBtcUsdcUpper": "1.096275000237101873622114794",
+      "cashIntervalWidthAtPositionCapUsdc": "1.672362283265462595E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87701.99988517916722853217592",
+        "87702.00001896814988976918352"
+      ],
+      "contextSampledOracle": "87702",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260101/6.lz4",
+        "bytes": 7099891,
+        "etag": "\"a807e98041fb5f4b74c7514931f55aee\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "53bf9f2f6abc01069a0e51709829d0406aadeb011b1431aa322fca5077bd9b2a"
+      }
+    },
+    {
+      "time": 1767250800011,
+      "blockNumber": 847212359,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3888,
+      "longCount": 2478,
+      "shortCount": 1410,
+      "chargePerLongBtcUsdcLower": "1.095662498721299003811657468",
+      "chargePerLongBtcUsdcUpper": "1.095662500055803873000253526",
+      "cashIntervalWidthAtPositionCapUsdc": "1.334504869188596058E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87652.99989770392030493259744",
+        "87653.00000446430984002028208"
+      ],
+      "contextSampledOracle": "87653",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260101/7.lz4",
+        "bytes": 7152575,
+        "etag": "\"2b8b65c9dfb99b4f6ce9088d91933f16\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "9c44adf1eab9cdaed56750601f45dd7cb84c96aa2798e2e1186e2e89ed37dff0"
+      }
+    },
+    {
+      "time": 1767254400045,
+      "blockNumber": 847256307,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3886,
+      "longCount": 2486,
+      "shortCount": 1400,
+      "chargePerLongBtcUsdcLower": "1.095399997698497150427942839",
+      "chargePerLongBtcUsdcUpper": "1.095400000241594221778282243",
+      "cashIntervalWidthAtPositionCapUsdc": "2.543097071350339404E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87631.99981587977203423542712",
+        "87632.00001932753774226257944"
+      ],
+      "contextSampledOracle": "87632",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260101/8.lz4",
+        "bytes": 7384806,
+        "etag": "\"2602251e99109fb80bfc95e257bcfb80\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "c6ebd5e5beaaa20a5f80549ae8ab53e47812a49a37801f72afc3bbad213780e5"
+      }
+    },
+    {
+      "time": 1767258000098,
+      "blockNumber": 847300291,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3891,
+      "longCount": 2419,
+      "shortCount": 1472,
+      "chargePerLongBtcUsdcLower": "1.097137497565779272016847001",
+      "chargePerLongBtcUsdcUpper": "1.097137500108876343367186405",
+      "cashIntervalWidthAtPositionCapUsdc": "2.543097071350339404E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87770.99980526234176134776008",
+        "87771.0000087101074693749124"
+      ],
+      "contextSampledOracle": "87771",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260101/9.lz4",
+        "bytes": 7383488,
+        "etag": "\"d49f9e715f26ae8ae0473ade9ad3f44b\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "457644b533509692e985c2b06735de35903f4e14e20c59185d87fce8cc262867"
+      }
+    },
+    {
+      "time": 1767261600010,
+      "blockNumber": 847343793,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3903,
+      "longCount": 2430,
+      "shortCount": 1473,
+      "chargePerLongBtcUsdcLower": "1.098474997509354305746261346",
+      "chargePerLongBtcUsdcUpper": "1.098475000052451377096600750",
+      "cashIntervalWidthAtPositionCapUsdc": "2.543097071350339404E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87877.99980074834445970090768",
+        "87878.00000419611016772806"
+      ],
+      "contextSampledOracle": "87878",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260101/10.lz4",
+        "bytes": 7350037,
+        "etag": "\"c2938ec977455a17b6fe7257becd2580\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "1c9cc572d08bf84736e3e138ff5d98d0975eb6fe07d3217570a2f82e4cadac0e"
+      }
+    },
+    {
+      "time": 1767265200034,
+      "blockNumber": 847387687,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3903,
+      "longCount": 2424,
+      "shortCount": 1479,
+      "chargePerLongBtcUsdcLower": "1.098287497505380716572276440",
+      "chargePerLongBtcUsdcUpper": "1.098287500012490761000446670",
+      "cashIntervalWidthAtPositionCapUsdc": "2.507110044428170230E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87862.9998004304573257821152",
+        "87863.0000009992608800357336"
+      ],
+      "contextSampledOracle": "87863",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260101/11.lz4",
+        "bytes": 7373178,
+        "etag": "\"05ea78d77cef6424c32d429b7a6187f6\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "0956134b2982cc7aadb1a21db354e0cad72c22167c6e3b7151bd3d9e258d53d3"
+      }
+    },
+    {
+      "time": 1767268800051,
+      "blockNumber": 847431871,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3912,
+      "longCount": 2428,
+      "shortCount": 1484,
+      "chargePerLongBtcUsdcLower": "1.100274998029499035090172666",
+      "chargePerLongBtcUsdcUpper": "1.100275000097908121536897125",
+      "cashIntervalWidthAtPositionCapUsdc": "2.068409086446724459E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88021.99984235992280721381328",
+        "88022.00000783264972295177"
+      ],
+      "contextSampledOracle": "88022",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260101/12.lz4",
+        "bytes": 7348359,
+        "etag": "\"1d6c0ce68206bb9dd059fc5fe98c05a7\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "a561ac784273931d6541c886ab30591d208f68c43e9210b8eb9b237d8ec3a4e1"
+      }
+    },
+    {
+      "time": 1767272400101,
+      "blockNumber": 847476070,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3920,
+      "longCount": 2433,
+      "shortCount": 1487,
+      "chargePerLongBtcUsdcLower": "1.099362498442668592248684849",
+      "chargePerLongBtcUsdcUpper": "1.099362500671112650161936214",
+      "cashIntervalWidthAtPositionCapUsdc": "2.228444057913251365E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87948.99987541348737989478792",
+        "87949.00005368901201295489712"
+      ],
+      "contextSampledOracle": "87949",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260101/13.lz4",
+        "bytes": 7250676,
+        "etag": "\"dc2a0e7c4463b5ba934247123a2f3c73\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "ebe741d0aad83c405554dad695cd71e2fcba9e7a379a5e36a1179a4ccb7f9ed0"
+      }
+    },
+    {
+      "time": 1767276000010,
+      "blockNumber": 847520432,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3913,
+      "longCount": 2423,
+      "shortCount": 1490,
+      "chargePerLongBtcUsdcLower": "1.098962498188410403228061967",
+      "chargePerLongBtcUsdcUpper": "1.098962500410450839201779234",
+      "cashIntervalWidthAtPositionCapUsdc": "2.222040435973717267E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87916.99985507283225824495736",
+        "87917.00003283606713614233872"
+      ],
+      "contextSampledOracle": "87917",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260101/14.lz4",
+        "bytes": 7272184,
+        "etag": "\"9986f1f9983e9cbd0072174a7f8d806f\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "5f27128f1e12f8e966430e96772bd28855343e82ff6d608f7fa0f42ea67f897c"
+      }
+    },
+    {
+      "time": 1767279600003,
+      "blockNumber": 847564593,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3915,
+      "longCount": 2410,
+      "shortCount": 1505,
+      "chargePerLongBtcUsdcLower": "1.099587497870587666952283365",
+      "chargePerLongBtcUsdcUpper": "1.0995875000",
+      "cashIntervalWidthAtPositionCapUsdc": "2.129412333047716635E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87966.9998296470133561826692",
+        "87967.000"
+      ],
+      "contextSampledOracle": "87967",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260101/15.lz4",
+        "bytes": 7377984,
+        "etag": "\"efaa35549426e13622741788e4817387\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "771caa5e1be1ff8f9cfa115c8d2479d2a7cd5dfc962e0440f2f3964c17d3dc99"
+      }
+    },
+    {
+      "time": 1767283200025,
+      "blockNumber": 847609596,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3920,
+      "longCount": 2405,
+      "shortCount": 1515,
+      "chargePerLongBtcUsdcLower": "1.100399997711676298814394064",
+      "chargePerLongBtcUsdcUpper": "1.100400000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "2.288323701185605936E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88031.99981693410390515152512",
+        "88032.00000000000000000000"
+      ],
+      "contextSampledOracle": "88032",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260101/16.lz4",
+        "bytes": 7344249,
+        "etag": "\"f45d3a3381a5a9a0ffa6649b3ca39f7b\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "8702832c87c4950d1567b87cc26cff227a76c6cdca8f4abb36969678f7e4392b"
+      }
+    },
+    {
+      "time": 1767286800034,
+      "blockNumber": 847654730,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3922,
+      "longCount": 2415,
+      "shortCount": 1507,
+      "chargePerLongBtcUsdcLower": "1.099862498442668592248684849",
+      "chargePerLongBtcUsdcUpper": "1.099862500230483330128517505",
+      "cashIntervalWidthAtPositionCapUsdc": "1.787814737879832656E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87988.99987541348737989478792",
+        "87989.0000184386664102814004"
+      ],
+      "contextSampledOracle": "87989",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260101/17.lz4",
+        "bytes": 7213841,
+        "etag": "\"6d8bfac8232c025f00cd451298c61a40\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "e890bc7a23b30139a2435e61e98513a6bb2055832ef815aaf6861c6e789845fa"
+      }
+    },
+    {
+      "time": 1767290400042,
+      "blockNumber": 847698494,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3905,
+      "longCount": 2404,
+      "shortCount": 1501,
+      "chargePerLongBtcUsdcLower": "1.103949997584547204304082623",
+      "chargePerLongBtcUsdcUpper": "1.10395",
+      "cashIntervalWidthAtPositionCapUsdc": "2.415452795695917377E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88315.99980676377634432660984",
+        "88316"
+      ],
+      "contextSampledOracle": "88316",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260101/18.lz4",
+        "bytes": 7194367,
+        "etag": "\"1f107cde3b338aaed8e831408459db31\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "1f337c3a85d52ffcc6f3d15a8ce78943bebbdeb054c31dd8d266c1e4d6fe0393"
+      }
+    },
+    {
+      "time": 1767294000029,
+      "blockNumber": 847742801,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3903,
+      "longCount": 2404,
+      "shortCount": 1499,
+      "chargePerLongBtcUsdcLower": "1.102424997648111751559238344",
+      "chargePerLongBtcUsdcUpper": "1.102425000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "2.351888248440761656E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88193.99981184894012473906752",
+        "88194.00000000000000000000"
+      ],
+      "contextSampledOracle": "88194",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260101/19.lz4",
+        "bytes": 7283966,
+        "etag": "\"9a61ea80a9846814b2faefc63ca04092\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "d739d749ca720a1bb29d3f77f823611fef4c6afd5b3a991a8b584521d28de0e1"
+      }
+    },
+    {
+      "time": 1767297600043,
+      "blockNumber": 847787941,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3904,
+      "longCount": 2402,
+      "shortCount": 1502,
+      "chargePerLongBtcUsdcLower": "1.104787498633362234014152010",
+      "chargePerLongBtcUsdcUpper": "1.104787500712761805742231266",
+      "cashIntervalWidthAtPositionCapUsdc": "2.079399571728079256E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88382.9998906689787211321608",
+        "88383.00005702094445937850128"
+      ],
+      "contextSampledOracle": "88383",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260101/20.lz4",
+        "bytes": 7245520,
+        "etag": "\"26881ab5f550dd76ad6a6be4ff085502\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "52c632c23c2cf1c69ebe3ef657cc0d2630e2dbf70d1fe4da63a680a15695bd11"
+      }
+    },
+    {
+      "time": 1767301200069,
+      "blockNumber": 847832808,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3905,
+      "longCount": 2405,
+      "shortCount": 1500,
+      "chargePerLongBtcUsdcLower": "1.103224998156628129600484107",
+      "chargePerLongBtcUsdcUpper": "1.103225000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "1.843371870399515893E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88257.99985253025036803872856",
+        "88258.00000000000000000000"
+      ],
+      "contextSampledOracle": "88258",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260101/21.lz4",
+        "bytes": 7234740,
+        "etag": "\"fc7aedb315719efc83eb4c8adbbddc73\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "319b9dd5a1f61d89bf1a665fa9432f98b9d3b803115215c2e0931515bff922c0"
+      }
+    },
+    {
+      "time": 1767304800047,
+      "blockNumber": 847877123,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3903,
+      "longCount": 2395,
+      "shortCount": 1508,
+      "chargePerLongBtcUsdcLower": "1.104862498442668592248684849",
+      "chargePerLongBtcUsdcUpper": "1.104862500055164634858053405",
+      "cashIntervalWidthAtPositionCapUsdc": "1.612496042609368556E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88388.99987541348737989478792",
+        "88389.0000044131707886442724"
+      ],
+      "contextSampledOracle": "88389",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260101/22.lz4",
+        "bytes": 7204894,
+        "etag": "\"88b167570d8d675010ba35ad16df2402\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "285062187e031ca8294b2514ddab564174f0c4c4b9874ddb2ec1a00cc9540c94"
+      }
+    },
+    {
+      "time": 1767308400023,
+      "blockNumber": 847920736,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3891,
+      "longCount": 2390,
+      "shortCount": 1501,
+      "chargePerLongBtcUsdcLower": "1.108074998538015413131418430",
+      "chargePerLongBtcUsdcUpper": "1.108075000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "1.461984586868581570E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88645.9998830412330505134744",
+        "88646.00000000000000000000"
+      ],
+      "contextSampledOracle": "88646",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260101/23.lz4",
+        "bytes": 7236389,
+        "etag": "\"7f691bac95972b7fbafae12b4888d1e4\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "13ae19e2aebc8cf4eccbf96e42876579a8b515f712d6057449f37079dd904123"
+      }
+    },
+    {
+      "time": 1767312000042,
+      "blockNumber": 847965118,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3851,
+      "longCount": 2361,
+      "shortCount": 1490,
+      "chargePerLongBtcUsdcLower": "1.110487498124845855972906247",
+      "chargePerLongBtcUsdcUpper": "1.110487500162218874690161950",
+      "cashIntervalWidthAtPositionCapUsdc": "2.037373018717255703E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88838.99984998766847783249976",
+        "88839.000012977509975212956"
+      ],
+      "contextSampledOracle": "88839",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260102/0.lz4",
+        "bytes": 7246548,
+        "etag": "\"cd0d1ef7f87402c11ea6a91ea15105fa\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "e8e2319eb82a1b24c55e2e8a5a50e6b84341c260ce5dc52f5cea43270e46505c"
+      }
+    },
+    {
+      "time": 1767315600032,
+      "blockNumber": 848009082,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3864,
+      "longCount": 2358,
+      "shortCount": 1506,
+      "chargePerLongBtcUsdcLower": "1.110362498442668592248684849",
+      "chargePerLongBtcUsdcUpper": "1.110362500000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "1.557331407751315151E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88828.99987541348737989478792",
+        "88829.00000000000000000000"
+      ],
+      "contextSampledOracle": "88829",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260102/1.lz4",
+        "bytes": 7214585,
+        "etag": "\"f840e264a2699434ab439296efcd6376\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "46c69ca3e54a64d96b0c6789785c337b298d9482a8285bdcba925799756afa4b"
+      }
+    },
+    {
+      "time": 1767319200057,
+      "blockNumber": 848053391,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3862,
+      "longCount": 2346,
+      "shortCount": 1516,
+      "chargePerLongBtcUsdcLower": "1.107999997457418109793771182",
+      "chargePerLongBtcUsdcUpper": "1.108000000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "2.542581890206228818E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88639.99979659344878350169456",
+        "88640.00000000000000000000"
+      ],
+      "contextSampledOracle": "88640",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260102/2.lz4",
+        "bytes": 7200153,
+        "etag": "\"8912ea6306bfbf3de0b7596759ef8e9d\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "08b977be406016680c8e4d1d4aa966e741942922604a24d8574cc6c4ea4898e3"
+      }
+    },
+    {
+      "time": 1767322800019,
+      "blockNumber": 848097458,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3867,
+      "longCount": 2342,
+      "shortCount": 1525,
+      "chargePerLongBtcUsdcLower": "1.107962498188410403228061967",
+      "chargePerLongBtcUsdcUpper": "1.107962500000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "1.811589596771938033E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88636.99985507283225824495736",
+        "88637.00000000000000000000"
+      ],
+      "contextSampledOracle": "88637",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260102/3.lz4",
+        "bytes": 7245962,
+        "etag": "\"2471d75273ccd6647d6c9038b599b11c\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "6018e5c806ac014501634d8de772885237da2c52cceab85e2ddb7d0ba406aa16"
+      }
+    },
+    {
+      "time": 1767326400139,
+      "blockNumber": 848141339,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3852,
+      "longCount": 2340,
+      "shortCount": 1512,
+      "chargePerLongBtcUsdcLower": "1.111824997902369940579861225",
+      "chargePerLongBtcUsdcUpper": "1.111825000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "2.097630059420138775E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88945.999832189595246388898",
+        "88946.00000000000000000000"
+      ],
+      "contextSampledOracle": "88946",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260102/4.lz4",
+        "bytes": 7198992,
+        "etag": "\"830b755168a450ad678b950fac6033b4\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "ab1d8174431fccb77eea9e56e9fbe22ef68dded047fa9a900a8fa3ef3e21391b"
+      }
+    },
+    {
+      "time": 1767330000110,
+      "blockNumber": 848185510,
+      "settledRate": "0.0000121813",
+      "distinctBtcPositionsInPrefix": 3851,
+      "longCount": 2332,
+      "shortCount": 1519,
+      "chargePerLongBtcUsdcLower": "1.079734217487042343016650207",
+      "chargePerLongBtcUsdcUpper": "1.079734220029223645158774793",
+      "cashIntervalWidthAtPositionCapUsdc": "2.542181302142124586E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88638.66890127017174001545049",
+        "88638.66910996557388446018019"
+      ],
+      "contextSampledOracle": "88639",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260102/5.lz4",
+        "bytes": 7201110,
+        "etag": "\"c038baf575c5aec874af40884d2bdca2\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "c0bc447b36ff35802a7d2e1366db36234ffc4a9149bb32869e9a12bd3c2da4da"
+      }
+    },
+    {
+      "time": 1767333600022,
+      "blockNumber": 848230030,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3853,
+      "longCount": 2330,
+      "shortCount": 1523,
+      "chargePerLongBtcUsdcLower": "1.109549997683437288422988971",
+      "chargePerLongBtcUsdcUpper": "1.10955",
+      "cashIntervalWidthAtPositionCapUsdc": "2.316562711577011029E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88763.99981467498307383911768",
+        "88764"
+      ],
+      "contextSampledOracle": "88764",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260102/6.lz4",
+        "bytes": 7231010,
+        "etag": "\"b4e90eacdfc0dbe3b5550b67ff8052d9\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "ecd441d6df03852c05471175fa7cd8c7f00bb12e864ead489fa4d3c679b322a9"
+      }
+    },
+    {
+      "time": 1767337200003,
+      "blockNumber": 848273969,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3852,
+      "longCount": 2324,
+      "shortCount": 1528,
+      "chargePerLongBtcUsdcLower": "1.111687498041725965693644655",
+      "chargePerLongBtcUsdcUpper": "1.111687500000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "1.958274034306355345E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88934.9998433380772554915724",
+        "88935.00000000000000000000"
+      ],
+      "contextSampledOracle": "88935",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260102/7.lz4",
+        "bytes": 7250892,
+        "etag": "\"629558737927275c9ae9abd2feef2c7e\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "6ddf9381be46cfa7a5cae126702f684c55deea565d57d516a4f8693403645960"
+      }
+    },
+    {
+      "time": 1767340800081,
+      "blockNumber": 848317735,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3850,
+      "longCount": 2321,
+      "shortCount": 1529,
+      "chargePerLongBtcUsdcLower": "1.110724997694559331619860766",
+      "chargePerLongBtcUsdcUpper": "1.110725000236740633761985352",
+      "cashIntervalWidthAtPositionCapUsdc": "2.542181302142124586E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88857.99981556474652958886128",
+        "88858.00001893925070095882816"
+      ],
+      "contextSampledOracle": "88858",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260102/8.lz4",
+        "bytes": 7477897,
+        "etag": "\"9d2c214fa20557caf27c8c5050464006\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "a011f1988d33be3657cb8376ddc8b35a0e55ce63c5d0031be88b2c025dd9df3a"
+      }
+    },
+    {
+      "time": 1767344400003,
+      "blockNumber": 848361390,
+      "settledRate": "0.0000105918",
+      "distinctBtcPositionsInPrefix": 3857,
+      "longCount": 2375,
+      "shortCount": 1482,
+      "chargePerLongBtcUsdcLower": "0.9445537572518104938574862060",
+      "chargePerLongBtcUsdcUpper": "0.9445537596626844694307800422",
+      "cashIntervalWidthAtPositionCapUsdc": "2.4108739755732938362E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "89177.83164823830641227045507",
+        "89177.83187585532859672388472"
+      ],
+      "contextSampledOracle": "89178",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260102/9.lz4",
+        "bytes": 7500954,
+        "etag": "\"367030fe9b28c75a2605681438e0e9d4\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "8ac812db4118426450cffefffd4982a9eb21f43d6e12f1926a0efb4297fdd2fc"
+      }
+    },
+    {
+      "time": 1767348000091,
+      "blockNumber": 848405554,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3861,
+      "longCount": 2379,
+      "shortCount": 1482,
+      "chargePerLongBtcUsdcLower": "1.118337498591472672281879097",
+      "chargePerLongBtcUsdcUpper": "1.1183375",
+      "cashIntervalWidthAtPositionCapUsdc": "1.408527327718120903E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "89466.99988731781378255032776",
+        "89467"
+      ],
+      "contextSampledOracle": "89467",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260102/10.lz4",
+        "bytes": 7424467,
+        "etag": "\"b9b74b7891cd3e261cab4b6d43e4d02b\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "df39b16172ad772657302490cf45f0a88091bda696d217d9e9159ed86cbc642c"
+      }
+    },
+    {
+      "time": 1767351600048,
+      "blockNumber": 848449726,
+      "settledRate": "0.0000057789",
+      "distinctBtcPositionsInPrefix": 3837,
+      "longCount": 2343,
+      "shortCount": 1494,
+      "chargePerLongBtcUsdcLower": "0.5181484098751286899841043759",
+      "chargePerLongBtcUsdcUpper": "0.5181484113631587102894801877",
+      "cashIntervalWidthAtPositionCapUsdc": "1.4880300203053758118E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "89662.11733636655591619588086",
+        "89662.11759386020008816213946"
+      ],
+      "contextSampledOracle": "89662",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260102/11.lz4",
+        "bytes": 7402984,
+        "etag": "\"e14362f3ccc04b6d0bdfce6efa9b921f\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "41c66ecb5a97e9ef864b0e5c4faf6f73c51e845c3508c8be650bd8b4da312348"
+      }
+    },
+    {
+      "time": 1767355200042,
+      "blockNumber": 848494056,
+      "settledRate": "5.329E-7",
+      "distinctBtcPositionsInPrefix": 3863,
+      "longCount": 2345,
+      "shortCount": 1518,
+      "chargePerLongBtcUsdcLower": "0.04769963924540686626645530124",
+      "chargePerLongBtcUsdcUpper": "0.04769964178758816840857988732",
+      "cashIntervalWidthAtPositionCapUsdc": "2.54218130214212458608E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "89509.55009458972840393188448",
+        "89509.55486505567350080669416"
+      ],
+      "contextSampledOracle": "89503",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260102/12.lz4",
+        "bytes": 7311109,
+        "etag": "\"9137f60d9313de31779a4470a915fb7d\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "b8bd07c6fb3b535e41a78851d3ceb52689b5b2de93f6a9afc67d097717b1da3f"
+      }
+    },
+    {
+      "time": 1767358800114,
+      "blockNumber": 848538020,
+      "settledRate": "0.0000051975",
+      "distinctBtcPositionsInPrefix": 3861,
+      "longCount": 2338,
+      "shortCount": 1523,
+      "chargePerLongBtcUsdcLower": "0.4646998182785250696255792758",
+      "chargePerLongBtcUsdcUpper": "0.4646998208207063717677038618",
+      "cashIntervalWidthAtPositionCapUsdc": "2.5421813021421245860E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "89408.33444512266851862997129",
+        "89408.33493423884016694638996"
+      ],
+      "contextSampledOracle": "89408",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260102/13.lz4",
+        "bytes": 7298695,
+        "etag": "\"13d51309a5510f2a7178edd573a568f8\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "8d7adcaa3939b16ca46ee7b7b9fb6bf4f6f17f4b996c3b2d41bea4b8e063608f"
+      }
+    },
+    {
+      "time": 1767362400009,
+      "blockNumber": 848582124,
+      "settledRate": "0.0000084142",
+      "distinctBtcPositionsInPrefix": 3864,
+      "longCount": 2325,
+      "shortCount": 1539,
+      "chargePerLongBtcUsdcLower": "0.7518023576062287000956305052",
+      "chargePerLongBtcUsdcUpper": "0.75180236",
+      "cashIntervalWidthAtPositionCapUsdc": "2.3937712999043694948E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "89349.23790808736422899746918",
+        "89349.23819257921133322240974"
+      ],
+      "contextSampledOracle": "89349",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260102/14.lz4",
+        "bytes": 7367837,
+        "etag": "\"994a2624bf081ae69efeff89d3dfb9f0\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "538c1edb7368296850cb1dadcb579d0b599c5b1581aa570cc7ad4aec154cb02f"
+      }
+    },
+    {
+      "time": 1767366000105,
+      "blockNumber": 848626678,
+      "settledRate": "0.0000046961",
+      "distinctBtcPositionsInPrefix": 3825,
+      "longCount": 2290,
+      "shortCount": 1535,
+      "chargePerLongBtcUsdcLower": "0.4206917732915763106581141756",
+      "chargePerLongBtcUsdcUpper": "0.42069177500",
+      "cashIntervalWidthAtPositionCapUsdc": "1.7084236893418858244E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "89583.22294916554388920895543",
+        "89583.22331296181938204041652"
+      ],
+      "contextSampledOracle": "89584",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260102/15.lz4",
+        "bytes": 7276412,
+        "etag": "\"607f3cfadeba433baff11cd810b5b5eb\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "0dcc7d29fd9474e694e9d759aacf75428d01412ca3de38560e937b45893eec05"
+      }
+    },
+    {
+      "time": 1767369600038,
+      "blockNumber": 848670603,
+      "settledRate": "0.0000044126",
+      "distinctBtcPositionsInPrefix": 3863,
+      "longCount": 2308,
+      "shortCount": 1555,
+      "chargePerLongBtcUsdcLower": "0.3945401546752080568843572530",
+      "chargePerLongBtcUsdcUpper": "0.3945401567340416782526621681",
+      "cashIntervalWidthAtPositionCapUsdc": "2.0588336213683049151E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "89412.17302162173251243195690",
+        "89412.17348820234742615740563"
+      ],
+      "contextSampledOracle": "89413",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260102/16.lz4",
+        "bytes": 7349378,
+        "etag": "\"e66a96be98727913d99437c324bb9af8\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "0d595bcae57379afbc7cebc653dc5669b3310f28074dbc854fa97abe36756371"
+      }
+    },
+    {
+      "time": 1767373200047,
+      "blockNumber": 848714663,
+      "settledRate": "0.0000083593",
+      "distinctBtcPositionsInPrefix": 3858,
+      "longCount": 2304,
+      "shortCount": 1554,
+      "chargePerLongBtcUsdcLower": "0.7554769853466763108551332265",
+      "chargePerLongBtcUsdcUpper": "0.7554769878888576129972578125",
+      "cashIntervalWidthAtPositionCapUsdc": "2.5421813021421245860E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "90375.62778542178302670477510",
+        "90375.62808953591963409110960"
+      ],
+      "contextSampledOracle": "90376",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260102/17.lz4",
+        "bytes": 7308967,
+        "etag": "\"2d425c30d0a904ff6c28597208230d22\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "1c829f74ea1384fe14b7d46475109d4c2cd2bd9ab4a92c44d026f8337ae3d870"
+      }
+    },
+    {
+      "time": 1767376800034,
+      "blockNumber": 848758585,
+      "settledRate": "-0.0000015941",
+      "distinctBtcPositionsInPrefix": 15750,
+      "longCount": 9127,
+      "shortCount": 6623,
+      "chargePerLongBtcUsdcLower": "-0.1440234757714175243276313283",
+      "chargePerLongBtcUsdcUpper": "-0.1440234735208156825241596294",
+      "cashIntervalWidthAtPositionCapUsdc": "2.2506018418034716989E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "90347.82856835561290016914209",
+        "90347.82998018789556968278546"
+      ],
+      "contextSampledOracle": "90350",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260102/18.lz4",
+        "etag": "\"5d88481cdf59c1a29f90302ea4b12137\"",
+        "bytes": 7274726,
+        "range_prefix_bytes": 4194304,
+        "sha256": "0a283c9ad66ead92649eb68471921573aac8d17c50f9e375bea0874bfbcdf472"
+      }
+    },
+    {
+      "time": 1767380400026,
+      "blockNumber": 848801917,
+      "settledRate": "4.711E-7",
+      "distinctBtcPositionsInPrefix": 3865,
+      "longCount": 2281,
+      "shortCount": 1584,
+      "chargePerLongBtcUsdcLower": "0.04228886818847147472382218992",
+      "chargePerLongBtcUsdcUpper": "0.04228887035771293239720562686",
+      "cashIntervalWidthAtPositionCapUsdc": "2.16924145767338343694E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "89766.22413175859631462999346",
+        "89766.22873638915813459058981"
+      ],
+      "contextSampledOracle": "89773",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260102/19.lz4",
+        "bytes": 7248438,
+        "etag": "\"6f825177862a79facff41d067109f9b3\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "e3b8b2568cb102cc934590c4b13d303f3ecf88f94d2cf08587a1a68ed4cebcd7"
+      }
+    },
+    {
+      "time": 1767384000027,
+      "blockNumber": 848845442,
+      "settledRate": "0.0000060741",
+      "distinctBtcPositionsInPrefix": 3877,
+      "longCount": 2301,
+      "shortCount": 1576,
+      "chargePerLongBtcUsdcLower": "0.5460413260805748176985899601",
+      "chargePerLongBtcUsdcUpper": "0.5460413285714285714285714286",
+      "cashIntervalWidthAtPositionCapUsdc": "2.4908537537299814685E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "89896.66388116343453327899773",
+        "89896.66429124126560783843345"
+      ],
+      "contextSampledOracle": "89897",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260102/20.lz4",
+        "bytes": 7304876,
+        "etag": "\"0f438d3a28f4173bb8288a8f38c2932a\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "be52c57003572a672e9735e5963e6a879db26c712b072778974f8c82e74e426a"
+      }
+    },
+    {
+      "time": 1767387600000,
+      "blockNumber": 848889172,
+      "settledRate": "-0.0000045595",
+      "distinctBtcPositionsInPrefix": 3880,
+      "longCount": 2308,
+      "shortCount": 1572,
+      "chargePerLongBtcUsdcLower": "-0.4093723348009557839041663745",
+      "chargePerLongBtcUsdcUpper": "-0.4093723322587744817620417885",
+      "cashIntervalWidthAtPositionCapUsdc": "2.5421813021421245860E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "89784.47905664535185043136057",
+        "89784.47961420238708283065566"
+      ],
+      "contextSampledOracle": "89784",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260102/21.lz4",
+        "bytes": 7225234,
+        "etag": "\"0ab400605e08f5293f1e4ac48b6f4a3d\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "979f99cc414f2604328cbf9058de408c0fa281a43a8d7d994ba8993f4ee28786"
+      }
+    },
+    {
+      "time": 1767391200042,
+      "blockNumber": 848933491,
+      "settledRate": "-0.0000010285",
+      "distinctBtcPositionsInPrefix": 3889,
+      "longCount": 2305,
+      "shortCount": 1584,
+      "chargePerLongBtcUsdcLower": "-0.09264280265550950232117572585",
+      "chargePerLongBtcUsdcUpper": "-0.09264280020253558434166306577",
+      "cashIntervalWidthAtPositionCapUsdc": "2.45297391797951266008E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "90075.64433887757349699860551",
+        "90075.64672387895218393361774"
+      ],
+      "contextSampledOracle": "90073",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260102/22.lz4",
+        "bytes": 7243246,
+        "etag": "\"e4c8e058fe7a30dd28328566583f1b43\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "b064b702a8d6155114cb623d089e8328f0ba49cc87ab1e5868fc781e37c34a7c"
+      }
+    },
+    {
+      "time": 1767394800022,
+      "blockNumber": 848977145,
+      "settledRate": "0.0000013348",
+      "distinctBtcPositionsInPrefix": 3886,
+      "longCount": 2314,
+      "shortCount": 1572,
+      "chargePerLongBtcUsdcLower": "0.1203910815449776380199483696",
+      "chargePerLongBtcUsdcUpper": "0.1203910840614891851660388533",
+      "cashIntervalWidthAtPositionCapUsdc": "2.5165115471460904837E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "90194.09765131678005689868864",
+        "90194.09953662659961495269201"
+      ],
+      "contextSampledOracle": "90195",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260102/23.lz4",
+        "bytes": 7226997,
+        "etag": "\"78355c666e010a1f76b376c93d9d7fff\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "a258692fd0bd61ab5a25aedb0729a31b6dec7ff4455fc0d31391ec346147a647"
+      }
+    },
+    {
+      "time": 1767398400008,
+      "blockNumber": 849020720,
+      "settledRate": "-0.0000028235",
+      "distinctBtcPositionsInPrefix": 3899,
+      "longCount": 2316,
+      "shortCount": 1583,
+      "chargePerLongBtcUsdcLower": "-0.2540917239805730304116822583",
+      "chargePerLongBtcUsdcUpper": "-0.2540917215200540925337469802",
+      "cashIntervalWidthAtPositionCapUsdc": "2.4605189378779352781E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "89991.75545247178768682379324",
+        "89991.75632391465571513449913"
+      ],
+      "contextSampledOracle": "89992",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260103/0.lz4",
+        "bytes": 7180511,
+        "etag": "\"0ee50061bac61ed657b308df7ea55ead\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "8da86e6a662cbf77db1e14d8af4c6bda86ff56c9d047bc63c817123ad24a5fab"
+      }
+    },
+    {
+      "time": 1767402000018,
+      "blockNumber": 849063050,
+      "settledRate": "0.0000040019",
+      "distinctBtcPositionsInPrefix": 3895,
+      "longCount": 2312,
+      "shortCount": 1583,
+      "chargePerLongBtcUsdcLower": "0.3607914471360706990788850934",
+      "chargePerLongBtcUsdcUpper": "0.3607914490327894828260157862",
+      "cashIntervalWidthAtPositionCapUsdc": "1.8967187837471306928E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "90155.03814090074691493667843",
+        "90155.03861485531443214867593"
+      ],
+      "contextSampledOracle": "90156",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260103/1.lz4",
+        "bytes": 7248429,
+        "etag": "\"ba19d271a76f2f108b3c6d59c2266d05\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "d78eed48171f6645bd0ff7a9bbbba5b5eb4b9fe7fc3dd942274deb64164db428"
+      }
+    },
+    {
+      "time": 1767405600008,
+      "blockNumber": 849106788,
+      "settledRate": "0.0000035501",
+      "distinctBtcPositionsInPrefix": 3901,
+      "longCount": 2319,
+      "shortCount": 1582,
+      "chargePerLongBtcUsdcLower": "0.3205105386443652964542481407",
+      "chargePerLongBtcUsdcUpper": "0.3205105404699738903394255875",
+      "cashIntervalWidthAtPositionCapUsdc": "1.8256085938851774468E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "90282.11561487431240084733971",
+        "90282.11612911576866550958776"
+      ],
+      "contextSampledOracle": "90283",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260103/2.lz4",
+        "bytes": 7283201,
+        "etag": "\"e61fbe857422f5ccf68774918a19000c\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "cc3a9158906824d4f16511c153f4e3a23c1c80074e7a66f26eb9b6daee03bd1a"
+      }
+    },
+    {
+      "time": 1767409200074,
+      "blockNumber": 849150960,
+      "settledRate": "0.0000037402",
+      "distinctBtcPositionsInPrefix": 3893,
+      "longCount": 2317,
+      "shortCount": 1576,
+      "chargePerLongBtcUsdcLower": "0.3378883243904691335019519822",
+      "chargePerLongBtcUsdcUpper": "0.3378883269326504356440765682",
+      "cashIntervalWidthAtPositionCapUsdc": "2.5421813021421245860E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "90339.64076532515199774129250",
+        "90339.64144501642576441809748"
+      ],
+      "contextSampledOracle": "90340",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260103/3.lz4",
+        "bytes": 7290786,
+        "etag": "\"de6a1172d4f7d6fb6d5d283f528e221a\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "72a1030671ff12a5a26c0ceeb46fb8c294eb4533e8541ee2af66d9f37f29225b"
+      }
+    },
+    {
+      "time": 1767412800011,
+      "blockNumber": 849194733,
+      "settledRate": "4.915E-7",
+      "distinctBtcPositionsInPrefix": 3904,
+      "longCount": 2320,
+      "shortCount": 1584,
+      "chargePerLongBtcUsdcLower": "0.04439043227187307092132908543",
+      "chargePerLongBtcUsdcUpper": "0.04439043456900326192187638992",
+      "cashIntervalWidthAtPositionCapUsdc": "2.29713019100054730449E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "90316.24063453320635061868857",
+        "90316.24530824671805061320431"
+      ],
+      "contextSampledOracle": "90321",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260103/4.lz4",
+        "bytes": 7272599,
+        "etag": "\"8ed8e9433f6b1e0caf8f8265417bca1d\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "0f1f109c6d46b42fb4d78424671e6e92613f2e88a5c7348f99021c1a8b421df1"
+      }
+    },
+    {
+      "time": 1767416400006,
+      "blockNumber": 849238719,
+      "settledRate": "0.0000022977",
+      "distinctBtcPositionsInPrefix": 3917,
+      "longCount": 2329,
+      "shortCount": 1588,
+      "chargePerLongBtcUsdcLower": "0.2071871799830678014370823792",
+      "chargePerLongBtcUsdcUpper": "0.2071871823149691344386899654",
+      "cashIntervalWidthAtPositionCapUsdc": "2.3319013330016075862E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "90171.55415548931602780275023",
+        "90171.55517037434584092351717"
+      ],
+      "contextSampledOracle": "90170",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260103/5.lz4",
+        "bytes": 7249183,
+        "etag": "\"a5b5523a05ebd19e77f3cb5150a00706\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "40fc881510ef1f0976a8aef3b72c423ca44aecba42e4d4e7914daca97a7fe5aa"
+      }
+    },
+    {
+      "time": 1767420000019,
+      "blockNumber": 849282692,
+      "settledRate": "0.0000072188",
+      "distinctBtcPositionsInPrefix": 3939,
+      "longCount": 2333,
+      "shortCount": 1606,
+      "chargePerLongBtcUsdcLower": "0.6499328768804435648779603622",
+      "chargePerLongBtcUsdcUpper": "0.6499328788366803642129016548",
+      "cashIntervalWidthAtPositionCapUsdc": "1.9562367993349412926E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "90033.36799474200211641275035",
+        "90033.36826573396744790015720"
+      ],
+      "contextSampledOracle": "90033",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260103/6.lz4",
+        "bytes": 7303945,
+        "etag": "\"d67c5a4efe3514719a4fb9b0e1bd017e\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "c8e9e8bfe45529fdfd5b921ef62c8776e1f2aa25cb6beda2105c632bcf546951"
+      }
+    },
+    {
+      "time": 1767423600004,
+      "blockNumber": 849327360,
+      "settledRate": "0.0000060963",
+      "distinctBtcPositionsInPrefix": 3946,
+      "longCount": 2330,
+      "shortCount": 1616,
+      "chargePerLongBtcUsdcLower": "0.5479387708006835162867069531",
+      "chargePerLongBtcUsdcUpper": "0.5479387728459530026109660574",
+      "cashIntervalWidthAtPositionCapUsdc": "2.0452694863242591043E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "89880.54570816454509894640242",
+        "89880.54604365812092760626239"
+      ],
+      "contextSampledOracle": "89880",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260103/7.lz4",
+        "bytes": 7214420,
+        "etag": "\"bcfb7ba84304d0ca59767536d77b1f33\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "48bdf161852801d7ea103ebf4b1a1e32131071f0ae566f2cd1a6e31d942967be"
+      }
+    },
+    {
+      "time": 1767427200011,
+      "blockNumber": 849369442,
+      "settledRate": "0.0000081292",
+      "distinctBtcPositionsInPrefix": 3950,
+      "longCount": 2329,
+      "shortCount": 1621,
+      "chargePerLongBtcUsdcLower": "0.7282158596649824503691533246",
+      "chargePerLongBtcUsdcUpper": "0.7282158622061378249370604949",
+      "cashIntervalWidthAtPositionCapUsdc": "2.5411553745679071703E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "89580.26123911116104526316545",
+        "89580.26155170715752313394859"
+      ],
+      "contextSampledOracle": "89580",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260103/8.lz4",
+        "bytes": 7403131,
+        "etag": "\"d0d96b0ce5738367ca18b0fbc0a1b191\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "c73cf66dddef63c5d0b06a8bc8209abed4367031aa5fc860985474cf0ec14cda"
+      }
+    },
+    {
+      "time": 1767430800067,
+      "blockNumber": 849413541,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3963,
+      "longCount": 2342,
+      "shortCount": 1621,
+      "chargePerLongBtcUsdcLower": "1.120887498372209534972120851",
+      "chargePerLongBtcUsdcUpper": "1.120887500152514395906455513",
+      "cashIntervalWidthAtPositionCapUsdc": "1.780304860934334662E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "89670.99986977676279776966808",
+        "89671.00001220115167251644104"
+      ],
+      "contextSampledOracle": "89671",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260103/9.lz4",
+        "bytes": 7342500,
+        "etag": "\"8b338ec8ff814a747767ef8379580338\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "fec1f420f0aa87b96681c780fc7562fcf029fdb82710c5c072a9bedcc600d41f"
+      }
+    },
+    {
+      "time": 1767434400026,
+      "blockNumber": 849457761,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3949,
+      "longCount": 2339,
+      "shortCount": 1610,
+      "chargePerLongBtcUsdcLower": "1.122387498467541333802450523",
+      "chargePerLongBtcUsdcUpper": "1.1223875",
+      "cashIntervalWidthAtPositionCapUsdc": "1.532458666197549477E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "89790.99987740330670419604184",
+        "89791"
+      ],
+      "contextSampledOracle": "89791",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260103/10.lz4",
+        "bytes": 7241753,
+        "etag": "\"02576063ee2367eb5e8538d53862e13a\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "581f7f64988c6f4b301993144e8616f3bc7476559663ce8a723e63f805a726c4"
+      }
+    },
+    {
+      "time": 1767438000060,
+      "blockNumber": 849501810,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3966,
+      "longCount": 2350,
+      "shortCount": 1616,
+      "chargePerLongBtcUsdcLower": "1.121924998152151966005443192",
+      "chargePerLongBtcUsdcUpper": "1.121925000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "1.847848033994556808E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "89753.99985217215728043545536",
+        "89754.00000000000000000000"
+      ],
+      "contextSampledOracle": "89754",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260103/11.lz4",
+        "bytes": 7154492,
+        "etag": "\"1168cc317430ff18e9b562bf0c987e94\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "11ec4121b92857f2feb619be7811e912eb29be6a1203c54a90445f359bd792cd"
+      }
+    },
+    {
+      "time": 1767441600095,
+      "blockNumber": 849545894,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3971,
+      "longCount": 2346,
+      "shortCount": 1625,
+      "chargePerLongBtcUsdcLower": "1.121912498246689333178853450",
+      "chargePerLongBtcUsdcUpper": "1.1219125",
+      "cashIntervalWidthAtPositionCapUsdc": "1.753310666821146550E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "89752.999859735146654308276",
+        "89753"
+      ],
+      "contextSampledOracle": "89753",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260103/12.lz4",
+        "bytes": 7237538,
+        "etag": "\"14ce48745f00fc24a36493e33a10d0c5\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "d5927c50b14ff95f11791b94cca6b2c891f5a20d2b7fbb483abb9fa2410be93e"
+      }
+    },
+    {
+      "time": 1767445200083,
+      "blockNumber": 849590238,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3971,
+      "longCount": 2354,
+      "shortCount": 1617,
+      "chargePerLongBtcUsdcLower": "1.125487497901905994075827803",
+      "chargePerLongBtcUsdcUpper": "1.1254875",
+      "cashIntervalWidthAtPositionCapUsdc": "2.098094005924172197E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "90038.99983215247952606622424",
+        "90039"
+      ],
+      "contextSampledOracle": "90039",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260103/13.lz4",
+        "bytes": 7246229,
+        "etag": "\"e2ae6952817248622e2f3c9523e76c90\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "2663eea26ee8fe49db6fbadfe6e2012203a1ee1764272725eed04c324fce697f"
+      }
+    },
+    {
+      "time": 1767448800043,
+      "blockNumber": 849634755,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3981,
+      "longCount": 2365,
+      "shortCount": 1616,
+      "chargePerLongBtcUsdcLower": "1.125062498573995175829651990",
+      "chargePerLongBtcUsdcUpper": "1.1250625",
+      "cashIntervalWidthAtPositionCapUsdc": "1.426004824170348010E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "90004.9998859196140663721592",
+        "90005"
+      ],
+      "contextSampledOracle": "90005",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260103/14.lz4",
+        "bytes": 7226820,
+        "etag": "\"4341b3cd0b3c1683d3515c589f020103\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "46fd6971fe166bc14ae13304ed113223bf47ad965a3fe88de200a9c8126a5647"
+      }
+    },
+    {
+      "time": 1767452400072,
+      "blockNumber": 849678588,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3991,
+      "longCount": 2373,
+      "shortCount": 1618,
+      "chargePerLongBtcUsdcLower": "1.126574998574789607486571404",
+      "chargePerLongBtcUsdcUpper": "1.126575000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "1.425210392513428596E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "90125.99988598316859892571232",
+        "90126.00000000000000000000"
+      ],
+      "contextSampledOracle": "90126",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260103/15.lz4",
+        "bytes": 7196842,
+        "etag": "\"b38435581ae6b033a1953364ec6051eb\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "4535a3a5b6291cba3d4ef2445d45ab743fbf42c195e31b25db400bcd63513748"
+      }
+    },
+    {
+      "time": 1767456000044,
+      "blockNumber": 849722486,
+      "settledRate": "0.0000100383",
+      "distinctBtcPositionsInPrefix": 4016,
+      "longCount": 2394,
+      "shortCount": 1622,
+      "chargePerLongBtcUsdcLower": "0.9031347218176799684820362161",
+      "chargePerLongBtcUsdcUpper": "0.9031347243598612706241608021",
+      "cashIntervalWidthAtPositionCapUsdc": "2.5421813021421245860E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "89968.89132798182645288905652",
+        "89968.89158123001610075020692"
+      ],
+      "contextSampledOracle": "89969",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260103/16.lz4",
+        "bytes": 7253583,
+        "etag": "\"d57b70919c954f46b9d0a91e0d6b9751\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "706da448ab01011dfe830e089a667784ae47f08c223d03fc139f563c7e871c74"
+      }
+    },
+    {
+      "time": 1767459600083,
+      "blockNumber": 849766208,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 4038,
+      "longCount": 2414,
+      "shortCount": 1624,
+      "chargePerLongBtcUsdcLower": "1.126312498017893015986062237",
+      "chargePerLongBtcUsdcUpper": "1.1263125",
+      "cashIntervalWidthAtPositionCapUsdc": "1.982106984013937763E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "90104.99984143144127888497896",
+        "90105"
+      ],
+      "contextSampledOracle": "90105",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260103/17.lz4",
+        "bytes": 7135853,
+        "etag": "\"ad7785e92b9eed473391bcf404c037d4\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "51c113e20575d78d635657e20747f059b871dd81bd1ae540836441edef0a5582"
+      }
+    },
+    {
+      "time": 1767463200061,
+      "blockNumber": 849810350,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 4038,
+      "longCount": 2416,
+      "shortCount": 1622,
+      "chargePerLongBtcUsdcLower": "1.126174997786713403822512782",
+      "chargePerLongBtcUsdcUpper": "1.126175000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "2.213286596177487218E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "90093.99982293707230580102256",
+        "90094.00000000000000000000"
+      ],
+      "contextSampledOracle": "90094",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260103/18.lz4",
+        "bytes": 7159789,
+        "etag": "\"f643e95cb9be01972849f77c91d52783\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "01a376854deb8feded2b6a5cd87a40330f35720bf55a73712ac86f3cabcbcc62"
+      }
+    },
+    {
+      "time": 1767466800032,
+      "blockNumber": 849854458,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 4039,
+      "longCount": 2419,
+      "shortCount": 1620,
+      "chargePerLongBtcUsdcLower": "1.126774998333282383783069568",
+      "chargePerLongBtcUsdcUpper": "1.126775000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "1.666717616216930432E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "90141.99986666259070264556544",
+        "90142.00000000000000000000"
+      ],
+      "contextSampledOracle": "90142",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260103/19.lz4",
+        "bytes": 7147610,
+        "etag": "\"799c875fb969ab845744310557260b61\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "6bc8106c799e89b6762e1a5781145dee02491eeeed23561bc76bb211b7f5b680"
+      }
+    },
+    {
+      "time": 1767470400019,
+      "blockNumber": 849898175,
+      "settledRate": "0.0000083607",
+      "distinctBtcPositionsInPrefix": 4023,
+      "longCount": 2402,
+      "shortCount": 1621,
+      "chargePerLongBtcUsdcLower": "0.7535006669094873507096086001",
+      "chargePerLongBtcUsdcUpper": "0.7535006689467171382779074068",
+      "cashIntervalWidthAtPositionCapUsdc": "2.0372297875682988067E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "90124.11244387280379748210079",
+        "90124.11268754017465976621656"
+      ],
+      "contextSampledOracle": "90124",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260103/20.lz4",
+        "bytes": 7278740,
+        "etag": "\"cf5be5f8102e2d7b70a722b158d76ed2\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "ead3ee7fe6792ab97d7f3cf3b77bcfa956932318b9806c1a5217dc3bc429af0c"
+      }
+    },
+    {
+      "time": 1767474000128,
+      "blockNumber": 849942249,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 4048,
+      "longCount": 2412,
+      "shortCount": 1636,
+      "chargePerLongBtcUsdcLower": "1.129624998387303736453589716",
+      "chargePerLongBtcUsdcUpper": "1.129625000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "1.612696263546410284E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "90369.99987098429891628717728",
+        "90370.00000000000000000000"
+      ],
+      "contextSampledOracle": "90370",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260103/21.lz4",
+        "bytes": 7202318,
+        "etag": "\"5df9e721189b73aca92a9a8226c3ea75\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "c6ff7e40dd9c6117cd821ede385f18ee883e607ce2aa966b2bbfdb37105494fc"
+      }
+    },
+    {
+      "time": 1767477600077,
+      "blockNumber": 849986380,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 4030,
+      "longCount": 2420,
+      "shortCount": 1610,
+      "chargePerLongBtcUsdcLower": "1.132024998031398354153692274",
+      "chargePerLongBtcUsdcUpper": "1.132025000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "1.968601645846307726E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "90561.99984251186833229538192",
+        "90562.00000000000000000000"
+      ],
+      "contextSampledOracle": "90562",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260103/22.lz4",
+        "bytes": 7202161,
+        "etag": "\"149209403020f8719ddcada679f3b0e5\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "8128228231a9c1a95c8ca68d7330125a2f366a5e1085087f1ebf1379de5c72e6"
+      }
+    },
+    {
+      "time": 1767481200046,
+      "blockNumber": 850030806,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 4040,
+      "longCount": 2416,
+      "shortCount": 1624,
+      "chargePerLongBtcUsdcLower": "1.132387497831996008266919376",
+      "chargePerLongBtcUsdcUpper": "1.1323875",
+      "cashIntervalWidthAtPositionCapUsdc": "2.168003991733080624E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "90590.99982655968066135355008",
+        "90591"
+      ],
+      "contextSampledOracle": "90591",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260103/23.lz4",
+        "bytes": 7208104,
+        "etag": "\"39ef5cce3dd3313d10f135a6ad023cb6\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "e8124597c19333be9eca0e415325d5dd7695619275d86915a207e695c0292b94"
+      }
+    },
+    {
+      "time": 1767484800024,
+      "blockNumber": 850074763,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 4033,
+      "longCount": 2403,
+      "shortCount": 1630,
+      "chargePerLongBtcUsdcLower": "1.132912497674698540196875418",
+      "chargePerLongBtcUsdcUpper": "1.1329125",
+      "cashIntervalWidthAtPositionCapUsdc": "2.325301459803124582E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "90632.99981397588321575003344",
+        "90633"
+      ],
+      "contextSampledOracle": "90633",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260104/0.lz4",
+        "bytes": 7293767,
+        "etag": "\"4c18cdbd3781f6cc461be1a3ca976acf\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "688480e841e5b89cfaf5e009a1529d00253b601b39cbe9fbb0087340d7f0f784"
+      }
+    },
+    {
+      "time": 1767488400010,
+      "blockNumber": 850118725,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3911,
+      "longCount": 2398,
+      "shortCount": 1513,
+      "chargePerLongBtcUsdcLower": "1.141762498110047088188714253",
+      "chargePerLongBtcUsdcUpper": "1.141762500246924696466381260",
+      "cashIntervalWidthAtPositionCapUsdc": "2.136877608277667007E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "91340.99984880376705509714024",
+        "91341.0000197539757173105008"
+      ],
+      "contextSampledOracle": "91341",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260104/1.lz4",
+        "bytes": 7155191,
+        "etag": "\"21e5beabbd67604a815e1b2bf42bbfae\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "615b9a3d131e9988b7ce67012dabafc0d6f8e10ef2a03c8c574c781314fc8c4a"
+      }
+    },
+    {
+      "time": 1767492000026,
+      "blockNumber": 850162694,
+      "settledRate": "0.0000081158",
+      "distinctBtcPositionsInPrefix": 3892,
+      "longCount": 2386,
+      "shortCount": 1506,
+      "chargePerLongBtcUsdcLower": "0.7404434682750708807812936640",
+      "chargePerLongBtcUsdcUpper": "0.7404434705882352941176470589",
+      "cashIntervalWidthAtPositionCapUsdc": "2.3131644133363533949E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "91234.80966449036210617482737",
+        "91234.80994951025088317196812"
+      ],
+      "contextSampledOracle": "91235",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260104/2.lz4",
+        "bytes": 7244095,
+        "etag": "\"5fd12612ebb5135a1d26b1380aa77b48\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "0ef4edf047665edfc1eaa2a44453d7342338a02075ea925b933048dc4ea2c8cf"
+      }
+    },
+    {
+      "time": 1767495600011,
+      "blockNumber": 850206376,
+      "settledRate": "0.0000069842",
+      "distinctBtcPositionsInPrefix": 3919,
+      "longCount": 2401,
+      "shortCount": 1518,
+      "chargePerLongBtcUsdcLower": "0.6364292203657448950298385353",
+      "chargePerLongBtcUsdcUpper": "0.6364292222155063327278819685",
+      "cashIntervalWidthAtPositionCapUsdc": "1.8497614376980434332E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "91124.14025453808525383559109",
+        "91124.14051938752222557801445"
+      ],
+      "contextSampledOracle": "91124",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260104/3.lz4",
+        "bytes": 7241861,
+        "etag": "\"9c49029a7d5b20a3b4fd5621389d7e4e\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "a37536e869b3dea11207654284a45043bb262fecc13f4f4569e9303456d8c818"
+      }
+    },
+    {
+      "time": 1767499200063,
+      "blockNumber": 850250120,
+      "settledRate": "0.0000082581",
+      "distinctBtcPositionsInPrefix": 3918,
+      "longCount": 2400,
+      "shortCount": 1518,
+      "chargePerLongBtcUsdcLower": "0.7534413679884335835115137616",
+      "chargePerLongBtcUsdcUpper": "0.7534413697771583571158511705",
+      "cashIntervalWidthAtPositionCapUsdc": "1.7887247736043374089E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "91236.64862237482998649977133",
+        "91236.64883897728982645537963"
+      ],
+      "contextSampledOracle": "91237",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260104/4.lz4",
+        "bytes": 7196376,
+        "etag": "\"24c7e6ca4834460186224fb69eb7360a\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "a3f5c309c359f7ca981b891561b34b7510067c55a7e094c4da28685dcba0e83c"
+      }
+    },
+    {
+      "time": 1767502800060,
+      "blockNumber": 850293632,
+      "settledRate": "0.0000099762",
+      "distinctBtcPositionsInPrefix": 3920,
+      "longCount": 2398,
+      "shortCount": 1522,
+      "chargePerLongBtcUsdcLower": "0.9118367868644396483582532022",
+      "chargePerLongBtcUsdcUpper": "0.9118367888784811490827448201",
+      "cashIntervalWidthAtPositionCapUsdc": "2.0140415007244916179E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "91401.21357475187429665135043",
+        "91401.21377663650980160229547"
+      ],
+      "contextSampledOracle": "91401",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260104/5.lz4",
+        "bytes": 7197125,
+        "etag": "\"8147a21e2e45c2271012caf3da72bfaf\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "512d0c1a70e7401deb17e7b326f9d114a108af2388d206f8e8e863fb90bf9fe6"
+      }
+    },
+    {
+      "time": 1767506400066,
+      "blockNumber": 850337142,
+      "settledRate": "0.0000122433",
+      "distinctBtcPositionsInPrefix": 3937,
+      "longCount": 2398,
+      "shortCount": 1539,
+      "chargePerLongBtcUsdcLower": "1.120039071502881023592196262",
+      "chargePerLongBtcUsdcUpper": "1.120039074044497192581612058",
+      "cashIntervalWidthAtPositionCapUsdc": "2.541616168989415796E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "91481.79588043101317391522400",
+        "91481.79608802342445105584752"
+      ],
+      "contextSampledOracle": "91482",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260104/6.lz4",
+        "bytes": 7302031,
+        "etag": "\"13389c232c67895dc966f1a367b9e045\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "fac5434051e5b22cb916b25b918d77564f683437557d302c9cad074394b5d846"
+      }
+    },
+    {
+      "time": 1767510000031,
+      "blockNumber": 850381402,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3936,
+      "longCount": 2408,
+      "shortCount": 1528,
+      "chargePerLongBtcUsdcLower": "1.140474998579236561534916570",
+      "chargePerLongBtcUsdcUpper": "1.140475000099991600705540734",
+      "cashIntervalWidthAtPositionCapUsdc": "1.520755039170624164E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "91237.9998863389249227933256",
+        "91238.00000799932805644325872"
+      ],
+      "contextSampledOracle": "91238",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260104/7.lz4",
+        "bytes": 7161403,
+        "etag": "\"c6938cfa58e95fa75c9af1b91d0e76d3\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "bfa1ecc3a24eee9a67544961600e3f3d11a9230e3dc07c64ac329c47f958a6b2"
+      }
+    },
+    {
+      "time": 1767513600036,
+      "blockNumber": 850424666,
+      "settledRate": "0.0000115467",
+      "distinctBtcPositionsInPrefix": 3928,
+      "longCount": 2391,
+      "shortCount": 1537,
+      "chargePerLongBtcUsdcLower": "1.056850738303914465059436710",
+      "chargePerLongBtcUsdcUpper": "1.056850740491500393084264387",
+      "cashIntervalWidthAtPositionCapUsdc": "2.187585928024827677E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "91528.37939012137364436910199",
+        "91528.37957957688283962209003"
+      ],
+      "contextSampledOracle": "91528",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260104/8.lz4",
+        "bytes": 7262958,
+        "etag": "\"18cfef7fd2604b65f592f8b2c8479076\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "0dd37d831af541ec9414a9bb88672aabdfb4dba9a052cf356dc9cbc7b2535a55"
+      }
+    },
+    {
+      "time": 1767517200001,
+      "blockNumber": 850468283,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3941,
+      "longCount": 2439,
+      "shortCount": 1502,
+      "chargePerLongBtcUsdcLower": "1.142187497617234841572422692",
+      "chargePerLongBtcUsdcUpper": "1.142187500000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "2.382765158427577308E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "91374.99980937878732579381536",
+        "91375.00000000000000000000"
+      ],
+      "contextSampledOracle": "91375",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260104/9.lz4",
+        "bytes": 7164451,
+        "etag": "\"1cc7731123584ed56d9b3d060dc19156\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "dc5b353ff675392ee6d421c916cd735ed2851083c9139f9330df99140ce85203"
+      }
+    },
+    {
+      "time": 1767520800051,
+      "blockNumber": 850511848,
+      "settledRate": "0.0000049497",
+      "distinctBtcPositionsInPrefix": 3948,
+      "longCount": 2443,
+      "shortCount": 1505,
+      "chargePerLongBtcUsdcLower": "0.4527323898786337613448850128",
+      "chargePerLongBtcUsdcUpper": "0.4527323922776881824099510002",
+      "cashIntervalWidthAtPositionCapUsdc": "2.3990544210650659874E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "91466.63229663085870757520916",
+        "91466.63278131769246822049825"
+      ],
+      "contextSampledOracle": "91466",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260104/10.lz4",
+        "bytes": 7259594,
+        "etag": "\"b051a21bfb4c445ba697e67f2215890f\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "cece95b465254d2693d90cad9d4238f37f39660fe42df48c84d1c0a28301ca19"
+      }
+    },
+    {
+      "time": 1767524400051,
+      "blockNumber": 850555939,
+      "settledRate": "0.0000025689",
+      "distinctBtcPositionsInPrefix": 3938,
+      "longCount": 2437,
+      "shortCount": 1501,
+      "chargePerLongBtcUsdcLower": "0.2353125885435532871687727685",
+      "chargePerLongBtcUsdcUpper": "0.2353125903933685238564899888",
+      "cashIntervalWidthAtPositionCapUsdc": "1.8498152366877172203E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "91600.52494980469740697293336",
+        "91600.52566988536877904550150"
+      ],
+      "contextSampledOracle": "91601",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260104/11.lz4",
+        "bytes": 7289296,
+        "etag": "\"457378338c1c2071ddb4ce02a546d175\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "b70e56607585dde6cf1bffdd51c6f6b8e8869683652d2d6e0ffb9b617432acee"
+      }
+    },
+    {
+      "time": 1767528000052,
+      "blockNumber": 850599206,
+      "settledRate": "0.0000034233",
+      "distinctBtcPositionsInPrefix": 3975,
+      "longCount": 2457,
+      "shortCount": 1518,
+      "chargePerLongBtcUsdcLower": "0.3125624843627065202926193195",
+      "chargePerLongBtcUsdcUpper": "0.3125624869043226892820351147",
+      "cashIntervalWidthAtPositionCapUsdc": "2.5416161689894157952E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "91304.43851333699070856171516",
+        "91304.43925578321773786554339"
+      ],
+      "contextSampledOracle": "91304",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260104/12.lz4",
+        "bytes": 7306431,
+        "etag": "\"e33f29a0fa75582559930d70cd473265\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "13b416531081d605ea4eb04a90e5ba29d021fbf6443a83fe957bb6134fdee658"
+      }
+    },
+    {
+      "time": 1767531600062,
+      "blockNumber": 850642619,
+      "settledRate": "0.0000037309",
+      "distinctBtcPositionsInPrefix": 3994,
+      "longCount": 2466,
+      "shortCount": 1528,
+      "chargePerLongBtcUsdcLower": "0.3400733647673643470826973787",
+      "chargePerLongBtcUsdcUpper": "0.3400733666666666666666666666",
+      "cashIntervalWidthAtPositionCapUsdc": "1.8993023195839692879E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "91150.49043591743200908557686",
+        "91150.49094499093158933948018"
+      ],
+      "contextSampledOracle": "91151",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260104/13.lz4",
+        "bytes": 7298096,
+        "etag": "\"ab377621e0648a4c1ac5df3be00fa04e\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "8af4f0b4a3b4ff40868ec652449d7692cf7d8e2a641102e3cfab292dd38bd502"
+      }
+    },
+    {
+      "time": 1767535200019,
+      "blockNumber": 850685784,
+      "settledRate": "0.000002501",
+      "distinctBtcPositionsInPrefix": 4002,
+      "longCount": 2461,
+      "shortCount": 1541,
+      "chargePerLongBtcUsdcLower": "0.2282543615912591176667638242",
+      "chargePerLongBtcUsdcUpper": "0.2282543636296542307834237426",
+      "cashIntervalWidthAtPositionCapUsdc": "2.0383951131166599184E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "91265.23854108721218183279656",
+        "91265.23935611924461552328772"
+      ],
+      "contextSampledOracle": "91264",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260104/14.lz4",
+        "bytes": 7352152,
+        "etag": "\"20fe2914577e823581a38d4f7af92568\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "b23c87974be3c941ac005a1c68efa34ca962ebabdd512133bcce53813c6ed658"
+      }
+    },
+    {
+      "time": 1767538800078,
+      "blockNumber": 850730278,
+      "settledRate": "0.0000052562",
+      "distinctBtcPositionsInPrefix": 3983,
+      "longCount": 2451,
+      "shortCount": 1532,
+      "chargePerLongBtcUsdcLower": "0.4800783232063484285339724109",
+      "chargePerLongBtcUsdcUpper": "0.480078325",
+      "cashIntervalWidthAtPositionCapUsdc": "1.7936515714660275891E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "91335.62710824329906281580056",
+        "91335.62744948822343137627944"
+      ],
+      "contextSampledOracle": "91336",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260104/15.lz4",
+        "bytes": 7418090,
+        "etag": "\"75252c3144404dc109ef8628553a8e6a\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "1d1b25d62b12351197a16bc16d3c351b9cf245d27729ad21ffb2825f09575420"
+      }
+    },
+    {
+      "time": 1767542400098,
+      "blockNumber": 850774782,
+      "settledRate": "0.000003712",
+      "distinctBtcPositionsInPrefix": 3996,
+      "longCount": 2458,
+      "shortCount": 1538,
+      "chargePerLongBtcUsdcLower": "0.3390258605378608802674105537",
+      "chargePerLongBtcUsdcUpper": "0.3390258629190113234143408829",
+      "cashIntervalWidthAtPositionCapUsdc": "2.3811504431469303292E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "91332.39777420821127893603279",
+        "91332.39841568192979912200509"
+      ],
+      "contextSampledOracle": "91333",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260104/16.lz4",
+        "bytes": 7402020,
+        "etag": "\"3cce9ca7c8c85827fdb64afb6efacdd7\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "33c94aa3db671bfdde49dd50c3abf6f634d3cad0af1ee6b895f6805606e3ca91"
+      }
+    },
+    {
+      "time": 1767546000020,
+      "blockNumber": 850818814,
+      "settledRate": "0.0000068565",
+      "distinctBtcPositionsInPrefix": 3996,
+      "longCount": 2465,
+      "shortCount": 1531,
+      "chargePerLongBtcUsdcLower": "0.6261389871618900718474225115",
+      "chargePerLongBtcUsdcUpper": "0.6261389897035062408368383067",
+      "cashIntervalWidthAtPositionCapUsdc": "2.5416161689894157952E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "91320.49692436229444285313374",
+        "91320.49729504940433702884952"
+      ],
+      "contextSampledOracle": "91321",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260104/17.lz4",
+        "bytes": 7374212,
+        "etag": "\"7797a5c02436c2ee9c8c4f618c53e164\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "0d045211931f3d2ef7e33dbfc7cb790dba8dfdd4e897bef5713a31e4e40b5e2a"
+      }
+    },
+    {
+      "time": 1767549600054,
+      "blockNumber": 850862817,
+      "settledRate": "0.0000086608",
+      "distinctBtcPositionsInPrefix": 3995,
+      "longCount": 2468,
+      "shortCount": 1527,
+      "chargePerLongBtcUsdcLower": "0.7910539342642493931383073304",
+      "chargePerLongBtcUsdcUpper": "0.7910539368058655621277231256",
+      "cashIntervalWidthAtPositionCapUsdc": "2.5416161689894157952E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "91337.28226771769272334049169",
+        "91337.28256117974807497264982"
+      ],
+      "contextSampledOracle": "91337",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260104/18.lz4",
+        "bytes": 7331479,
+        "etag": "\"3d61fb47343e3a57adb055c1b651a381\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "6ea71f8960740d29ece6c53f52a5358366fe37dd69334871acfc10e7c7b7b897"
+      }
+    },
+    {
+      "time": 1767553200024,
+      "blockNumber": 850906610,
+      "settledRate": "0.0000099687",
+      "distinctBtcPositionsInPrefix": 4002,
+      "longCount": 2460,
+      "shortCount": 1542,
+      "chargePerLongBtcUsdcLower": "0.9092159790188568603456130333",
+      "chargePerLongBtcUsdcUpper": "0.9092159804021170179492195683",
+      "cashIntervalWidthAtPositionCapUsdc": "1.3832601576036065350E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "91207.07604992194171212023968",
+        "91207.07618868227732294276769"
+      ],
+      "contextSampledOracle": "91207",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260104/19.lz4",
+        "bytes": 7318516,
+        "etag": "\"ee4c33fa0503cec2b4c63e097fba9a47\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "4c6ac32d926e7d50ccf6743805f8969bbdd6162f5c867c93c4dff5e3182eb1f2"
+      }
+    },
+    {
+      "time": 1767556800062,
+      "blockNumber": 850949680,
+      "settledRate": "0.0000088914",
+      "distinctBtcPositionsInPrefix": 4009,
+      "longCount": 2460,
+      "shortCount": 1549,
+      "chargePerLongBtcUsdcLower": "0.8103445074302115407470379243",
+      "chargePerLongBtcUsdcUpper": "0.8103445097551090107457417195",
+      "cashIntervalWidthAtPositionCapUsdc": "2.3248974699987037952E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "91138.01059790489020255954341",
+        "91138.01085938198829720198388"
+      ],
+      "contextSampledOracle": "91138",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260104/20.lz4",
+        "bytes": 7288081,
+        "etag": "\"9d7d73a6c9a94207c74c9595bd6befac\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "c85d3f227571ff292ca22ae926d3d97a2d653583fe7d6db497b5ee7d46755a1b"
+      }
+    },
+    {
+      "time": 1767560400000,
+      "blockNumber": 850993743,
+      "settledRate": "0.0000104483",
+      "distinctBtcPositionsInPrefix": 4006,
+      "longCount": 2458,
+      "shortCount": 1548,
+      "chargePerLongBtcUsdcLower": "0.9540620389190567432076070369",
+      "chargePerLongBtcUsdcUpper": "0.9540620414606729121970228321",
+      "cashIntervalWidthAtPositionCapUsdc": "2.5416161689894157952E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "91312.65745806080828532938726",
+        "91312.65770131723937836995799"
+      ],
+      "contextSampledOracle": "91313",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260104/21.lz4",
+        "bytes": 7369781,
+        "etag": "\"a0350fec1e8928f805b29f9560d4679e\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "1944dca90ce497ec1fe2defee790ed98caa11a600fc585d41513cc8e80fd9d30"
+      }
+    },
+    {
+      "time": 1767564000037,
+      "blockNumber": 851038108,
+      "settledRate": "0.0000080895",
+      "distinctBtcPositionsInPrefix": 4020,
+      "longCount": 2468,
+      "shortCount": 1552,
+      "chargePerLongBtcUsdcLower": "0.7384137453245699763355201738",
+      "chargePerLongBtcUsdcUpper": "0.7384137474810520685395642978",
+      "cashIntervalWidthAtPositionCapUsdc": "2.1564820922040441240E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "91280.51737741145637375859742",
+        "91280.51764398937740769692784"
+      ],
+      "contextSampledOracle": "91280",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260104/22.lz4",
+        "bytes": 7343131,
+        "etag": "\"f73542b0382992bf59e2b2688ed67561\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "647e5ce9dc8f088e3cf4641dafad5a7d635ac39559fc88cf9c249085d56b0cc0"
+      }
+    },
+    {
+      "time": 1767567600111,
+      "blockNumber": 851082091,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 4042,
+      "longCount": 2474,
+      "shortCount": 1568,
+      "chargePerLongBtcUsdcLower": "1.140249998195452520017514785",
+      "chargePerLongBtcUsdcUpper": "1.140250000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "1.804547479982485215E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "91219.9998556362016014011828",
+        "91220.00000000000000000000"
+      ],
+      "contextSampledOracle": "91220",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260104/23.lz4",
+        "bytes": 7354691,
+        "etag": "\"9ea6391ecc6e77db1350fccc0afeba5f\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "f9274348dd87297c56c63636c242b476037307f5c7ad8f519d02f16f0e949c24"
+      }
+    },
+    {
+      "time": 1767571200000,
+      "blockNumber": 851126967,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 4036,
+      "longCount": 2487,
+      "shortCount": 1549,
+      "chargePerLongBtcUsdcLower": "1.144162498585590601957390110",
+      "chargePerLongBtcUsdcUpper": "1.1441625",
+      "cashIntervalWidthAtPositionCapUsdc": "1.414409398042609890E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "91532.9998868472481565912088",
+        "91533"
+      ],
+      "contextSampledOracle": "91533",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260105/0.lz4",
+        "bytes": 7381656,
+        "etag": "\"2fb2994fe1284c4ea06e6c3c916cc91c\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "37fb1243cf979c4aa00610fc3d127ada7cef22d0b828d045130690dc1b783a4c"
+      }
+    },
+    {
+      "time": 1767574800014,
+      "blockNumber": 851171061,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3945,
+      "longCount": 2478,
+      "shortCount": 1467,
+      "chargePerLongBtcUsdcLower": "1.154624998004831307343308600",
+      "chargePerLongBtcUsdcUpper": "1.154625000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "1.995168692656691400E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "92369.999840386504587464688",
+        "92370.00000000000000000000"
+      ],
+      "contextSampledOracle": "92370",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260105/1.lz4",
+        "bytes": 7443030,
+        "etag": "\"df864e96a16e04e89bcf00d5f3dcf11f\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "75285d9c242a3dfe398b7a11f3d2567b0a1fbbb1eeb4585c6be4740797234d3f"
+      }
+    },
+    {
+      "time": 1767578400009,
+      "blockNumber": 851215558,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3879,
+      "longCount": 2459,
+      "shortCount": 1420,
+      "chargePerLongBtcUsdcLower": "1.161987498555764858735220152",
+      "chargePerLongBtcUsdcUpper": "1.161987500000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "1.444235141264779848E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "92958.99988446118869881761216",
+        "92959.00000000000000000000"
+      ],
+      "contextSampledOracle": "92959",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260105/2.lz4",
+        "bytes": 7320848,
+        "etag": "\"a7a2fb899211016fb7b6ace9bb1a96f7\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "d50e2dea6167aeddbab3c3f9d326cf33bedade596723e171cbd84f3905a00915"
+      }
+    },
+    {
+      "time": 1767582000010,
+      "blockNumber": 851259826,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3884,
+      "longCount": 2452,
+      "shortCount": 1432,
+      "chargePerLongBtcUsdcLower": "1.162949997971431736034997446",
+      "chargePerLongBtcUsdcUpper": "1.162950000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "2.028568263965002554E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "93035.99983771453888279979568",
+        "93036.00000000000000000000"
+      ],
+      "contextSampledOracle": "93036",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260105/3.lz4",
+        "bytes": 7227135,
+        "etag": "\"841f222277776760f7a4ce33cd82c5f2\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "cc857245b74a400376955ec347ce24a2f53bb2501114131cdb841234488e2533"
+      }
+    },
+    {
+      "time": 1767585600044,
+      "blockNumber": 851303010,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3882,
+      "longCount": 2438,
+      "shortCount": 1444,
+      "chargePerLongBtcUsdcLower": "1.160999998132167022844626524",
+      "chargePerLongBtcUsdcUpper": "1.161000000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "1.867832977155373476E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "92879.99985057336182757012192",
+        "92880.00000000000000000000"
+      ],
+      "contextSampledOracle": "92880",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260105/4.lz4",
+        "bytes": 7298819,
+        "etag": "\"ce062f10ebb26ab3a2d141877362956f\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "5fdbe83a63323787e17d1193ac5da3e2028e2877ceb79348685f89f3cb3a6066"
+      }
+    },
+    {
+      "time": 1767589200042,
+      "blockNumber": 851346972,
+      "settledRate": "0.0000124628",
+      "distinctBtcPositionsInPrefix": 3872,
+      "longCount": 2421,
+      "shortCount": 1451,
+      "chargePerLongBtcUsdcLower": "1.154081748086332053410315497",
+      "chargePerLongBtcUsdcUpper": "1.154081750627601410084293015",
+      "cashIntervalWidthAtPositionCapUsdc": "2.541269356673977518E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "92602.12376723786415655514788",
+        "92602.12397114624402897366683"
+      ],
+      "contextSampledOracle": "92602",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260105/5.lz4",
+        "bytes": 7226992,
+        "etag": "\"590f4f48f692e25d3216026807767a6b\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "24fc6fc97b3ba052f5ad3abb86bd2a39d63930b73bdc64723923a4efcb25798a"
+      }
+    },
+    {
+      "time": 1767592800026,
+      "blockNumber": 851390558,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3881,
+      "longCount": 2431,
+      "shortCount": 1450,
+      "chargePerLongBtcUsdcLower": "1.154549998566088765496708186",
+      "chargePerLongBtcUsdcUpper": "1.154550000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "1.433911234503291814E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "92363.99988528710123973665488",
+        "92364.00000000000000000000"
+      ],
+      "contextSampledOracle": "92364",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260105/6.lz4",
+        "bytes": 7257571,
+        "etag": "\"a489b4e0275528d03335e1fcdffc3443\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "524eecfea5c87c180ef5715893f9775b62a2ead6728e511a3241bfa009b5629d"
+      }
+    },
+    {
+      "time": 1767596400067,
+      "blockNumber": 851434327,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3884,
+      "longCount": 2429,
+      "shortCount": 1455,
+      "chargePerLongBtcUsdcLower": "1.156149998271301520122526793",
+      "chargePerLongBtcUsdcUpper": "1.156150000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "1.728698479877473207E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "92491.99986170412160980214344",
+        "92492.00000000000000000000"
+      ],
+      "contextSampledOracle": "92492",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260105/7.lz4",
+        "bytes": 7252535,
+        "etag": "\"b505578f5f5c7706722a34fd985a77db\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "173bb51e52b48fed32c05f136ff5e49bfc30e5127272305e8afda5dea6514eaa"
+      }
+    },
+    {
+      "time": 1767600000060,
+      "blockNumber": 851478203,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3894,
+      "longCount": 2430,
+      "shortCount": 1464,
+      "chargePerLongBtcUsdcLower": "1.156549997879946039194734256",
+      "chargePerLongBtcUsdcUpper": "1.156550000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "2.120053960805265744E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "92523.99983039568313557874048",
+        "92524.00000000000000000000"
+      ],
+      "contextSampledOracle": "92524",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260105/8.lz4",
+        "bytes": 7293908,
+        "etag": "\"d1a08d5e2f9f56232a0c998e06d13250\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "d561e8b85a7ac6ea216f5ca5e24a66ba77dda467b26580b9af42f853fbab8141"
+      }
+    },
+    {
+      "time": 1767603600043,
+      "blockNumber": 851521726,
+      "settledRate": "0.000011345",
+      "distinctBtcPositionsInPrefix": 3897,
+      "longCount": 2432,
+      "shortCount": 1465,
+      "chargePerLongBtcUsdcLower": "1.049125868778990086088930171",
+      "chargePerLongBtcUsdcUpper": "1.049125871320259442762907689",
+      "cashIntervalWidthAtPositionCapUsdc": "2.541269356673977518E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "92474.73501798061578571442671",
+        "92474.73524197967763445638510"
+      ],
+      "contextSampledOracle": "92475",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260105/9.lz4",
+        "bytes": 7338674,
+        "etag": "\"a519e4e6e333b59880e712b49bde18e5\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "d36fd2d54f1c195b888e6d65c56d2154e5d5c51eead811984dc819df1cfced74"
+      }
+    },
+    {
+      "time": 1767607200038,
+      "blockNumber": 851565822,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3934,
+      "longCount": 2466,
+      "shortCount": 1468,
+      "chargePerLongBtcUsdcLower": "1.158624997676326831991231807",
+      "chargePerLongBtcUsdcUpper": "1.158625000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "2.323673168008768193E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "92689.99981410614655929854456",
+        "92690.00000000000000000000"
+      ],
+      "contextSampledOracle": "92690",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260105/10.lz4",
+        "bytes": 7288547,
+        "etag": "\"70e8eca2e5d2a143d0ba4f7b401e49b7\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "3c69bb9422ea747faf906618ea3babcdce9806231dd99457587f978e3467e4db"
+      }
+    },
+    {
+      "time": 1767610800040,
+      "blockNumber": 851610284,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3923,
+      "longCount": 2456,
+      "shortCount": 1467,
+      "chargePerLongBtcUsdcLower": "1.163449997799896054459503964",
+      "chargePerLongBtcUsdcUpper": "1.163450000341165411133481482",
+      "cashIntervalWidthAtPositionCapUsdc": "2.541269356673977518E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "93075.99982399168435676031712",
+        "93076.00002729323289067851856"
+      ],
+      "contextSampledOracle": "93076",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260105/11.lz4",
+        "bytes": 7328054,
+        "etag": "\"dce0f1021d2e2550237a64d2d381d644\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "c9ac7b6c309035429f13501a75ff37180edf35710eb9472b1cd236c052042256"
+      }
+    },
+    {
+      "time": 1767614400068,
+      "blockNumber": 851654533,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3939,
+      "longCount": 2460,
+      "shortCount": 1479,
+      "chargePerLongBtcUsdcLower": "1.164174997805296251842436166",
+      "chargePerLongBtcUsdcUpper": "1.164175",
+      "cashIntervalWidthAtPositionCapUsdc": "2.194703748157563834E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "93133.99982442370014739489328",
+        "93134"
+      ],
+      "contextSampledOracle": "93134",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260105/12.lz4",
+        "bytes": 7336605,
+        "etag": "\"5837e254645328375c7c65d5f813b18b\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "0ba0a5f334408f41e5270e07792f1d498e764ec5c39fa300322d61f4a37a4083"
+      }
+    },
+    {
+      "time": 1767618000054,
+      "blockNumber": 851698305,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3949,
+      "longCount": 2465,
+      "shortCount": 1484,
+      "chargePerLongBtcUsdcLower": "1.160924997649643503746155043",
+      "chargePerLongBtcUsdcUpper": "1.160925",
+      "cashIntervalWidthAtPositionCapUsdc": "2.350356496253844957E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "92873.99981197148029969240344",
+        "92874"
+      ],
+      "contextSampledOracle": "92874",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260105/13.lz4",
+        "bytes": 7362630,
+        "etag": "\"f6742bbccbcf1a6cf54f55a33ca9fd3a\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "24f5caad82f8b19112657a5a9b716bb4d1b63a904bc0a79426dafe17ae509505"
+      }
+    },
+    {
+      "time": 1767621600015,
+      "blockNumber": 851742293,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3949,
+      "longCount": 2460,
+      "shortCount": 1489,
+      "chargePerLongBtcUsdcLower": "1.159274998469838188612681287",
+      "chargePerLongBtcUsdcUpper": "1.159275",
+      "cashIntervalWidthAtPositionCapUsdc": "1.530161811387318713E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "92741.99987758705508901450296",
+        "92742"
+      ],
+      "contextSampledOracle": "92742",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260105/14.lz4",
+        "bytes": 7400691,
+        "etag": "\"e32251e4edcb7df140d9b05ca1b7c7a5\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "516f1e3db3203e77848337fc59161c05db3506d9f1e6f294791f98ae3767dbdb"
+      }
+    },
+    {
+      "time": 1767625200020,
+      "blockNumber": 851786667,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3924,
+      "longCount": 2454,
+      "shortCount": 1470,
+      "chargePerLongBtcUsdcLower": "1.167724998620408397995614455",
+      "chargePerLongBtcUsdcUpper": "1.167725000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "1.379591602004385545E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "93417.9998896326718396491564",
+        "93418.00000000000000000000"
+      ],
+      "contextSampledOracle": "93418",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260105/15.lz4",
+        "bytes": 7458927,
+        "etag": "\"c6a121255584aeb4222c65a4ac631f14\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "07093dd1610184346faa948d639a2f942b4d806986a41469e0191c8ea3ea013d"
+      }
+    },
+    {
+      "time": 1767628800051,
+      "blockNumber": 851831160,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 3954,
+      "longCount": 2468,
+      "shortCount": 1486,
+      "chargePerLongBtcUsdcLower": "1.174574997795131174415740256",
+      "chargePerLongBtcUsdcUpper": "1.174575000000000000000000000",
+      "cashIntervalWidthAtPositionCapUsdc": "2.204868825584259744E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "93965.99982361049395325922048",
+        "93966.00000000000000000000"
+      ],
+      "contextSampledOracle": "93966",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260105/16.lz4",
+        "bytes": 7374631,
+        "etag": "\"8c0ade3c0ff9ea9846f9018de4c034f1\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "2211416a522b521a2041d050636a46550d3b3fa7fc72b2dca32f97c7023be7e1"
+      }
+    },
+    {
+      "time": 1767632400085,
+      "blockNumber": 851875513,
+      "settledRate": "0.000004954",
+      "distinctBtcPositionsInPrefix": 3952,
+      "longCount": 2440,
+      "shortCount": 1512,
+      "chargePerLongBtcUsdcLower": "0.4642158906411491711516576567",
+      "chargePerLongBtcUsdcUpper": "0.4642158925202472182670800468",
+      "cashIntervalWidthAtPositionCapUsdc": "1.8790980471154223901E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "93705.26658077294532734308775",
+        "93705.26696008219989242633161"
+      ],
+      "contextSampledOracle": "93706",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260105/17.lz4",
+        "bytes": 7398175,
+        "etag": "\"9b793f3a8332e5129a7d5678458d608d\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "7274ed2984dfe854f6e01024ea0cb6c0bd34a0618ba243f2c144e5dbb16c12c9"
+      }
+    },
+    {
+      "time": 1767636000081,
+      "blockNumber": 851919712,
+      "settledRate": "0.0000026185",
+      "distinctBtcPositionsInPrefix": 3926,
+      "longCount": 2442,
+      "shortCount": 1484,
+      "chargePerLongBtcUsdcLower": "0.2469970029666905533279847237",
+      "chargePerLongBtcUsdcUpper": "0.2469970055079599100019622411",
+      "cashIntervalWidthAtPositionCapUsdc": "2.5412693566739775174E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "94327.66964548044809164969399",
+        "94327.67061598621730073028112"
+      ],
+      "contextSampledOracle": "94329",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260105/18.lz4",
+        "bytes": 7414013,
+        "etag": "\"13de549c3b73d5071d122db4e469069d\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "6b254d5c50bc363e5ecbff90e322df4ab12dd6a8d157945c470f8950e94cef82"
+      }
+    },
+    {
+      "time": 1767639600056,
+      "blockNumber": 851964280,
+      "settledRate": "-1.971E-7",
+      "distinctBtcPositionsInPrefix": 3941,
+      "longCount": 2420,
+      "shortCount": 1521,
+      "chargePerLongBtcUsdcLower": "-0.01861178392016914838940339521",
+      "chargePerLongBtcUsdcUpper": "-0.01861178155091051330375473691",
+      "cashIntervalWidthAtPositionCapUsdc": "2.36925863508564865830E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "94428.11542826237089677695033",
+        "94428.12744885412678540535368"
+      ],
+      "contextSampledOracle": "94451",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260105/19.lz4",
+        "bytes": 7378694,
+        "etag": "\"cae0b0737c98718b0154a3e789afb2ac\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "9622dd0bd4682c5ada93a7b5b55cb67b6c85ec4758dcaccc952d78e141c6ef43"
+      }
+    },
+    {
+      "time": 1767643200045,
+      "blockNumber": 852008722,
+      "settledRate": "-0.0000040825",
+      "distinctBtcPositionsInPrefix": 3950,
+      "longCount": 2410,
+      "shortCount": 1540,
+      "chargePerLongBtcUsdcLower": "-0.3849938082607441977706282553",
+      "chargePerLongBtcUsdcUpper": "-0.3849938057194748410966507379",
+      "cashIntervalWidthAtPositionCapUsdc": "2.5412693566739775174E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "94303.44291965091025025125239",
+        "94303.44354212962590829840914"
+      ],
+      "contextSampledOracle": "94303",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260105/20.lz4",
+        "bytes": 7485316,
+        "etag": "\"be49051f4ceed28945bfe3be0265a3b6\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "c0ca1e6b4791807246308d76ab4dcd6e04d9a8f00aeb53894d43a3137897581e"
+      }
+    },
+    {
+      "time": 1767646800022,
+      "blockNumber": 852053556,
+      "settledRate": "-0.0000035464",
+      "distinctBtcPositionsInPrefix": 3932,
+      "longCount": 2407,
+      "shortCount": 1525,
+      "chargePerLongBtcUsdcLower": "-0.3339485508861303018175326501",
+      "chargePerLongBtcUsdcUpper": "-0.3339485492318905365505244310",
+      "cashIntervalWidthAtPositionCapUsdc": "1.6542397652670082191E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "94165.50564851413730840413687",
+        "94165.50611497019563995393923"
+      ],
+      "contextSampledOracle": "94166",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260105/21.lz4",
+        "bytes": 7400004,
+        "etag": "\"191ef4c3dab0bcbe3b1121e0b23070c3\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "4feacb249b4b364896a854f347cd395c0340cf751d10025d8a45e16509802cec"
+      }
+    },
+    {
+      "time": 1767650400008,
+      "blockNumber": 852098070,
+      "settledRate": "0.0000018134",
+      "distinctBtcPositionsInPrefix": 3936,
+      "longCount": 2401,
+      "shortCount": 1535,
+      "chargePerLongBtcUsdcLower": "0.1706334661515056252204312923",
+      "chargePerLongBtcUsdcUpper": "0.1706334681240460362126462141",
+      "cashIntervalWidthAtPositionCapUsdc": "1.9725404109922149218E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "94095.87854389854704997865463",
+        "94095.87963165657671371248158"
+      ],
+      "contextSampledOracle": "94096",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260105/22.lz4",
+        "bytes": 7759977,
+        "etag": "\"8e5652f486df3d0d9c230816902ab060\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "7588ffe0eecd0117a9471f6f0932a71bad5e9584e434ceab1e00a10789a8bb00"
+      }
+    },
+    {
+      "time": 1767654000068,
+      "blockNumber": 852141786,
+      "settledRate": "0.0000047033",
+      "distinctBtcPositionsInPrefix": 3938,
+      "longCount": 2396,
+      "shortCount": 1542,
+      "chargePerLongBtcUsdcLower": "0.4429116392893812920161563232",
+      "chargePerLongBtcUsdcUpper": "0.4429116417910447761194029851",
+      "cashIntervalWidthAtPositionCapUsdc": "2.5016634841032466619E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "94170.39935563993196609961584",
+        "94170.39988753529992120489552"
+      ],
+      "contextSampledOracle": "94171",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260105/23.lz4",
+        "bytes": 7716087,
+        "etag": "\"136099093243ac56d5b55320c3ef4570\"",
+        "range_prefix_bytes": 1048576,
+        "sha256": "9f18cb96c9424737d1692bd3f22547e70471a6d79beb61e33270c744b6cc5776"
+      }
+    }
+  ]
+}

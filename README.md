@@ -9,3 +9,5 @@ The training and validation funding pages contain 7,200 official hourly settleme
 The first-week folder contains the training-only fitted models and chronological development diagnostics. The five-day policy submitted zero quotes on January 4–5. The fitted models include their training dates. The sealed final period is excluded.
 
 Extract into the strategy repository to reuse the data/btc layout. The first-week model predates later code changes, so its code hash describes the original fit. Run the current training runner to generate a current-version fit. SHA256SUMS records the uncompressed archive members' file hashes, including the exact compressed bytes for individual .gz packets.
+
+The BTC funding cash evidence covers all 168 hours of the first training week. Each row links a settled rate to a block and an observed interval for the charge per signed BTC. The source metadata includes the byte range and SHA-256 of the compressed prefix. The settlement oracle and mark price remain independently unverified. [Funding settlement evidence](data/btc/first-week/settlement-cash/manifest.json)

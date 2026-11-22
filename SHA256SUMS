@@ -1,4 +1,4 @@
-c999a014a897bbe58d45e7a4e9ff3b5631d3fa1bb63aad04361ec53a0bccabb3  README.md
+bb3b35756d11b1f21e203629d5fed275f54d83a91e28c98d97f23ff883137617  README.md
 695645f573f79da009a7c5499e50aa5c4be3c1fa7f65e2f34d92cb0e7e30883f  data/btc/annual/training/20260106/1767657600000.json.gz
 3165dceb955d8f91686c9c4c6e270a80b20c2cbc6f278c41982899ee24406a18  data/btc/annual/training/20260106/1767657600000.manifest.json
 44405b217f3ff1037d3efbeaf6ecfb268fe1871a3f2b47a33fb57fda471b1562  data/btc/annual/training/20260106/1767661200000.json.gz
@@ -403,6 +403,7 @@ c3d440571dd510cc08d498fd11e9408aff832e2dc5cc5522bedc34849234e68a  data/btc/first
 6008617ab84792ec4d0081066b71e7ff452879e9d4e5e7fcbd0c0aa6f6c1e708  data/btc/first-week/model-purged-through-20260104.json
 857582d8e2a4fca8b06e951c395dee99109419df11c35fabd7b60d605797c268  data/btc/first-week/model.json
 a8977c6042d0e9a2a769d27771cff143f970367be40b40aa599f21ca218fc74d  data/btc/first-week/prediction-audit.json
+9f9990833a325e9a4786df72a6548cf628b29bcd420c4016b48dd94c97a9d001  data/btc/first-week/settlement-cash/manifest.json
 873b8f4c45ba97ba6040dc2ae1de2022345b9451d0b87951f74a9bbc58f6256e  data/btc/funding/training/2025-12-30.raw.json
 2788ee3130bb19f4580b260830f1e22fbb4111af68077f84f6bea3bd4ad74bea  data/btc/funding/training/2025-12-30.raw.manifest.json
 b076623045582d6f4b52739aa6798a4be6bf24741ba62f9367e32c1322d15459  data/btc/funding/training/2026-01-06.raw.json

@@ -13,6 +13,7 @@ from pathlib import Path
 from archive import atomic_json, estimated_cost, sha, sources
 from bulk_archive import (
     AFTER_WEEK,
+    AUXILIARY_START,
     FIRST,
     LAST,
     ArchiveGetUnavailable,
@@ -45,7 +46,11 @@ def digest(data):
 
 
 def compact_day_complete(data, day):
-    folder = data / "first-week" if day < AFTER_WEEK else day_dir(data / "annual", day)
+    folder = (
+        data / "first-week"
+        if FIRST <= day < AFTER_WEEK
+        else day_dir(data / "annual", day)
+    )
     start = timestamp(day)
     for t in range(start, start + DAY, HOUR):
         meta, packet = folder / f"{t}.manifest.json", folder / f"{t}.json.gz"
@@ -89,7 +94,7 @@ def inputs(data, folder, day):
         or [r for r in json.loads(page) if start <= r["time"] < start + DAY] != rates
     ):
         raise ValueError("BTC daily rates differ from official raw page")
-    if day < AFTER_WEEK:
+    if FIRST <= day < AFTER_WEEK:
         # Week collector independently verifies these dates. Annual code never requests them again.
         path = data / "first-week" / "context-prices.json"
         body = path.read_bytes()
@@ -213,8 +218,10 @@ def collect_settlement_days(data, days, ledger, s3):
         "sourceGaps": 0,
     }
     for day in sorted(set(days)):
-        if day < FIRST or day > LAST or day >= datetime.now(UTC).date():
-            raise ValueError("Use elapsed complete UTC days within the study")
+        if day < AUXILIARY_START or day > LAST or day >= datetime.now(UTC).date():
+            raise ValueError(
+                "Use elapsed complete UTC days within the acquisition window"
+            )
         folder = day_dir(data / "annual", day)
         bundle = inputs(data, folder, day) if compact_day_complete(data, day) else None
         if bundle is None or len(bundle[1]) != 24:
@@ -275,7 +282,7 @@ def collect_settlement_days(data, days, ledger, s3):
                     ):
                         gaps[int(key)] = reason
             pending = [t for t, reason in gaps.items() if reason["state"] == "pending"]
-            if day < AFTER_WEEK:
+            if FIRST <= day < AFTER_WEEK:
                 # Atomically published hour aggregates can be reused before all 168 have arrived.
                 for t in pending:
                     p = data / "first-week" / "settlement-cash" / f"{t}.json"
@@ -383,7 +390,7 @@ def range_plan(data, days):
             waiting.append(day)
             continue
         ready.append(day)
-        if day >= AFTER_WEEK:
+        if not FIRST <= day < AFTER_WEEK:
             path = folder / "settlement-cash.json"
             count = (
                 json.loads(path.read_bytes())["verifiedHours"] if path.exists() else 0
@@ -405,12 +412,14 @@ def range_plan(data, days):
 def run(data, start, through, estimate_only=False):
     root = data / "annual"
     if (
-        not FIRST
+        not AUXILIARY_START
         <= start
         <= through
         <= min(LAST, datetime.now(UTC).date() - timedelta(days=1))
     ):
-        raise ValueError("Select complete elapsed UTC dates within the study")
+        raise ValueError(
+            "Select complete elapsed UTC dates within the acquisition window"
+        )
     days = [start + timedelta(days=n) for n in range((through - start).days + 1)]
     if estimate_only:
         print(json.dumps(range_plan(data, days)[1]), flush=True)

@@ -16,6 +16,8 @@ from pathlib import Path
 
 from funding import HOUR, URL
 
+PRE_STUDY = {"pre-study": (date(2025, 11, 22), date(2025, 12, 30))}
+
 SPLITS = {
     "training": (date(2025, 12, 30), date(2026, 8, 27)),
     "validation": (date(2026, 8, 27), date(2026, 10, 26)),
@@ -54,15 +56,19 @@ def validate(raw, start, end):
     return len(rows)
 
 
+def request_bytes(payload):
+    return json.dumps(payload).encode()
+
+
 def request(payload):
     req = urllib.request.Request(
-        URL, json.dumps(payload).encode(), {"Content-Type": "application/json"}
+        URL, request_bytes(payload), {"Content-Type": "application/json"}
     )
     for attempt in range(6):
         try:
             with urllib.request.urlopen(req, timeout=30) as res:
                 return res.read(2_000_000)
-        except (urllib.error.URLError, TimeoutError) as err:
+        except (urllib.error.URLError, TimeoutError, ConnectionError) as err:
             if isinstance(err, urllib.error.HTTPError) and err.code not in (
                 429,
                 500,
@@ -76,10 +82,11 @@ def request(payload):
             time.sleep(min(2**attempt, 15))
 
 
-def archive(out, through, first_week=None):
+def archive(out, through, first_week=None, *, pre_study=False):
     """'through' is exclusive. Fetch only complete UTC days."""
     cap = min(through, datetime.now(UTC).date())
-    for split, (day, stop) in SPLITS.items():
+    windows = PRE_STUDY if pre_study else SPLITS
+    for split, (day, stop) in windows.items():
         stop = min(stop, cap)
         if day >= stop:
             continue
@@ -110,7 +117,17 @@ def archive(out, through, first_week=None):
                 raw = rawpath.read_bytes()
                 if hashlib.sha256(raw).hexdigest() != meta["sha256"]:
                     raise ValueError(f"Corrupt archived page {rawpath}")
-                validate(raw, start, end)
+                count = validate(raw, start, end)
+                if split == "pre-study" and (
+                    meta["requestSha256"]
+                    != hashlib.sha256(request_bytes(payload)).hexdigest()
+                    or meta["settlements"] != count
+                    or meta["bytes"] != len(raw)
+                    or meta["file"] != rawpath.name
+                ):
+                    raise ValueError(
+                        "Pre-study funding request or raw page metadata mismatch"
+                    )
             else:
                 source_meta = None
                 if first_week and day == SPLITS["training"][0]:
@@ -139,6 +156,10 @@ def archive(out, through, first_week=None):
                     "settlements": n,
                     "retrieved_utc": retrieved,
                 }
+                if split == "pre-study":
+                    meta["requestSha256"] = hashlib.sha256(
+                        request_bytes(payload)
+                    ).hexdigest()
                 atomic(rawpath, raw)
                 write_json(metapath, meta)
             pages.append(meta)
@@ -147,7 +168,7 @@ def archive(out, through, first_week=None):
             folder / "manifest.json",
             {
                 "split": split,
-                "start": SPLITS[split][0].isoformat(),
+                "start": windows[split][0].isoformat(),
                 "end_exclusive": stop.isoformat(),
                 "pages": pages,
                 "settlements": sum(p["settlements"] for p in pages),
@@ -197,14 +218,14 @@ def join_samples(rates, samples, source):
     return out
 
 
-def materialize(funding, annual, first_week):
+def materialize(funding, annual, first_week, *, pre_study=False):
     """Publish per-day derived rates and any joined context proxies we can verify."""
     old = {}
-    if first_week:
+    if first_week and not pre_study:
         for row in json.loads((first_week / "context-prices.json").read_bytes()):
             old.setdefault(row["time"] // (24 * HOUR), []).append(row)
     counts = {}
-    for split in SPLITS:
+    for split in PRE_STUDY if pre_study else SPLITS:
         path = funding / split / "manifest.json"
         if not path.exists():
             continue
@@ -215,6 +236,12 @@ def materialize(funding, annual, first_week):
             if hashlib.sha256(body).hexdigest() != page["sha256"]:
                 raise ValueError("Funding page checksum mismatch")
             payload = page["request"]
+            if (
+                split == "pre-study"
+                and page["requestSha256"]
+                != hashlib.sha256(request_bytes(payload)).hexdigest()
+            ):
+                raise ValueError("Pre-study funding request checksum mismatch")
             validate(body, payload["startTime"], payload["endTime"] + 1)
             rows = json.loads(body)
             for i in range(0, len(rows), 24):
@@ -286,7 +313,16 @@ if __name__ == "__main__":
         type=Path,
         help="publish daily rates and join available context samples",
     )
+    parser.add_argument(
+        "--pre-study",
+        action="store_true",
+        help="Archive only the separate 2025-11-22 through 2025-12-29 acquisition window",
+    )
     args = parser.parse_args()
-    archive(args.output, args.end_exclusive, args.first_week)
+    archive(args.output, args.end_exclusive, args.first_week, pre_study=args.pre_study)
     if args.annual:
-        print(materialize(args.output, args.annual, args.first_week))
+        print(
+            materialize(
+                args.output, args.annual, args.first_week, pre_study=args.pre_study
+            )
+        )

@@ -3,7 +3,9 @@
 import gzip
 import itertools
 import json
-from datetime import date
+import sys
+import tarfile
+from datetime import UTC, date, datetime
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest import TestCase, main
@@ -64,6 +66,29 @@ class PublicationTests(TestCase):
         meta["billing"] = "private"
         with self.assertRaises(ValueError):
             verify()
+
+    def test_pre_study_date_boundaries(self):
+        for d, partition in (
+            ("2025-11-22", "pre-study"),
+            ("2025-12-29", "pre-study"),
+            ("2026-01-06", "training"),
+            ("2026-08-26", "training"),
+            ("2026-08-27", "validation"),
+            ("2026-10-25", "validation"),
+        ):
+            self.assertEqual(
+                pub.publication_partition(date.fromisoformat(d)), partition
+            )
+        for start, end in (
+            ("2025-11-21", "2025-11-22"),
+            ("2025-11-22", "2025-12-29"),
+            ("2025-12-29", "2025-12-30"),
+            ("2025-12-29", "2026-01-06"),
+            ("2025-12-30", "2026-01-05"),
+            ("2026-10-26", "2026-10-26"),
+        ):
+            with self.assertRaises(ValueError):
+                pub.days(date.fromisoformat(start), date.fromisoformat(end))
 
     def test_partially_uploaded_draft_resumes_and_rejects_content_changes(self):
         release = {}
@@ -157,14 +182,18 @@ class PublicationTests(TestCase):
 
 
 class FullDayContextTests(TestCase):
-    stamp = "20260107"
-    start = 1767744000000
-
     def setUp(self):
         td = TemporaryDirectory()
         self.addCleanup(td.cleanup)
         self.root = Path(td.name)
-        self.base = self.root / "annual" / "training" / self.stamp
+        self.select_day("20260107", "training")
+
+    def select_day(self, stamp, partition):
+        self.stamp = stamp
+        self.start = int(
+            datetime.strptime(stamp, "%Y%m%d").replace(tzinfo=UTC).timestamp() * 1000
+        )
+        self.base = self.root / "annual" / partition / self.stamp
         self.base.mkdir(parents=True)
         self.ctx = {
             "hour": self.start,
@@ -296,10 +325,7 @@ class FullDayContextTests(TestCase):
         with self.assertRaisesRegex(ValueError, "manifest"):
             self.verify(self.sparse[:1])
 
-    def test_pack_members_and_order(self):
-        import tarfile
-
-        day = date.fromisoformat(self.stamp)
+    def write_market_day(self):
         for h in range(24):
             t = self.start + h * pub.HOUR
             packet = gzip.compress(
@@ -361,6 +387,45 @@ class FullDayContextTests(TestCase):
         (self.base / "context-samples.json.gz").write_bytes(packet)
         (self.base / "context.manifest.json").write_bytes(meta)
         (self.base / "other.json").write_text("private")
+        return hourly
+
+    def test_pre_study_cli_batch_and_provenance(self):
+        self.select_day("20251122", "pre-study")
+        self.series(self.write_market_day())
+        out = self.root / "out"
+        tag = "btc-pre-study-20251122-20251122"
+        with (
+            patch.object(
+                sys,
+                "argv",
+                ["publisher", str(self.root), str(out), "2025-11-22", "2025-11-22"],
+            ),
+            patch("builtins.print"),
+        ):
+            pub.main()
+        asset = out / tag / "btc-pre-study-20251122.tar"
+        with tarfile.open(asset) as tar:
+            self.assertTrue(
+                all(
+                    n.startswith("data/btc/annual/pre-study/20251122/")
+                    for n in tar.getnames()
+                )
+            )
+            self.assertEqual(len(tar.getnames()), 53)
+        self.assertEqual(
+            (out / tag / "SHA256SUMS").read_text(),
+            f"{pub.file_digest(asset)}  {asset.name}\n",
+        )
+        manifest = self.base / f"{self.start}.manifest.json"
+        bad = json.loads(manifest.read_bytes())
+        bad["sources"][1]["key"] = "node_trades/hourly/20251122/0.lz4"
+        manifest.write_text(json.dumps(bad))
+        with self.assertRaisesRegex(ValueError, "Unexpected source"):
+            pub.pack_day(self.root, out, date.fromisoformat(self.stamp))
+
+    def test_pack_members_and_order(self):
+        hourly = self.write_market_day()
+        day = date.fromisoformat(self.stamp)
         out = self.root / "out"
         out.mkdir()
         legacy, _ = pub.pack_day(self.root, out, day)

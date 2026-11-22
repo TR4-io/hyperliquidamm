@@ -71,6 +71,28 @@ class FundingTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "Corrupt archived page"):
                     sf.archive(folder, date(2026, 1, 10))
 
+    def test_prestudy_isolated_request_hashes_and_cache_reuse(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            existing = root / "training" / "manifest.json"
+            existing.parent.mkdir()
+            existing.write_bytes(b"protected original bytes")
+            stop = sf.PRE_STUDY["pre-study"][1]
+            with patch.object(sf, "request", side_effect=response) as fetch:
+                sf.archive(root, stop, pre_study=True)
+                sf.archive(root, stop, pre_study=True)
+                self.assertEqual(fetch.call_count, 6)
+            summary = sf.materialize(root, root / "daily", None, pre_study=True)
+            self.assertEqual(summary["pre-study"]["rateDays"], 38)
+            self.assertEqual(existing.read_bytes(), b"protected original bytes")
+            self.assertFalse((root / "daily" / "training").exists())
+            path = root / "pre-study" / "2025-11-22.raw.manifest.json"
+            meta = json.loads(path.read_bytes())
+            meta["requestSha256"] = "wrong"
+            path.write_text(json.dumps(meta))
+            with self.assertRaisesRegex(ValueError, "request or raw"):
+                sf.archive(root, stop, pre_study=True)
+
 
 if __name__ == "__main__":
     unittest.main()

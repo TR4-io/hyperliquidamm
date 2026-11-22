@@ -56,7 +56,12 @@ class ArchiveFixture:
 
 class FundingAcquisitionTests(unittest.TestCase):
     def test_reuse_without_network_and_isolate_final_dir(self):
-        day = date(2026, 10, 26)
+        self._verify_isolated_day(date(2026, 10, 26), "sealed-final")
+
+    def test_prestudy_fetch_uses_separate_partition(self):
+        self._verify_isolated_day(date(2025, 11, 22), "pre-study")
+
+    def _verify_isolated_day(self, day, partition):
         start = ss.timestamp(day)
         rates = [
             {"time": start + i * ss.HOUR, "coin": "BTC", "fundingRate": "0.0001"}
@@ -96,7 +101,13 @@ class FundingAcquisitionTests(unittest.TestCase):
                 )
                 self.assertEqual(stats["verifiedHours"], 24)
                 self.assertEqual((api.gets, api.heads), (24, 24))
-                path = data / "annual/sealed-final/20261026/settlement-cash.json"
+                path = (
+                    data
+                    / "annual"
+                    / partition
+                    / day.strftime("%Y%m%d")
+                    / "settlement-cash.json"
+                )
                 self.assertTrue(path.is_file())
                 self.assertFalse((data / "annual/training").exists())
                 self.assertFalse(

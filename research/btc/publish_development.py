@@ -1,7 +1,8 @@
 """Verify, package and optionally publish a 1–31 day batch of BTC development data.
 
 Example: python publish_development.py DATA/BTC OUT 2026-01-07 2026-01-09 --publish
-One deterministic tar per UTC day plus a batch checksum index. Final data is sealed.
+One deterministic tar per UTC day plus a batch checksum index. The separate pre-study
+partition covers November 22–December 29, 2025. Final data is sealed.
 """
 
 import argparse
@@ -22,6 +23,8 @@ from pathlib import Path
 
 REPO = "TR4-io/hyperliquidamm"
 HOUR = 3600000
+PRE_STUDY_START = date(2025, 11, 22)
+TRAINING_START = date(2025, 12, 30)
 FIRST_ANNUAL = date(2026, 1, 6)
 VALIDATION = date(2026, 8, 27)
 FINAL = date(2026, 10, 26)
@@ -54,13 +57,22 @@ def require(ok, reason):
         raise ValueError(reason)
 
 
+def publication_partition(day):
+    if PRE_STUDY_START <= day < TRAINING_START:
+        return "pre-study"
+    # The first training week has a separate legacy data package.
+    if FIRST_ANNUAL <= day < VALIDATION:
+        return "training"
+    if VALIDATION <= day < FINAL:
+        return "validation"
+    raise ValueError("Date outside publishable pre-study and development partitions")
+
+
 def days(start, end):
+    require(start <= end and (end - start).days < 31, "Use 1–31 complete UTC days")
     require(
-        FIRST_ANNUAL <= start <= end < FINAL and (end - start).days < 31,
-        "Use 1–31 completed annual development days beginning January 6",
-    )
-    require(
-        (start < VALIDATION) == (end < VALIDATION), "Batch would cross a study split"
+        publication_partition(start) == publication_partition(end),
+        "Batch would cross a partition",
     )
     return [start + timedelta(days=i) for i in range((end - start).days + 1)]
 
@@ -317,9 +329,8 @@ def optional_series(folder, stamp, hourly_packet, hourly_manifest):
 
 
 def pack_day(root, out, day):
-    require(FIRST_ANNUAL <= day < FINAL, "Only development days may be packaged")
+    split = publication_partition(day)
     stamp = day.strftime("%Y%m%d")
-    split = "training" if day < VALIDATION else "validation"
     relative = Path("data/btc/annual", split, stamp)
     folder = root / "annual" / split / stamp
     start = int(datetime.combine(day, time(), tzinfo=UTC).timestamp() * 1000)
@@ -410,6 +421,8 @@ def publish(tag, sums, out, split, dates, *, has_series=False):
         f"Download the assets together and run `sha256sum -c SHA256SUMS` before extracting. "
         f"Sampled books can contain gaps. Batch SHA256SUMS digest: `{file_digest(checksum)}`."
     )
+    if split == "pre-study":
+        notes += " This supplemental archive precedes the registered training period, which begins December 30, 2025."
     if existing:
         require(
             len(existing) == 1
@@ -526,8 +539,13 @@ def publish_git_batch(tag, out, sums):
             if p.is_file():
                 index.append(f"{file_digest(p)}  {p.relative_to(checkout)}\n")
         (checkout / "SHA256SUMS").write_text("".join(index))
+        description = (
+            "supplemental pre-study data"
+            if tag.startswith("btc-pre-study-")
+            else "development data"
+        )
         (checkout / "README.md").write_text(
-            f"# Hyperliquid BTC development data\n\nBatch `{tag}` contains verified hourly BTC book "
+            f"# Hyperliquid BTC {description}\n\nBatch `{tag}` contains verified hourly BTC book "
             "and taker-trade packets, official source manifests and sampled BTC asset context. "
             "Individual sampled books can have data gaps. Run `sha256sum -c SHA256SUMS` in this checkout "
             "to verify the data files. The date range in the branch name is inclusive in UTC.\n"
@@ -589,7 +607,7 @@ def main():
     )
     args = parser.parse_args()
     dates = days(args.start, args.end)
-    split = "training" if args.start < VALIDATION else "validation"
+    split = publication_partition(args.start)
     tag = f"btc-{split}-{args.start:%Y%m%d}-{args.end:%Y%m%d}"
     out = args.output / tag
     out.mkdir(parents=True, exist_ok=True)

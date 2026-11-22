@@ -96,3 +96,13 @@ With the verified training packets and daily context proxies in the study data f
 ```sh
 node research/btc/training-followup.cjs data/btc jan10-11-replay.json research/btc/evidence/development-model-through-2026-01-08.json 2026-01-10 2026-01-12
 ```
+
+
+## Download the funding settlement evidence
+
+After market data collection, run the settlement collector for complete elapsed UTC dates. It shares the archive locks and gross spend ledger, checks AWS identity and applicable credits, and reuses the first week's verified evidence. Each daily file records the available BTC funding cash bounds, block provenance and coverage. Prices from hourly asset context samples retain their sampled status.
+
+```sh
+python research/btc/study_settlements.py data/btc --start 2025-12-30 --through 2026-11-21 --estimate-only
+python research/btc/study_settlements.py data/btc --start 2025-12-30 --through 2026-11-21
+```

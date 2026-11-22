@@ -91,6 +91,29 @@ def fetch_range(client, journal, row, start, end):
             time.sleep(2**attempt)
 
 
+def aggregate_prefix(prefix, rate, context):
+    try:
+        event = extract(prefix, rate, context)
+    except ValueError as exc:
+        if str(exc) in (
+            "substring not found",
+            "Insufficient independent positions or inconsistent bounds",
+        ):
+            return None
+        raise
+    if event["distinctBtcPositionsInPrefix"] < 10:
+        return None
+    return event
+
+
+def result_source(row, prefix):
+    return {
+        **{k: row[k] for k in ("bucket", "key", "bytes", "etag")},
+        "range_prefix_bytes": len(prefix),
+        "sha256": hashlib.sha256(prefix).hexdigest(),
+    }
+
+
 def collect(data, pilot, workers=2):
     budget_path = data / "archive-budget.json"
     folder = data / "first-week" / "settlement-cash"
@@ -154,23 +177,12 @@ def collect(data, pilot, workers=2):
                         )
                     )
                     try:
-                        event = extract(raw, r, contexts[r["time"]])
+                        event = aggregate_prefix(raw, r, contexts[r["time"]])
                     except ValueError as exc:
-                        # A partial LZ4 frame or a block spilling across the hour
-                        # can be inconclusive. Any inconsistent observations stay flagged.
-                        if str(exc) not in (
-                            "substring not found",
-                            "Insufficient independent positions or inconsistent bounds",
-                        ):
-                            return ms, None, str(exc)
+                        return ms, None, str(exc)
+                    if event is None:
                         continue
-                    if event["distinctBtcPositionsInPrefix"] < 10:
-                        continue
-                    event["source"] = {
-                        **{k: row[k] for k in ("bucket", "key", "bytes", "etag")},
-                        "range_prefix_bytes": len(raw),
-                        "sha256": hashlib.sha256(raw).hexdigest(),
-                    }
+                    event["source"] = result_source(row, raw)
                     atomic_json(folder / f"{ms}.json", event)
                     return ms, event, None
                 return (

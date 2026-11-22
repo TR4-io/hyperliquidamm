@@ -1,0 +1,84 @@
+{
+  "cashRoundingAllowancePerPositionUsdc": "0.000001",
+  "scope": "Training-only sampled BTC event prefixes. Conditional bounds on realized charge per BTC; exact oracle not independently identified.",
+  "rateSource": "https://api.hyperliquid.xyz/info",
+  "ratePageSha256": "873b8f4c45ba97ba6040dc2ae1de2022345b9451d0b87951f74a9bbc58f6256e",
+  "contextPricesSha256": "e915e889e869a43b6f8cc06ee4ae688a067efa45e8a70372170bea60821d6b2c",
+  "events": [
+    {
+      "time": 1767052800010,
+      "blockNumber": 844788899,
+      "settledRate": "0.0000125",
+      "distinctBtcPositionsInPrefix": 15696,
+      "longCount": 9753,
+      "shortCount": 5943,
+      "chargePerLongBtcUsdcLower": "1.090474997912270893600354151",
+      "chargePerLongBtcUsdcUpper": "1.090475000131104441294053277",
+      "cashIntervalWidthAtPositionCapUsdc": "2.218833547693699126E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "87237.99983298167148802833208",
+        "87238.00001048835530352426216"
+      ],
+      "contextSampledOracle": "87238",
+      "sampleInEquivalentOracleBounds": true,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251230/0.lz4",
+        "etag": "\"26e5458346e155e1a0edd212da57894e\"",
+        "bytes": 7230752,
+        "range_prefix_bytes": 4194304,
+        "sha256": "c355a6eaf46b3379609991b3747168727a8ee35e417da54850daf07fb667ac82"
+      }
+    },
+    {
+      "time": 1767117600071,
+      "blockNumber": 845581962,
+      "settledRate": "0.0000085988",
+      "distinctBtcPositionsInPrefix": 15545,
+      "longCount": 8915,
+      "shortCount": 6630,
+      "chargePerLongBtcUsdcLower": "0.7599085186766197855026131077",
+      "chargePerLongBtcUsdcUpper": "0.7599085203613028601007755515",
+      "cashIntervalWidthAtPositionCapUsdc": "1.6846830745981624438E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "88373.78688614920518009642133",
+        "88373.78708206992372200487876"
+      ],
+      "contextSampledOracle": "88374",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20251230/18.lz4",
+        "etag": "\"fe90ddfac0f2cc730073db9d5750b13d\"",
+        "bytes": 7242300,
+        "range_prefix_bytes": 4194304,
+        "sha256": "345d8f8c86e2a0b30c1a7f2e1961d71e1c299dba12aed6e4750e48b9c7766442"
+      }
+    },
+    {
+      "time": 1767376800034,
+      "blockNumber": 848758585,
+      "settledRate": "-0.0000015941",
+      "distinctBtcPositionsInPrefix": 15750,
+      "longCount": 9127,
+      "shortCount": 6623,
+      "chargePerLongBtcUsdcLower": "-0.1440234757714175243276313283",
+      "chargePerLongBtcUsdcUpper": "-0.1440234735208156825241596294",
+      "cashIntervalWidthAtPositionCapUsdc": "2.2506018418034716989E-11",
+      "reportedRateEquivalentOracleBounds": [
+        "90347.82856835561290016914209",
+        "90347.82998018789556968278546"
+      ],
+      "contextSampledOracle": "90350",
+      "sampleInEquivalentOracleBounds": false,
+      "source": {
+        "bucket": "hl-mainnet-node-data",
+        "key": "misc_events_by_block/hourly/20260102/18.lz4",
+        "etag": "\"5d88481cdf59c1a29f90302ea4b12137\"",
+        "bytes": 7274726,
+        "range_prefix_bytes": 4194304,
+        "sha256": "0a283c9ad66ead92649eb68471921573aac8d17c50f9e375bea0874bfbcdf472"
+      }
+    }
+  ]
+}

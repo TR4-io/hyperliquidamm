@@ -520,6 +520,7 @@ function readyThrough(root) {
 module.exports = {
   fitDevelopment,
   replayWindows,
+  proxyFunding,
   policies,
   folderFor,
   confirmedFunding,

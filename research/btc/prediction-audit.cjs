@@ -205,6 +205,8 @@ function selfTest() {
   console.log('prediction audit self-test passed');
 }
 
+module.exports = { audit };
+
 if (require.main === module) {
   const [folder, modelPath, resultPath] = process.argv.slice(2);
   if (folder === 'self-test') selfTest();

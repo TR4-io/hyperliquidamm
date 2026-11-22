@@ -1,0 +1,42 @@
+{
+  "hour": 1768014000000,
+  "sources": [
+    {
+      "bucket": "hyperliquid-archive",
+      "key": "market_data/20260110/3/l2Book/BTC.lz4",
+      "bytes": 748947,
+      "sha256": "079ac645a687c5fe97943940c5fb499938effbbbcc9db6f4d93b0be54c48eefb"
+    },
+    {
+      "bucket": "hl-mainnet-node-data",
+      "key": "node_fills_by_block/hourly/20260110/3.lz4",
+      "bytes": 11712184,
+      "sha256": "ddcc1430315261fc7303208e7fdb1ad5c958036d81ca27aa9e3f5d19f901dacd"
+    }
+  ],
+  "books": {
+    "first": 1768013997029,
+    "last": 1768017599395,
+    "rows": 6483,
+    "max_gap_ms": 17305
+  },
+  "stale_books_skipped": 0,
+  "venue_blocks": {
+    "first": 1768013999970,
+    "last": 1768017599807,
+    "rows": 43340,
+    "max_gap_ms": 815,
+    "gaps_gt_10s": []
+  },
+  "btc_account_rows": 6018,
+  "crossed_rows": 3009,
+  "unique_takers": 3009,
+  "packet_sha256": "32d6f797eebe7ec0adb5b7edadd778c72c5c64e5ceb7985712289ca1a26ce1d9",
+  "packet_bytes": 719166,
+  "origin": {
+    "etags": [
+      "\"9b7f605929f65726ae6471902ca3001f\"",
+      "\"9e5b257c4ed5db7e2fffb602710c9a29-2\""
+    ]
+  }
+}

@@ -4,6 +4,8 @@ The simulator evaluates BTC quotes for a 10,000 USDC paper account using officia
 
 The model trained on the first five days submitted zero quotes on January 4–9, 2026. On January 6–9, 9,640 hypothetical trade-throughs averaged −3.03 bps at the 30-second mark after one maker fee. The three active benchmarks carried inventory into a book gap, leaving their four-day P&L unknown. [Four-day development replay](research/btc/evidence/replay-20260106-20260109.json) The year-long validation and final evaluation remain pending. [Research methods and commands](research/btc/README.md)
 
+The rolling development fit through January 11 declines to quote in all 36 flat-inventory states. The January 11 decision cutoff allows outstanding 30-second markout labels to finish just after midnight UTC. [Fitted model checkpoint](research/btc/evidence/development-model-through-2026-01-11.json)
+
 ## Download the development snapshot
 
 The data branch includes the strategy source, fitted development models, 192 hourly BTC book/trade packets from December 30, 2025 through January 6, 2026 UTC, daily BTC context samples at one-minute intervals, and 7,200 hourly funding rates covering training and validation. Each packet has source and coverage metadata. The final test stays sealed. [Browse the development data](https://github.com/TR4-io/hyperliquidamm/tree/btc-development-data)

@@ -21,7 +21,26 @@ Run `cargo run -- stream --samples 20` to receive 20 BTC L2 book messages on one
 
 Run `cargo run -- stream --bbo --samples 20` to subscribe to both official BTC `bbo` and `l2Book` channels on the same socket. The connector emits each newer top of book and labels its source. BBO takes precedence if both feeds report the same exchange timestamp. A JSON null bid or ask means the exchange reported that side empty. L2 snapshots can advance the observation timestamp during quiet periods. Market activity determines the BBO cadence.
 
-The CI benchmark compares this mode with a simultaneous L2-only connection. It samples the last book actually received at each 100 ms tick during their common observation window. Both ages use the same runner clock. A newer exchange timestamp can describe the same prices.
+### Lowest decision-time quote age
+
+```sh
+cargo run --release -- stream --fast --samples 20
+```
+
+`--incremental` adds the official BTC `l2` subscription alongside BBO and L2 snapshots. Rust keeps an independent 20-level book for that channel, starting from its snapshot. It applies original-index removals before price updates and decodes both plain and raw-DEFLATE diffs. BBO wins when timestamps tie. A disconnect or an invalid diff ends the process and a new connection starts from a fresh snapshot. [Subscription protocol](https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions)
+
+`--fast` adds on-demand BTC book reads to those feeds over the same TCP connection, with TCP_NODELAY enabled. It requests a snapshot at startup and during gaps longer than 250 ms between newly accepted pushes. It allows one outstanding request and at most four reads per second. Only a correlated reply with a newer exchange timestamp can advance the book. A request error backs off for 60 seconds. A five-second reply timeout switches the connection to subscribed feeds. The venue allows 2,000 outgoing WebSocket messages per minute and 100 simultaneous outstanding posts per IP, shared with other clients. [WebSocket info requests](https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/post-requests) · [Rate limits](https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/rate-limits-and-user-limits)
+
+`quoteReadyMs` marks when the reconstructed top became available in the application. `frameToQuoteUs` measures local parsing, reconstruction and selection with a monotonic clock. A published `postL2Book` row includes its request RTT. A more recent exchange timestamp can confirm the same bid and ask.
+
+CI starts three release-mode clients on one runner and compares their emitted quotes on the same 100 ms decision grid. Each of two 90-second windows starts after every stream has published and includes its final quiet period. The artifact contains timestamped JSONL and summaries with receipt and decision ages, source counts, missing sides and matched price changes. You can reproduce one window in your Codespace from the connector directory.
+
+```sh
+cargo build --release
+python3 bench/decision_age.py capture ./target/release/hyperliquid-testnet /tmp/btc-latency local
+```
+
+To go beyond the hosted public API, Hyperliquid documents reconstructing the book on a non-validating node connected to a reliable peer. Its hardware guidance starts at 32 logical cores, 128 GB RAM and 500 MB/s of disk throughput. Measuring market data availability on that path requires a separate deployment. [Optimizing read latency](https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/optimizing-latency)
 
 ## Manual order lifecycle
 

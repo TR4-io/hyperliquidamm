@@ -1,3 +1,5 @@
+mod incremental;
+mod refresh;
 mod stream;
 
 use clap::{Parser, Subcommand, ValueEnum};
@@ -28,6 +30,12 @@ enum Command {
         /// Also listen for best-bid-and-offer updates and keep the newest top of book.
         #[arg(long)]
         bbo: bool,
+        /// Also reconstruct the native BTC incremental L2 feed, without polling.
+        #[arg(long)]
+        incremental: bool,
+        /// Keep the book fresh with public feeds and bounded reads over the same socket.
+        #[arg(long)]
+        fast: bool,
     },
     /// Read open orders for a public testnet account address.
     OpenOrders { account: String },
@@ -208,8 +216,11 @@ fn run(client: &Client, base: &str, command: Command, input: impl Read) -> Resul
             let oid = if hex(&id, 32) { json!(id) } else { json!(id.parse::<u64>()?) };
             Ok(info(client, base, json!({"type":"orderStatus","user":account,"oid":oid}))?.to_string())
         }
-        Command::Stream { samples, bbo } => {
-            stream::start(samples, bbo)?;
+        Command::Stream { samples, bbo, incremental, fast } => {
+            use stream::Mode;
+            let mode = if fast { Mode::Fast } else if incremental { Mode::Incremental }
+                       else if bbo { Mode::Bbo } else { Mode::L2 };
+            stream::start(samples, mode)?;
             Ok(String::new())
         }
         Command::Connect => {

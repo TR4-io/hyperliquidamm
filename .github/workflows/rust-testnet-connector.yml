@@ -28,6 +28,8 @@ jobs:
         run: cargo test --locked
       - name: Read public BTC HTTP book
         run: ./target/debug/hyperliquid-testnet connect
+      - name: Check public WebSocket feed capabilities
+        run: cargo run --locked --example feed_capabilities
       - name: Compare BTC top of book at shared decision times
         run: |
           capture() {

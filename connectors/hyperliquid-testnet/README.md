@@ -11,7 +11,7 @@ cargo test
 cargo run -- connect
 ```
 
-A successful connection prints the network, BTC asset index, size precision, best bid and ask, and exchange timestamp in milliseconds. For F5 debugging, install the CodeLLDB extension and select **Read BTC testnet book**.
+A successful connection prints the network, BTC asset index, size precision, best bid and ask, and exchange timestamp in milliseconds. The output also includes local Unix timestamps immediately before the book request and after the full response body arrives. `bookRequestRttMs` uses a monotonic clock for that request alone. `snapshotAgeAtReceiptMs` subtracts the exchange timestamp from the local receipt timestamp. Clock skew affects that signed difference and can make it negative. Both measures exclude metadata lookup and JSON decoding. For F5 debugging, install the CodeLLDB extension and select **Read BTC testnet book**.
 
 ## Manual order lifecycle
 

@@ -26,5 +26,9 @@ jobs:
           cargo build --locked
       - name: Test connector with local fixtures
         run: cargo test --locked
-      - name: Read public BTC testnet book
-        run: ./target/debug/hyperliquid-testnet connect
+      - name: Measure public BTC testnet book timing
+        run: |
+          for sample in $(seq 1 10); do
+            ./target/debug/hyperliquid-testnet connect
+            if [ "$sample" -lt 10 ]; then sleep 1; fi
+          done

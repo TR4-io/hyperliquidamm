@@ -3,7 +3,7 @@ use reqwest::blocking::Client;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use std::io::{self, Read};
-use std::time::Duration;
+use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 
 const BASE: &str = "https://api.hyperliquid-testnet.xyz";
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
@@ -133,6 +133,10 @@ fn info(client: &Client, base: &str, request: Value) -> Result<Value> {
     Ok(client.post(format!("{base}/info")).json(&request).send()?.error_for_status()?.json()?)
 }
 
+fn unix_time_ms() -> Result<i64> {
+    Ok(SystemTime::now().duration_since(UNIX_EPOCH)?.as_millis().try_into()?)
+}
+
 fn btc_meta(client: &Client, base: &str) -> Result<(usize, Asset)> {
     let meta: Meta = serde_json::from_value(info(client, base, json!({"type":"meta"}))?)?;
     meta.universe.into_iter().enumerate().find(|(_, a)| a.name == "BTC" && !a.is_delisted)
@@ -188,13 +192,22 @@ fn run(client: &Client, base: &str, command: Command, input: impl Read) -> Resul
         }
         Command::Connect => {
             let (asset, meta) = btc_meta(client, base)?;
-            let book = info(client, base, json!({"type":"l2Book","coin":"BTC"}))?;
+            let request = client.post(format!("{base}/info")).json(&json!({"type":"l2Book","coin":"BTC"})).build()?;
+            let sent_ms = unix_time_ms()?;
+            let start = Instant::now();
+            let body = client.execute(request)?.error_for_status()?.bytes()?;
+            let elapsed = start.elapsed();
+            let received_ms = unix_time_ms()?;
+            let book: Value = serde_json::from_slice(&body)?;
             if book["coin"] != "BTC" { return Err("Unexpected book instrument".into()); }
             let bid = book.pointer("/levels/0/0/px").and_then(Value::as_str).ok_or("Missing bid")?;
             let ask = book.pointer("/levels/1/0/px").and_then(Value::as_str).ok_or("Missing ask")?;
-            let time = book["time"].as_u64().ok_or("Missing exchange timestamp")?;
+            let time = book["time"].as_i64().filter(|t| *t >= 0).ok_or("Invalid exchange timestamp")?;
             Ok(json!({"network":"testnet","coin":"BTC","asset":asset,"sizeDecimals":meta.sz_decimals,
-                      "bid":bid,"ask":ask,"exchangeTimeMs":time}).to_string())
+                      "bid":bid,"ask":ask,"exchangeTimeMs":time,
+                      "requestSentMs":sent_ms,"responseReceivedMs":received_ms,
+                      "bookRequestRttMs":elapsed.as_millis() as u64,
+                      "snapshotAgeAtReceiptMs":received_ms - time}).to_string())
         }
         Command::PrepareOrder { side, price, size, tif, reduce_only, client_id } => {
             let (a, meta) = btc_meta(client, base)?;
@@ -261,6 +274,10 @@ mod tests {
         let response: Value = serde_json::from_str(&data).unwrap();
         assert_eq!(response["asset"],1);
         assert_eq!(response["bid"],"99");
+        assert!(response["requestSentMs"].is_i64());
+        assert!(response["bookRequestRttMs"].is_u64());
+        let received = response["responseReceivedMs"].as_i64().unwrap();
+        assert_eq!(response["snapshotAgeAtReceiptMs"], received - 1234);
         meta.assert(); book.assert();
     }
 

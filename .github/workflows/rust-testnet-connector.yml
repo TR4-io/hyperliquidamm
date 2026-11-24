@@ -22,10 +22,11 @@ jobs:
         run: |
           rustc --version
           cargo --version
-          test -f Cargo.lock || cargo generate-lockfile
           cargo build --release --locked
       - name: Test connector with local fixtures
-        run: cargo test --release --locked
+        run: |
+          cargo test --release --locked
+          python3 -B bench/test_decision_age.py
       - name: Read public BTC HTTP book
         run: ./target/release/hyperliquid-testnet connect
       - name: Compare public BTC feeds at the same decision times

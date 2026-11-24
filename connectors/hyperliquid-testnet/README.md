@@ -42,6 +42,18 @@ python3 bench/decision_age.py capture ./target/release/hyperliquid-testnet /tmp/
 
 To go beyond the hosted public API, Hyperliquid documents reconstructing the book on a non-validating node connected to a reliable peer. Its hardware guidance starts at 32 logical cores, 128 GB RAM and 500 MB/s of disk throughput. Measuring market data availability on that path requires a separate deployment. [Optimizing read latency](https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/optimizing-latency)
 
+### Measured on public BTC testnet
+
+On November 24, 2026, three clients ran simultaneously on the same GitHub Actions runner for two 90-second windows. The table pools 1,800 decisions per mode. Age is the time elapsed since the exchange timestamp on the latest two-sided quote the consumer had received.
+
+| Mode | Median age | 95th percentile | 99th percentile | Worst | Over 1 second |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| BBO + L2 snapshots | 2,063 ms | 5,160 ms | 5,596 ms | 5,877 ms | 76.3% |
+| Add native incremental L2 | 1,426 ms | 4,809 ms | 5,496 ms | 5,827 ms | 63.2% |
+| Add bounded book reads (`--fast`) | 685 ms | 1,007 ms | 1,229 ms | 1,865 ms | 5.3% |
+
+All modes had two-sided quotes at every tick. The fast and BBO modes showed identical prices at all 1,800 ticks. Across 16 matched price changes their median arrival difference was zero, with fast mode ranging from 1 ms later to 6 ms earlier. Median age at frame receipt was 344 ms in BBO mode and 407 ms in fast mode, which includes request replies. The 232 published book replies had a median round trip of 102 ms. Local processing in fast mode took 55 microseconds at the 95th percentile. Absolute ages depend on receiver clock alignment, deployment location and venue conditions. [Benchmark run and raw captures](https://github.com/TR4-io/hyperliquidamm/actions/runs/45506146988)
+
 ## Manual order lifecycle
 
 | Command after `cargo run --` | Effect |

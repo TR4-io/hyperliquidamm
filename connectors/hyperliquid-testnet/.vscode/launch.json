@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Read BTC testnet book",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": { "args": ["build", "--bin", "hyperliquid-testnet"] },
+      "args": ["connect"],
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}

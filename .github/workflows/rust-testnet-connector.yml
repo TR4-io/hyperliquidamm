@@ -1,0 +1,30 @@
+name: Verify Rust testnet connector
+on:
+  push:
+    branches: [rust-testnet-connector]
+    paths:
+      - 'connectors/hyperliquid-testnet/**'
+      - '.github/workflows/rust-testnet-connector.yml'
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: connectors/hyperliquid-testnet
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Build connector
+        run: |
+          rustc --version
+          cargo --version
+          test -f Cargo.lock || cargo generate-lockfile
+          cargo build --locked
+      - name: Test connector with local fixtures
+        run: cargo test --locked
+      - name: Read public BTC testnet book
+        run: ./target/debug/hyperliquid-testnet connect

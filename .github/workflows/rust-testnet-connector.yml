@@ -26,9 +26,13 @@ jobs:
           cargo build --locked
       - name: Test connector with local fixtures
         run: cargo test --locked
-      - name: Measure public BTC testnet book timing
+      - name: Compare public BTC HTTP and WebSocket book timing
         run: |
+          ./target/debug/hyperliquid-testnet stream --samples 21 > "$RUNNER_TEMP/btc-stream.jsonl" &
+          stream_pid=$!
           for sample in $(seq 1 10); do
             ./target/debug/hyperliquid-testnet connect
             if [ "$sample" -lt 10 ]; then sleep 1; fi
           done
+          wait "$stream_pid"
+          cat "$RUNNER_TEMP/btc-stream.jsonl"

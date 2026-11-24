@@ -1,3 +1,5 @@
+mod stream;
+
 use clap::{Parser, Subcommand, ValueEnum};
 use reqwest::blocking::Client;
 use serde::{Deserialize, Serialize};
@@ -19,6 +21,11 @@ struct Cli {
 enum Command {
     /// Read the BTC perpetual metadata and top of book.
     Connect,
+    /// Receive BTC book updates over one testnet WebSocket (Ctrl+C to stop).
+    Stream {
+        #[arg(long)]
+        samples: Option<std::num::NonZeroUsize>,
+    },
     /// Read open orders for a public testnet account address.
     OpenOrders { account: String },
     /// Look up an order by exchange ID or 16-byte client order ID.
@@ -137,6 +144,14 @@ fn unix_time_ms() -> Result<i64> {
     Ok(SystemTime::now().duration_since(UNIX_EPOCH)?.as_millis().try_into()?)
 }
 
+fn btc_touch(book: &Value) -> Result<(&str, &str, i64)> {
+    if book["coin"] != "BTC" { return Err("Unexpected book instrument".into()); }
+    let bid = book.pointer("/levels/0/0/px").and_then(Value::as_str).ok_or("Missing bid")?;
+    let ask = book.pointer("/levels/1/0/px").and_then(Value::as_str).ok_or("Missing ask")?;
+    let time = book["time"].as_i64().filter(|t| *t >= 0).ok_or("Invalid exchange timestamp")?;
+    Ok((bid, ask, time))
+}
+
 fn btc_meta(client: &Client, base: &str) -> Result<(usize, Asset)> {
     let meta: Meta = serde_json::from_value(info(client, base, json!({"type":"meta"}))?)?;
     meta.universe.into_iter().enumerate().find(|(_, a)| a.name == "BTC" && !a.is_delisted)
@@ -190,6 +205,10 @@ fn run(client: &Client, base: &str, command: Command, input: impl Read) -> Resul
             let oid = if hex(&id, 32) { json!(id) } else { json!(id.parse::<u64>()?) };
             Ok(info(client, base, json!({"type":"orderStatus","user":account,"oid":oid}))?.to_string())
         }
+        Command::Stream { samples } => {
+            stream::start(samples)?;
+            Ok(String::new())
+        }
         Command::Connect => {
             let (asset, meta) = btc_meta(client, base)?;
             let request = client.post(format!("{base}/info")).json(&json!({"type":"l2Book","coin":"BTC"})).build()?;
@@ -199,10 +218,7 @@ fn run(client: &Client, base: &str, command: Command, input: impl Read) -> Resul
             let elapsed = start.elapsed();
             let received_ms = unix_time_ms()?;
             let book: Value = serde_json::from_slice(&body)?;
-            if book["coin"] != "BTC" { return Err("Unexpected book instrument".into()); }
-            let bid = book.pointer("/levels/0/0/px").and_then(Value::as_str).ok_or("Missing bid")?;
-            let ask = book.pointer("/levels/1/0/px").and_then(Value::as_str).ok_or("Missing ask")?;
-            let time = book["time"].as_i64().filter(|t| *t >= 0).ok_or("Invalid exchange timestamp")?;
+            let (bid, ask, time) = btc_touch(&book)?;
             Ok(json!({"network":"testnet","coin":"BTC","asset":asset,"sizeDecimals":meta.sz_decimals,
                       "bid":bid,"ask":ask,"exchangeTimeMs":time,
                       "requestSentMs":sent_ms,"responseReceivedMs":received_ms,
@@ -245,7 +261,8 @@ fn main() {
     let result = Client::builder().retry(reqwest::retry::never()).timeout(Duration::from_secs(20)).redirect(reqwest::redirect::Policy::none())
         .build().map_err(Into::into).and_then(|client| run(&client, BASE, command, io::stdin().lock()));
     match result {
-        Ok(output) => println!("{output}"),
+        Ok(output) if !output.is_empty() => println!("{output}"),
+        Ok(_) => (),
         Err(e) => { eprintln!("{e}"); std::process::exit(1); }
     }
 }

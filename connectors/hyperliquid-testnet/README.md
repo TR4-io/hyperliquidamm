@@ -13,6 +13,10 @@ cargo run -- connect
 
 A successful connection prints the network, BTC asset index, size precision, best bid and ask, and exchange timestamp in milliseconds. The output also includes local Unix timestamps immediately before the book request and after the full response body arrives. `bookRequestRttMs` uses a monotonic clock for that request alone. `snapshotAgeAtReceiptMs` subtracts the exchange timestamp from the local receipt timestamp. Clock skew affects that signed difference and can make it negative. Both measures exclude metadata lookup and JSON decoding. For F5 debugging, install the CodeLLDB extension and select **Read BTC testnet book**.
 
+## Stream the BTC book
+
+Run `cargo run -- stream --samples 20` to receive 20 BTC L2 book messages on one public testnet WebSocket. Omit `--samples` to stream until Ctrl+C. Each line includes the best bid and ask, exchange timestamp, local frame receipt time and signed snapshot age. The first line also reports connection and subscription startup time. A disconnect, an invalid book or 30 seconds without a book ends the command with an error. Run the command again to start a new stream. [Hyperliquid subscriptions](https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions)
+
 ## Manual order lifecycle
 
 | Command after `cargo run --` | Effect |

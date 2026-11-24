@@ -17,6 +17,12 @@ A successful connection prints the network, BTC asset index, size precision, bes
 
 Run `cargo run -- stream --samples 20` to receive 20 BTC L2 book messages on one public testnet WebSocket. Omit `--samples` to stream until Ctrl+C. Each line includes the best bid and ask, exchange timestamp, local frame receipt time and signed snapshot age. The first line also reports connection and subscription startup time. A disconnect, an invalid book or 30 seconds without a book ends the command with an error. Run the command again to start a new stream. [Hyperliquid subscriptions](https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions)
 
+### Best bid and offer
+
+Run `cargo run -- stream --bbo --samples 20` to subscribe to both official BTC `bbo` and `l2Book` channels on the same socket. The connector emits each newer top of book and labels its source. BBO takes precedence if both feeds report the same exchange timestamp. A JSON null bid or ask means the exchange reported that side empty. L2 snapshots can advance the observation timestamp during quiet periods. Market activity determines the BBO cadence.
+
+The CI benchmark compares this mode with a simultaneous L2-only connection. It samples the last book actually received at each 100 ms tick during their common observation window. Both ages use the same runner clock. A newer exchange timestamp can describe the same prices.
+
 ## Manual order lifecycle
 
 | Command after `cargo run --` | Effect |

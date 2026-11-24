@@ -25,6 +25,9 @@ enum Command {
     Stream {
         #[arg(long)]
         samples: Option<std::num::NonZeroUsize>,
+        /// Also listen for best-bid-and-offer updates and keep the newest top of book.
+        #[arg(long)]
+        bbo: bool,
     },
     /// Read open orders for a public testnet account address.
     OpenOrders { account: String },
@@ -205,8 +208,8 @@ fn run(client: &Client, base: &str, command: Command, input: impl Read) -> Resul
             let oid = if hex(&id, 32) { json!(id) } else { json!(id.parse::<u64>()?) };
             Ok(info(client, base, json!({"type":"orderStatus","user":account,"oid":oid}))?.to_string())
         }
-        Command::Stream { samples } => {
-            stream::start(samples)?;
+        Command::Stream { samples, bbo } => {
+            stream::start(samples, bbo)?;
             Ok(String::new())
         }
         Command::Connect => {

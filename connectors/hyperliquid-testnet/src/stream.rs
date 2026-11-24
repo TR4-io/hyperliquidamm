@@ -10,16 +10,42 @@ use tokio_tungstenite::{connect_async, tungstenite::Message};
 const URL: &str = "wss://api.hyperliquid-testnet.xyz/ws";
 const WAIT: Duration = Duration::from_secs(30);
 
-pub fn start(samples: Option<NonZeroUsize>) -> Result<()> {
+pub fn start(samples: Option<NonZeroUsize>, bbo: bool) -> Result<()> {
     let runtime = tokio::runtime::Builder::new_current_thread().enable_all().build()?;
-    runtime.block_on(read_books(URL, samples, io::stdout().lock()))
+    runtime.block_on(read_books(URL, samples, bbo, io::stdout().lock()))
 }
 
-async fn read_books(url: &str, samples: Option<NonZeroUsize>, mut output: impl Write) -> Result<()> {
+struct Top<'a> {
+    bid: Option<&'a str>,
+    ask: Option<&'a str>,
+    time: i64,
+}
+
+fn bbo_top(data: &Value) -> Result<Top<'_>> {
+    if data["coin"] != "BTC" { return Err("Unexpected BBO instrument".into()); }
+    let time = data["time"].as_i64().filter(|t| *t >= 0).ok_or("Invalid BBO timestamp")?;
+    let pair = data["bbo"].as_array().ok_or("Missing BBO sides")?;
+    let [bid, ask] = pair.as_slice() else { return Err("Expected two BBO sides".into()); };
+    fn price(level: &Value) -> Result<Option<&str>> {
+        if level.is_null() { return Ok(None); }
+        Ok(Some(level["px"].as_str().ok_or("Missing BBO price")?))
+    }
+    Ok(Top { bid: price(bid)?, ask: price(ask)?, time })
+}
+
+// On equal timestamps prefer the event specifically describing the top of book.
+fn advances(previous: Option<(i64, bool)>, time: i64, is_bbo: bool) -> bool {
+    previous.is_none_or(|last| (time, is_bbo) > last)
+}
+
+async fn read_books(url: &str, samples: Option<NonZeroUsize>, bbo: bool, mut output: impl Write) -> Result<()> {
     let started = Instant::now();
     let (mut socket, _) = timeout(WAIT, connect_async(url)).await??;
-    let subscription = json!({"method":"subscribe","subscription":{"type":"l2Book","coin":"BTC"}});
-    timeout(WAIT, socket.send(Message::Text(subscription.to_string().into()))).await??;
+    let channels: &[&str] = if bbo { &["l2Book", "bbo"] } else { &["l2Book"] };
+    for channel in channels {
+        let subscription = json!({"method":"subscribe","subscription":{"type":channel,"coin":"BTC"}});
+        timeout(WAIT, socket.send(Message::Text(subscription.to_string().into()))).await??;
+    }
     let mut previous = None;
     let mut count = 0;
     let mut deadline = Deadline::now() + WAIT;
@@ -41,20 +67,28 @@ async fn read_books(url: &str, samples: Option<NonZeroUsize>, mut output: impl W
             _ => continue,
         };
         let event: Value = serde_json::from_str(&text)?;
-        match event["channel"].as_str() {
-            Some("l2Book") => (),
+        let channel = event["channel"].as_str();
+        let top = match channel {
+            Some("l2Book") => {
+                let (bid, ask, time) = btc_touch(&event["data"])?;
+                Top { bid: Some(bid), ask: Some(ask), time }
+            }
+            Some("bbo") if bbo => bbo_top(&event["data"])?,
             Some("error") => return Err(format!("Testnet subscription error: {}", event["data"]).into()),
             Some("subscriptionResponse" | "pong") => continue,
             _ => return Err("Unexpected message on BTC book stream".into()),
-        }
-        let (bid, ask, exchange_ms) = btc_touch(&event["data"])?;
-        if previous.is_some_and(|last| exchange_ms < last) {
+        };
+        let exchange_ms = top.time;
+        let is_bbo = channel == Some("bbo");
+        if bbo {
+            if !advances(previous, exchange_ms, is_bbo) { continue; }
+        } else if previous.is_some_and(|(last, _)| exchange_ms < last) {
             return Err("BTC book timestamp moved backwards".into());
         }
         count += 1;
         let mut row = json!({
             "network":"testnet", "coin":"BTC", "transport":"websocket",
-            "bid":bid, "ask":ask, "exchangeTimeMs":exchange_ms,
+            "bid":top.bid, "ask":top.ask, "source":channel, "exchangeTimeMs":exchange_ms,
             "responseReceivedMs":received_ms, "snapshotAgeAtReceiptMs":received_ms - exchange_ms,
             "initial":previous.is_none()
         });
@@ -67,7 +101,7 @@ async fn read_books(url: &str, samples: Option<NonZeroUsize>, mut output: impl W
             timeout(WAIT, socket.close(None)).await??;
             return Ok(());
         }
-        previous = Some(exchange_ms);
+        previous = Some((exchange_ms, is_bbo));
         deadline = Deadline::now() + WAIT;
     }
 }
@@ -77,6 +111,24 @@ mod tests {
     use super::*;
     use tokio::net::TcpListener;
     use tokio_tungstenite::accept_async;
+
+    #[test]
+    fn bbo_clears_an_absent_side_and_rejects_malformed_levels() {
+        let data = json!({"coin":"BTC","time":12,"bbo":[null,{"px":"101"}]});
+        let top = bbo_top(&data).unwrap();
+        assert_eq!((top.bid, top.ask, top.time), (None, Some("101"), 12));
+        assert!(bbo_top(&json!({"coin":"BTC","time":12,"bbo":[{},null]})).is_err());
+    }
+
+    #[test]
+    fn late_snapshots_and_duplicate_timestamps_cannot_replace_fresher_bbo() {
+        assert!(advances(None, 10, false));
+        assert!(advances(Some((10, false)), 10, true));
+        assert!(!advances(Some((10, true)), 10, false));
+        assert!(!advances(Some((10, true)), 10, true));
+        assert!(!advances(Some((10, false)), 9, true));
+        assert!(advances(Some((10, true)), 11, false));
+    }
 
     #[test]
     fn one_subscription_streams_two_timestamped_books() {
@@ -98,7 +150,7 @@ mod tests {
                 assert!(matches!(ws.next().await.unwrap().unwrap(), Message::Close(_)));
             });
             let mut bytes = Vec::new();
-            read_books(&url, NonZeroUsize::new(2), &mut bytes).await.unwrap();
+            read_books(&url, NonZeroUsize::new(2), false, &mut bytes).await.unwrap();
             server.await.unwrap();
             let rows: Vec<Value> = std::str::from_utf8(&bytes).unwrap().lines()
                 .map(|line| serde_json::from_str(line).unwrap()).collect();

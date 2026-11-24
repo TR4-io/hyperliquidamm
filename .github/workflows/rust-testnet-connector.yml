@@ -26,13 +26,21 @@ jobs:
           cargo build --locked
       - name: Test connector with local fixtures
         run: cargo test --locked
-      - name: Compare public BTC HTTP and WebSocket book timing
+      - name: Read public BTC HTTP book
+        run: ./target/debug/hyperliquid-testnet connect
+      - name: Compare BTC top of book at shared decision times
         run: |
-          ./target/debug/hyperliquid-testnet stream --samples 21 > "$RUNNER_TEMP/btc-stream.jsonl" &
-          stream_pid=$!
-          for sample in $(seq 1 10); do
-            ./target/debug/hyperliquid-testnet connect
-            if [ "$sample" -lt 10 ]; then sleep 1; fi
-          done
-          wait "$stream_pid"
-          cat "$RUNNER_TEMP/btc-stream.jsonl"
+          capture() {
+            local file="$1"
+            shift
+            timeout 75s ./target/debug/hyperliquid-testnet stream "$@" > "$file" && return 1
+            local status=$?
+            test "$status" -eq 124
+          }
+          capture "$RUNNER_TEMP/l2.jsonl" &
+          l2_pid=$!
+          capture "$RUNNER_TEMP/top.jsonl" --bbo &
+          top_pid=$!
+          wait "$l2_pid"
+          wait "$top_pid"
+          python3 bench/decision_age.py "$RUNNER_TEMP/l2.jsonl" "$RUNNER_TEMP/top.jsonl"
